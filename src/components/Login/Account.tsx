@@ -5,7 +5,11 @@ const Account = () => {
   const loginHandler = () => {
     window.location.href = KAKAO_AUTH_URI;
   };
-  return <button onClick={loginHandler}>로그인</button>;
+  return (
+    <button onClick={loginHandler} className="bg-amber-800 py-2">
+      로그인
+    </button>
+  );
 };
 
 export default Account;
