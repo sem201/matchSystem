@@ -1,7 +1,11 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import MainPage from "./page/Desktop-MainPage";
+import LoginPage from "./page/LoginPage";
+import Mainpage from "./page/MainPage";
 
-const router = createBrowserRouter([{ path: "/main", element: <MainPage /> }]);
+const router = createBrowserRouter([
+  { path: "/", element: <LoginPage /> },
+  { path: "/main", element: <Mainpage /> },
+]);
 
 export default router;
