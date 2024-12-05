@@ -1,7 +1,7 @@
 import TeamContainer from "../components/Mobile/Main/TeamContainer";
 
-const Mainpage = () => {
+const MobileMainpage = () => {
   return <TeamContainer />;
 };
 
-export default Mainpage;
+export default MobileMainpage;
