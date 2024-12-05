@@ -1,5 +1,3 @@
-import Container from "../common/Container";
-
 const Account = () => {
   const REST_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
   const REDIRECT_URI = "http://localhost:5173/kakao/login";
@@ -8,11 +6,15 @@ const Account = () => {
     window.location.href = KAKAO_AUTH_URI;
   };
   return (
-    <Container>
-      <button onClick={loginHandler} className="bg-amber-800 py-2">
-        로그인
-      </button>
-    </Container>
+    <div className="border-2 w-[100px] bg-white border-[#C8AA6E] rounded-[15px] bg-opacity-30">
+      <div className="flex flex-col justify-center items-center">
+        <div>Login</div>
+        <button
+          onClick={loginHandler}
+          className=" bg-[url(./assets/kakao_login_small.png)] bg-no-repeat bg-cover"
+        ></button>
+      </div>
+    </div>
   );
 };
 
