@@ -2,7 +2,7 @@ import { Props } from "../../commonTypes";
 
 const Container = ({ children }: Props) => {
   return (
-    <div className="border-2 lg:w-[600px] md:w-[500px] sm:w-96 h-100 bg-white">
+    <div className="border-2 w-[100px] bg-white border-[#C8AA6E] rounded-[15px] bg-opacity-30">
       {children}
     </div>
   );
