@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
-import LoginPage from "./page/Mobile-LoginPage";
-import Mainpage from "./page/Mobile-Mainpage";
+import LoginPage from "./page/LoginPage";
+import Mainpage from "./page/MainPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
