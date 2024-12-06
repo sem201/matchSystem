@@ -1,7 +1,13 @@
 import TeamContainer from "../components/Mobile/Main/TeamContainer";
+import UserContainer from "../components/Mobile/chouseUser/UserContainer";
 
-const Mainpage = () => {
-  return <TeamContainer />;
+const MobileMainpage = () => {
+  return (
+    <>
+      <TeamContainer />
+      <UserContainer />
+    </>
+  );
 };
 
-export default Mainpage;
+export default MobileMainpage;
