@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import MobileMainpage from "./Mobile-Mainpage";
 import DesktopMainPage from "./Desktop-MainPage";
 

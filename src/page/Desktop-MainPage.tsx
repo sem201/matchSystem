@@ -1,4 +1,3 @@
-import React from "react";
 import Team from "../components/Desktop/Team";
 import Header from "../components/Desktop/Header";
 
