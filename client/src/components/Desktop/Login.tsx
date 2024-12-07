@@ -1,7 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 
-
-
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
   const audioRef = useRef<HTMLAudioElement | null>(null); // audio 태그 참조 타입 명시
@@ -18,9 +16,9 @@ const Login = () => {
   };
 
   const handleKakaoLogin = () => {
-    const REST_API_KEY = "fccbcfc6b296ae9020fa8e80cf706d6c";  // 카카오 REST API 키
-    const REDIRECT_URI = 'http://localhost:8000/user/kakao/login';  // 서버에서 처리할 리디렉션 URI
-  
+    const REST_API_KEY = import.meta.env.VITE_KAKAO_API_KEY; // 카카오 REST API 키
+    const REDIRECT_URI = "http://localhost:8000/user/kakao/login"; // 서버에서 처리할 리디렉션 URI
+
     // 카카오 로그인 페이지로 리디렉션 (서버에서 처리할 로그인 URL로)
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   };
