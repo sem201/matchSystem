@@ -1,9 +1,9 @@
-import none from "../../../assets/line-none.png";
-import top from "../../../assets/line-top.png";
-import jg from "../../../assets/line-jug.png";
-import mid from "../../../assets/line-mid.png";
-import ad from "../../../assets/line-ad.png";
-import sup from "../../../assets/line-sup.png";
+import top from "../../../assets/line_img/line-top.png";
+import jg from "../../../assets/line_img/line-jug.png";
+import mid from "../../../assets/line_img/line-mid.png";
+import ad from "../../../assets/line_img/line-ad.png";
+import sup from "../../../assets/line_img/line-sup.png";
+import none from "../../../assets/line_img/line-none.png";
 import sett from "../../../assets/sett.png";
 import { useState } from "react";
 import LineModal from "./LineModal";
