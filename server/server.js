@@ -5,7 +5,7 @@ const app = express();
 const authRoutes = require('./routes/authRoutes');
 const path = require('path');
 
-const sequelize = require('./config/db');
+const sequelize = require('./config/db');g
 const PORT = process.env.PORT || 8000;
 
 // 세션 설정
