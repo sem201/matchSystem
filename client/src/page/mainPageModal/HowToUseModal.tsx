@@ -55,7 +55,9 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         </div>
 
         {/* 설명 텍스트 */}
-        <p className="text-[#0F2041] mb-4 text-sm">{descriptions[currentIndex]}</p>
+        <p className="text-[#0F2041] mb-4 text-sm">
+          {descriptions[currentIndex]}
+        </p>
 
         {/* 이미지 이동 버튼과 페이지 번호 위치 조정 */}
         <div className="flex justify-between items-center mb-4">
@@ -83,7 +85,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         <div className="absolute top-4 right-4">
           <button
             onClick={closeModal}
-            className="px-4 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg hover:bg-[#F5F5F5]"
+            className="bg-[#F0E6D2] px-4 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg hover:bg-[#F5F5F5]"
           >
             닫기
           </button>
