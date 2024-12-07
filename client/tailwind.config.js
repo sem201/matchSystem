@@ -2,7 +2,13 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        blackHanSans: ["'Black Han Sans'", "sans-serif"],
+        notoSansKR: ["'Noto Sans KR'", "sans-serif"],
+        protestGuerrilla: ["'Protest Guerrilla'", "cursive"],
+      },
+    },
   },
   plugins: [],
 };

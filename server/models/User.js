@@ -3,18 +3,15 @@ const sequelize = require('../config/db');
 
 // User 모델 정의
 const User = sequelize.define('User', {
-  kakaoId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
-  },
-  email: {
-    type: DataTypes.STRING,
-    allowNull: true,
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true, // 기본 키 설정
+    autoIncrement: true, // 자동 증가 설정
   },
   nickname: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   profileImage: {
     type: DataTypes.STRING,
