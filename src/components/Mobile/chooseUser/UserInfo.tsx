@@ -21,12 +21,12 @@ const UserInfo = () => {
       />
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />
       <div className="flex flex-col">
-        <div className="text-[10px]">UNRANK ▼</div>
+        <div className="text-[10px]">UNRANK</div>
         <p className="text-[12px]">닉네임네임입니#KR1</p>
       </div>
       <p className="text-[13px] text-nowrap">승률 50.4%</p>
       <button className="w-[10px] bg-inherit">X</button>
-      {isLine && <LineModal isLine={isLine} />}
+      {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
     </div>
   );
 };
