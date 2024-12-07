@@ -6,8 +6,6 @@ interface ModalProps {
   isModalOpen: boolean; // isModalOpen 속성 추가
 }
 
-
-
 export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
   const [nicknameTag, setNicknameTag] = useState<string>(""); // 입력값
   const [userAdded, setUserAdded] = useState<boolean | null>(null); // 검색 결과
@@ -22,13 +20,13 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
       setUserAdded(false); // 유효성 실패
       return;
     }
-  
+
     // 입력값 분리
     const [nickname, tag] = trimmedInput.split("#");
-  
+
     // 태그를 대문자로 변환
     const normalizedTag = tag.toUpperCase();
-  
+
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)
     if (nickname === "example" && normalizedTag === "KR1234") {
       setUserAdded(true); // 유저 검색 성공
@@ -51,8 +49,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
         >
           <p
             className="text-center mb-4 font-bold text-lg"
-            style={{ fontFamily: "Arial, sans-serif", color: "#0F2041", }}
-            
+            style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
           >
             추가할 유저의 닉네임과 태그를 입력하세요.
           </p>
@@ -64,7 +61,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
               value={nicknameTag}
               onChange={(e) => setNicknameTag(e.target.value)}
               placeholder="예: 닉네임#KR1234"
-              className="flex-1 px-4 py-2 border border-[#C89B3C] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
+              className="flex-1 px-4 py-2 border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
             />
             <button
               onClick={handleAddUser}

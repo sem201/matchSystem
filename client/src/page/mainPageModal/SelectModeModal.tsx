@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 // ModalProps 수정
 interface ModalProps {
   closeModal: () => void;
@@ -56,6 +55,7 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
               style={{
                 cursor: "pointer",
                 borderRadius: "8px",
+                backgroundColor: "#F0E6D2",
               }}
             >
               {mode}
@@ -64,9 +64,7 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
         </div>
 
         {/* 이미지 컨테이너 */}
-        <div
-          className="relative h-[200px] mb-4 flex items-center justify-center  rounded-lg"
-        >
+        <div className="relative h-[200px] mb-4 flex items-center justify-center  rounded-lg">
           {/* 이미지 전환 애니메이션 */}
           <div
             className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
@@ -87,7 +85,9 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
             isTransitioning ? "opacity-0" : "opacity-100"
           }`}
         >
-          <p className="text-center text-sm font-bold text-gray-700">{modeDescriptions[selectedMode]}</p>
+          <p className="text-center text-sm font-bold text-gray-700">
+            {modeDescriptions[selectedMode]}
+          </p>
         </div>
 
         {/* 확인/취소 버튼 */}
@@ -97,13 +97,13 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
               alert(`${selectedMode} 모드가 선택되었습니다.`);
               closeModal();
             }}
-            className="px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
+            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
           >
             확인
           </button>
           <button
             onClick={closeModal}
-            className="px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
+            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
           >
             취소
           </button>
@@ -112,4 +112,3 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
     </div>
   );
 }
-

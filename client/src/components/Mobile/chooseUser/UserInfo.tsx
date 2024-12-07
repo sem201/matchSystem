@@ -20,12 +20,12 @@ const UserInfo = () => {
         onClick={() => setIsLine(!isLine)}
       />
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />
-      <div className="flex flex-col">
+      <div className="flex flex-col whitespace-nowrap">
         <div className="text-[10px]">UNRANK</div>
         <p className="text-[12px]">닉네임네임입니#KR1</p>
       </div>
       <p className="text-[13px] text-nowrap">승률 50.4%</p>
-      <button className="w-[10px] bg-inherit">X</button>
+      <button className="ml-[-25px] bg-inherit">X</button>
       {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
     </div>
   );
