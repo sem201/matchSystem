@@ -9,7 +9,7 @@ const TeamContainer: React.FC<Props> = ({ color }) => {
       <p className="text-[30px]" style={{ color: textColor }}>
         {color} TEAM
       </p>
-      <div className="bg-white border-2 border-[#C8AA6E] rounded-[15px] bg-opacity-30 w-[300px] min-h-[250px]"></div>
+      <div className="bg-[#F0E6D2] border-2 border-[#C8AA6E] rounded-[15px] bg-opacity-15 w-[300px] min-h-[250px]"></div>
     </>
   );
 };
