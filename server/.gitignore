@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+champ_img
+profile_img
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
