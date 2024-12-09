@@ -48,7 +48,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
           style={{ borderColor: "#C89B3C" }}
         >
           <p
-            className="text-center mb-4 font-bold text-lg"
+            className="text-center mb-7 font-bold text-lg whitespace-nowrap font-blackHanSans"
             style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
           >
             추가할 유저의 닉네임과 태그를 입력하세요.
@@ -61,11 +61,11 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
               value={nicknameTag}
               onChange={(e) => setNicknameTag(e.target.value)}
               placeholder="예: 닉네임#KR1234"
-              className="flex-1 px-4 py-2 border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
+              className="flex-1 px-4 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
             />
             <button
               onClick={handleAddUser}
-              className="px-4 py-2 bg-[#C89B3C] text-white rounded-lg hover:bg-[#A87F2D]"
+              className="px-4 py-2 bg-[#C89B3C] text-white rounded-lg hover:bg-[#A87F2D] font-blackHanSans"
             >
               검색
             </button>
@@ -84,13 +84,13 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
           )}
 
           {/* 닫기 + 추가 버튼 */}
-          <div className="flex justify-center gap-4 mt-10">
+          <div className="flex justify-center gap-4 mt-10 font-blackHanSans">
             <button
               disabled={!isAddEnabled} // 검색 성공 시 활성화
               className={`px-7 py-2 ${
                 isAddEnabled
                   ? "bg-[#F0E6D2] text-[#0F2041] font-bold hover:bg-[#A87F2D]"
-                  : "bg-gray-300 text-gray-500  font-bold cursor-not-allowed"
+                  : "bg-[#C89B3C] text-white border-[#F0E6D2] font-bold cursor-not-allowed"
               } border-2 border-[#C89B3C] rounded-full`}
             >
               추가
