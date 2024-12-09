@@ -1,5 +1,4 @@
 import React from "react";
-import UserInfo from "../Mobile/chooseUser/UserInfo";
 import { Props } from "../../commonTypes";
 
 const UserContainer = ({ children }: Props) => {
@@ -7,16 +6,7 @@ const UserContainer = ({ children }: Props) => {
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto bg-[#F0E6D2] border-2 border-[#C8AA6E] rounded-[40px] bg-opacity-15 p-4">
         <div className="ml-3 mb-5 mt-3">최근에 같이한 친구</div>
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
-        <UserInfo />
+
         {children}
       </div>
     </div>
