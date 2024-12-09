@@ -1,12 +1,12 @@
-const express = require('express');
+import express from 'express';
+import { kakaoLogin, logout } from '../controllers/authController.js';
+
 const router = express.Router();
-const authController = require('../controllers/authController');
 
 // 카카오 로그인 처리
-router.get('/user/kakao/login', authController.kakaoLogin);
+router.get('/user/kakao/login', kakaoLogin);
 
 // 로그아웃
-router.get('/logout', authController.logout);
+router.get('/logout', logout);
 
-
-module.exports = router;
+export default router;
