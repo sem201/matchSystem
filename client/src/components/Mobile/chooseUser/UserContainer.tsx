@@ -1,6 +1,5 @@
 import { Props } from "../../../commonTypes";
 import LatestUserInfo from "./LatestUserInfo";
-import UserInfo from "./AddedUserInfo";
 import { User } from "../../../commonTypes";
 interface UserContainerProps extends Props {
   onAddUser: (user: User) => void;
