@@ -9,6 +9,7 @@ export default {
         protestGuerrilla: ["'Protest Guerrilla'", "cursive"],
       },
     },
+    mode: "jit",
   },
   plugins: [],
 };

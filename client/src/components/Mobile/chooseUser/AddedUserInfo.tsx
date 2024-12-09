@@ -7,8 +7,14 @@ import none from "../../../assets/line_img/line-none.png";
 import sett from "../../../assets/sett.png";
 import { useState } from "react";
 import LineModal from "./LineModal";
+import { User } from "../../../commonTypes";
 
-const UserInfo = () => {
+interface AddedUserInfoProps {
+  user: User;
+  onRemoveUser: (user: User) => void;
+}
+
+const UserInfo: React.FC<AddedUserInfoProps> = ({ user, onRemoveUser }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
   return (
@@ -27,7 +33,12 @@ const UserInfo = () => {
         </p>
       </div>
       <p className="text-[13px] text-nowrap text-white">승률 50.4%</p>
-      <button className="w-[10px] bg-inherit text-white">+</button>
+      <button
+        className="w-[10px] bg-inherit text-white"
+        onClick={() => onRemoveUser(user)}
+      >
+        X
+      </button>
       {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
     </div>
   );
