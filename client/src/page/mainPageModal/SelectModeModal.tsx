@@ -37,7 +37,7 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center font-blackHanSans"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
@@ -49,7 +49,7 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
             <button
               key={mode}
               onClick={() => handleModeClick(mode)}
-              className={`px-4 py-2 font-bold text-lg border-[3px] border-[#C89B3C] transition-all duration-300 ${
+              className={`px-3 py-2 font-bold text-lg border-[3px] border-[#C89B3C] transition-all duration-300 ${
                 selectedMode === mode ? "text-[#0F2041]" : "text-gray-600"
               } focus:outline-none`}
               style={{

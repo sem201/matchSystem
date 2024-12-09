@@ -8,7 +8,7 @@ interface ModalProps {
 
 export default function HowToUseModal({ closeModal }: ModalProps) {
   const images = [
-    "/src/assets/modeGif/salt.jpg", // 예시 이미지 경로
+    "/src/assets/modeGif/modeselect.png", // 예시 이미지 경로
     "/src/assets/modeGif/sugar.jpg",
     "/src/assets/modeGif/tower.jpg",
     "/src/assets/modeGif/sunrise.jpg",
@@ -16,7 +16,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
   ];
 
   const descriptions = [
-    "이 이미지는 첫 번째 사용법을 설명합니다. 이 이미지는 첫 번째 사용법을 설명합니다. 이 이미지는 첫 번째 사용법을 설명합니다.",
+    "내전 인원 추가 버튼을 눌러 닉네임과 태그라인을 입력하고, 추가 버튼을 클릭하여 내전에 참여할 유저의 정보를 불러옵니다.",
     "이 이미지는 두 번째 사용법을 설명합니다.",
     "이 이미지는 세 번째 사용법을 설명합니다.",
     "이 이미지는 네 번째 사용법을 설명합니다.",
