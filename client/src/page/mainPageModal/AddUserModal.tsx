@@ -35,6 +35,19 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
     }
   };
 
+  const handleAddButtonClick = () => {
+    // 추가 버튼 클릭 시 초기화
+    setNicknameTag(""); // 입력 필드 초기화
+    setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
+  };
+
+  const handleCloseButtonClick = () => {
+    // 닫기 버튼 클릭 시 초기화
+    setNicknameTag(""); // 입력 필드 초기화
+    setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
+    closeModal();
+  };
+
   return (
     isModalOpen && (
       <div
@@ -87,6 +100,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
           <div className="flex justify-center gap-4 mt-10 font-blackHanSans">
             <button
               disabled={!isAddEnabled} // 검색 성공 시 활성화
+              onClick={handleAddButtonClick} // 추가 버튼 클릭 시 초기화
               className={`px-7 py-2 ${
                 isAddEnabled
                   ? "bg-[#F0E6D2] text-[#0F2041] font-bold hover:bg-[#A87F2D]"
@@ -96,7 +110,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
               추가
             </button>
             <button
-              onClick={closeModal}
+              onClick={handleCloseButtonClick}
               className="px-7 py-2 bg-[#F0E6D2] text-[#0F2041] font-bold border-2 border-[#C89B3C] rounded-full hover:bg-[#e8d9c3]"
             >
               닫기

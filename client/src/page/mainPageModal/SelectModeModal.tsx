@@ -4,9 +4,13 @@ import React, { useState } from "react";
 interface ModalProps {
   closeModal: () => void;
   isModalOpen: boolean; // isModalOpen 속성 추가
+  setHeaderText: (text: string) => void;
 }
 
-export default function SelectModeModal({ closeModal }: ModalProps) {
+export default function SelectModeModal({
+  closeModal,
+  setHeaderText,
+}: ModalProps) {
   const [selectedMode, setSelectedMode] = useState("RANDOM"); // 기본값은 RANDOM
   const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
 
@@ -33,6 +37,11 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
         setIsTransitioning(false); // 애니메이션 종료
       }, 300); // 애니메이션 지속 시간과 동일하게 설정 (300ms)
     }
+  };
+
+  const handleConfirm = () => {
+    setHeaderText(`${selectedMode} 모드`);
+    closeModal();
   };
 
   return (
@@ -95,7 +104,7 @@ export default function SelectModeModal({ closeModal }: ModalProps) {
           <button
             onClick={() => {
               alert(`${selectedMode} 모드가 선택되었습니다.`);
-              closeModal();
+              handleConfirm();
             }}
             className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
           >

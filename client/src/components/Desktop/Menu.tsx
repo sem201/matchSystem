@@ -2,10 +2,14 @@ import React from "react";
 import UserContainer from "./UserContainer";
 import Button from "./Button";
 
-const Menu = () => {
+interface MenuProps {
+  setHeaderText: (text: string) => void;
+}
+
+const Menu: React.FC<MenuProps> = ({ setHeaderText }) => {
   return (
     <div className="relative">
-      <Button />
+      <Button setHeaderText={setHeaderText} />
       <div className="lg:col-span-1 lg:row-span-3">
         <UserContainer />
       </div>
