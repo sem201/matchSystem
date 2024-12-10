@@ -13,7 +13,7 @@ export default function MainPage() {
   // 화면 크기 변화에 따른 상태 업데이트
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 700);
+      setIsMobile(window.innerWidth < 700);
     };
 
     // 이벤트 리스너 추가
