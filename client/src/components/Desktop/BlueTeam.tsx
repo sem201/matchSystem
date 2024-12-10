@@ -1,7 +1,3 @@
-import jg from "./../../assets/line_img/line-jug.png";
-import mid from "./../../assets/line_img/line-mid.png";
-import ad from "./../../assets/line_img/line-ad.png";
-import sup from "./../../assets/line_img/line-sup.png";
 import none from "./../../assets/line_img/line-none.png";
 import sett from "./../../assets/sett.png";
 import tier from "./../../assets/tier.png";
