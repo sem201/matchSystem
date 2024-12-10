@@ -17,8 +17,20 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
 
   const descriptions = [
     "내전 인원 추가 버튼을 눌러 닉네임과 태그라인을 입력하고, 추가 버튼을 클릭하여 내전에 참여할 유저의 정보를 불러옵니다.",
-    "이 이미지는 두 번째 사용법을 설명합니다.",
-    "이 이미지는 세 번째 사용법을 설명합니다.",
+    <div className="space-y-4">
+      <p>
+        <strong className="font-bold">RANDOM :</strong> 팀을 무작위로 섞습니다.
+      </p>
+      <p>
+        <strong className="font-bold">DRAFT :</strong> 팀장 2명 선정 후, 라인별
+        2명씩 보여주고 팀장이 팀원을 선택합니다.
+      </p>
+      <p>
+        <strong className="font-bold">BALANCE :</strong> 알고리즘을 통해 팀 선정
+      </p>
+      <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
+    </div>,
+    "총 10명의 인원을 추가해야 합니다. \n참가 유저의 주라인을 선택해야 하며, 탑/미드/정글/\n원딜/서폿 라인별로 각각 2명이 존재해야합니다.",
     "이 이미지는 네 번째 사용법을 설명합니다.",
     "이 이미지는 다섯 번째 사용법을 설명합니다.",
   ];
@@ -55,9 +67,9 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         </div>
 
         {/* 설명 텍스트 */}
-        <p className="text-[#0F2041] mb-4 text-sm">
+        <div className="text-[#0F2041] mb-4 text-sm whitespace-pre-wrap">
           {descriptions[currentIndex]}
-        </p>
+        </div>
 
         {/* 이미지 이동 버튼과 페이지 번호 위치 조정 */}
         <div className="flex justify-between items-center mb-4">
@@ -70,7 +82,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
 
           {/* 페이지 번호 */}
           <div className="text-lg text-[#0F2041]">
-            <span>{`<${currentIndex + 1}>`}</span>
+            <span>{`< ${currentIndex + 1} >`}</span>
           </div>
 
           <button
@@ -85,9 +97,17 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         <div className="absolute top-4 right-4">
           <button
             onClick={closeModal}
-            className="bg-[#F0E6D2] px-4 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg hover:bg-[#F5F5F5]"
+            className="bg-white hover:bg-[#F5F5F5] p-1 rounded-lg"
           >
-            닫기
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#000000"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
           </button>
         </div>
       </div>
