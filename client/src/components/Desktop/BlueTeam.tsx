@@ -14,7 +14,7 @@ const BlueTeam = () => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
   return (
-    <div className="w-[18%] min-w-[110px] max-h-[100%] border-2 border-solid border-[#004A82] rounded-2xl flex flex-col items-center p-2">
+    <div className="w-[18%] max-h-[100%] border-2 border-solid border-[#004A82] rounded-2xl flex flex-col items-center p-2">
       <img
         src={line}
         alt="라인 이미지"
