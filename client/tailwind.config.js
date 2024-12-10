@@ -8,6 +8,9 @@ export default {
         notoSansKR: ["'Noto Sans KR'", "sans-serif"],
         protestGuerrilla: ["'Protest Guerrilla'", "cursive"],
       },
+      screens: {
+        xs: "425px",
+      },
     },
     mode: "jit",
   },
