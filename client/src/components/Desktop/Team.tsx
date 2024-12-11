@@ -6,9 +6,10 @@ import { User } from "../../commonTypes";
 interface TeamProps {
   redTeam: User[];
   blueTeam: User[];
+  onRemoveUser: (userId: number) => void;
 }
 
-const Team: React.FC<TeamProps> = ({ redTeam, blueTeam }) => {
+const Team: React.FC<TeamProps> = ({ redTeam, blueTeam, onRemoveUser }) => {
   const redTeamCount = 5;
   const blueTeamCount = 5;
   return (
@@ -16,7 +17,7 @@ const Team: React.FC<TeamProps> = ({ redTeam, blueTeam }) => {
       {/* Red Team 영역 */}
       <div className="w-[100%] h-[100%] flex xs:gap-[10px] lg:gap-[15px] xl:gap-[25px] justify-center">
         {Array.from({ length: redTeamCount }).map((_, idx) => (
-          <RedTeam key={idx} user={redTeam[idx]} />
+          <RedTeam key={idx} user={redTeam[idx]} onRemoveUser={onRemoveUser} />
         ))}
       </div>
       <div>
