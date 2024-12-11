@@ -1,45 +1,53 @@
 import React, { useState } from "react";
+import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
 
-// ModalProps 수정
 interface ModalProps {
   closeModal: () => void;
-  isModalOpen: boolean; // isModalOpen 속성 추가
+
+  isModalOpen: boolean;
+  setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // setIsDraftModalOpen 추가
   setHeaderText: (text: string) => void;
+
 }
 
 export default function SelectModeModal({
   closeModal,
-  setHeaderText,
+  setIsDraftModalOpen, // prop으로 받기
+  setHeaderText
 }: ModalProps) {
   const [selectedMode, setSelectedMode] = useState("RANDOM"); // 기본값은 RANDOM
   const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
 
-  // 모드 설명 객체
+
   const modeDescriptions: Record<string, string> = {
     RANDOM: "RANDOM 모드는 랜덤으로 팀을 구성합니다.",
     DRAFT: "DRAFT 모드는 플레이어가 번갈아 가며 팀을 선택합니다.",
     BALANCE: "BALANCE 모드는 밸런스를 맞춰 팀을 자동으로 구성합니다.",
   };
 
-  // 모드 이미지 객체
   const modeImages: Record<string, string> = {
     RANDOM: "/src/assets/modeGif/random.gif",
     DRAFT: "/src/assets/modeGif/draft.gif",
     BALANCE: "/src/assets/modeGif/justice.gif",
   };
 
-  // 모드 선택 핸들러
   const handleModeClick = (mode: string) => {
     if (mode !== selectedMode) {
-      setIsTransitioning(true); // 애니메이션 시작
+      setIsTransitioning(true);
       setTimeout(() => {
-        setSelectedMode(mode); // 모드 변경
-        setIsTransitioning(false); // 애니메이션 종료
-      }, 300); // 애니메이션 지속 시간과 동일하게 설정 (300ms)
+        setSelectedMode(mode);
+        setIsTransitioning(false);
+      }, 300);
     }
   };
 
+// 확인 클릭시 헤더 택스트 
   const handleConfirm = () => {
+        alert(`${selectedMode} 모드가 선택되었습니다.`);
+
+    if (selectedMode === "DRAFT") {
+      // DRAFT 모드가 선택되면 DraftModal을 열기
+      setIsDraftModalOpen(true); // 여기서 상태를 true로 설정
     setHeaderText(`${selectedMode} 모드`);
     closeModal();
   };
@@ -52,7 +60,6 @@ export default function SelectModeModal({
       }}
     >
       <div className="bg-white border-[3px] border-[#C89B3C] p-8 rounded-lg w-[450px] shadow-lg relative overflow-hidden">
-        {/* 상단 모드 선택 */}
         <div className="flex justify-center items-center space-x-4 mb-6">
           {["RANDOM", "DRAFT", "BALANCE"].map((mode) => (
             <button
@@ -72,9 +79,7 @@ export default function SelectModeModal({
           ))}
         </div>
 
-        {/* 이미지 컨테이너 */}
         <div className="relative h-[200px] mb-4 flex items-center justify-center  rounded-lg">
-          {/* 이미지 전환 애니메이션 */}
           <div
             className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
               isTransitioning ? "opacity-0" : "opacity-100"
@@ -88,7 +93,6 @@ export default function SelectModeModal({
           </div>
         </div>
 
-        {/* 설명 전환 애니메이션 */}
         <div
           className={`transition-opacity duration-300 ${
             isTransitioning ? "opacity-0" : "opacity-100"
@@ -99,11 +103,9 @@ export default function SelectModeModal({
           </p>
         </div>
 
-        {/* 확인/취소 버튼 */}
         <div className="flex justify-center space-x-4 mt-6">
           <button
             onClick={() => {
-              alert(`${selectedMode} 모드가 선택되었습니다.`);
               handleConfirm();
             }}
             className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
