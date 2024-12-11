@@ -8,15 +8,19 @@ interface ModalProps {
 
 export default function HowToUseModal({ closeModal }: ModalProps) {
   const images = [
-    "/src/assets/modeGif/modeselect.png", // 예시 이미지 경로
-    "/src/assets/modeGif/sugar.jpg",
-    "/src/assets/modeGif/tower.jpg",
-    "/src/assets/modeGif/sunrise.jpg",
-    "/src/assets/modeGif/rain.png",
+    "/src/assets/modeGif/userselect.png", // 예시 이미지 경로
+    "/src/assets/modeGif/userselect.png",
+    "/src/assets/modeGif/userAdd.png",
+    "src/assets/modeGif/teamChoose.png",
+    "src/assets/modeGif/modeselect.png",
+    "src/assets/modeGif/good.jpeg",
   ];
 
   const descriptions = [
-    "내전 인원 추가 버튼을 눌러 닉네임과 태그라인을 입력하고, 추가 버튼을 클릭하여 내전에 참여할 유저의 정보를 불러옵니다.",
+    "인원 추가 버튼을 눌러 닉네임과 태그를 입력하고 \n검색버튼을 클릭하여 유저 정보가 존재하는지 확인합니다.",
+    "유저 정보가 확인되면 추가 버튼을 클릭하여\n 참여할 인원을 추가합니다.",
+    "최근에 함께한 유저의 경우 검색을 하지 않고\n +버튼을 클릭하여 추가할 수 있습니다",
+    "총 10명의 인원을 추가해야합니다. \n겹치는 라인이 없도록 추가해주세요",
     <div className="space-y-4">
       <p>
         <strong className="font-bold">RANDOM :</strong> 팀을 무작위로 섞습니다.
@@ -30,9 +34,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
       </p>
       <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
     </div>,
-    "총 10명의 인원을 추가해야 합니다. \n참가 유저의 주라인을 선택해야 하며, 탑/미드/정글/\n원딜/서폿 라인별로 각각 2명이 존재해야합니다.",
-    "이 이미지는 네 번째 사용법을 설명합니다.",
-    "이 이미지는 다섯 번째 사용법을 설명합니다.",
+    "팀짜기 버튼을 클릭하면 팀이 구성됩니다.\n 재밌게 즐겨주세요!",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
