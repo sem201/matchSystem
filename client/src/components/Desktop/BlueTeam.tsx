@@ -16,7 +16,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({ user }) => {
   const [line, setLine] = useState(none);
 
   // 유저가 없을 경우 배경을 다르게 설정
-  const backgroundClass = user ? "bg-[#B9CCDF]" : "bg-[#F0E6D2] bg-opacity-30";
+  const backgroundClass = user ? "bg-[#B9CCDF]" : "bg-[#F0E6D2] bg-opacity-15";
 
   return (
     <div

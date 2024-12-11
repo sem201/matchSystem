@@ -5,9 +5,6 @@ import PlusIcon from "../../assets/svg/add.svg";
 interface UserContainerProps {
   allUser: User[];
   onAddUser: (userId: number) => void;
-  setAllUser: React.Dispatch<React.SetStateAction<User[]>>;
-  setRedTeam: React.Dispatch<React.SetStateAction<User[]>>;
-  setBlueTeam: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
@@ -16,7 +13,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
 }) => {
   return (
     <div>
-      <div className="w-[100%] h-[70vh] overflow-auto bg-[#F0E6D2] border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-30 p-4">
+      <div className="w-[100%] h-[70vh] overflow-auto bg-[#F0E6D2] border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">
         <div className="ml-3 mb-5 mt-3">최근에 같이한 친구</div>
         <ul>
           {allUser.map((user) => (
