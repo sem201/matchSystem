@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import apiCall from "../../Api/Api";
 
 // ModalProps 수정
 interface ModalProps {
@@ -26,6 +27,11 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
 
     // 태그를 대문자로 변환
     const normalizedTag = tag.toUpperCase();
+
+    // 검색 로직 실행
+    const data = { userid: nickname, tagLine: tag };
+    const response = apiCall("/noobs/lolUser", "post", data);
+    console.log(response);
 
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)
     if (nickname === "example" && normalizedTag === "KR1234") {
