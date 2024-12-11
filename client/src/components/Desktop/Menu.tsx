@@ -8,23 +8,31 @@ import { User } from "../../commonTypes";
 interface MenuProps {
   setHeaderText: (text: string) => void;
   allUser: User[];
-  redTeam: User[];
-  blueTeam: User[];
-  setRedTeam: (team: User[]) => void;
-  setBlueTeam: (team: User[]) => void;
-  onAddUserToTeam: (user: User) => void;
+  onAddUserToTeam: (userId: number) => void;
+  setAllUser: React.Dispatch<React.SetStateAction<User[]>>;
+  setRedTeam: React.Dispatch<React.SetStateAction<User[]>>;
+  setBlueTeam: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const Menu: React.FC<MenuProps> = ({
   setHeaderText,
   allUser,
   onAddUserToTeam,
+  setAllUser,
+  setRedTeam,
+  setBlueTeam,
 }) => {
   return (
     <div className="relative">
       <ModalButton setHeaderText={setHeaderText} />
       <div className="lg:col-span-1 lg:row-span-3">
-        <UserContainer allUser={allUser} onAddUser={onAddUserToTeam} />
+        <UserContainer
+          allUser={allUser}
+          onAddUser={onAddUserToTeam}
+          setAllUser={setAllUser}
+          setRedTeam={setRedTeam}
+          setBlueTeam={setBlueTeam}
+        />
       </div>
       <ComposeButton />
     </div>
