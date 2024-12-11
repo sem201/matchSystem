@@ -3,12 +3,12 @@ import DesktopLoginPage from "./Desktop-LoginPage";
 import MobileLoginPage from "./Mobile-LoginPage";
 
 export default function LoginPage() {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 425);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
 
   // 화면 크기 변화에 따른 상태 업데이트
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 425);
+      setIsMobile(window.innerWidth < 700);
     };
 
     // 이벤트 리스너 추가

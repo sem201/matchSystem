@@ -3,16 +3,21 @@ import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
 
 interface ModalProps {
   closeModal: () => void;
+
   isModalOpen: boolean;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // setIsDraftModalOpen 추가
+  setHeaderText: (text: string) => void;
+
 }
 
 export default function SelectModeModal({
   closeModal,
   setIsDraftModalOpen, // prop으로 받기
+  setHeaderText
 }: ModalProps) {
-  const [selectedMode, setSelectedMode] = useState("RANDOM");
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [selectedMode, setSelectedMode] = useState("RANDOM"); // 기본값은 RANDOM
+  const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
+
 
   const modeDescriptions: Record<string, string> = {
     RANDOM: "RANDOM 모드는 랜덤으로 팀을 구성합니다.",
@@ -36,14 +41,14 @@ export default function SelectModeModal({
     }
   };
 
-  const handleConfirmClick = () => {
-    alert(`${selectedMode} 모드가 선택되었습니다.`);
+// 확인 클릭시 헤더 택스트 
+  const handleConfirm = () => {
+        alert(`${selectedMode} 모드가 선택되었습니다.`);
 
     if (selectedMode === "DRAFT") {
       // DRAFT 모드가 선택되면 DraftModal을 열기
       setIsDraftModalOpen(true); // 여기서 상태를 true로 설정
-    }
-
+    setHeaderText(`${selectedMode} 모드`);
     closeModal();
   };
 
@@ -100,7 +105,9 @@ export default function SelectModeModal({
 
         <div className="flex justify-center space-x-4 mt-6">
           <button
-            onClick={handleConfirmClick}
+            onClick={() => {
+              handleConfirm();
+            }}
             className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
           >
             확인
