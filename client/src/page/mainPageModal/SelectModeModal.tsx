@@ -3,21 +3,16 @@ import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
 
 interface ModalProps {
   closeModal: () => void;
-
-  isModalOpen: boolean;
-  setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>; // setIsDraftModalOpen 추가
-  setHeaderText: (text: string) => void;
-
+  setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedMode: React.Dispatch<React.SetStateAction<string>>; // 부모로부터 받은 setSelectedMode
 }
 
 export default function SelectModeModal({
   closeModal,
-  setIsDraftModalOpen, // prop으로 받기
-  setHeaderText
+  setIsDraftModalOpen,
+  setSelectedMode, // 부모로부터 받은 setSelectedMode
 }: ModalProps) {
-  const [selectedMode, setSelectedMode] = useState("RANDOM"); // 기본값은 RANDOM
-  const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
-
+  const [selectedModeState, setSelectedModeState] = useState("RANDOM"); // 로컬 상태로 초기 설정
 
   const modeDescriptions: Record<string, string> = {
     RANDOM: "RANDOM 모드는 랜덤으로 팀을 구성합니다.",
@@ -32,41 +27,37 @@ export default function SelectModeModal({
   };
 
   const handleModeClick = (mode: string) => {
-    if (mode !== selectedMode) {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setSelectedMode(mode);
-        setIsTransitioning(false);
-      }, 300);
-    }
+    setSelectedModeState(mode); // 로컬 상태 업데이트
   };
 
-// 확인 클릭시 헤더 택스트 
-  const handleConfirm = () => {
-        alert(`${selectedMode} 모드가 선택되었습니다.`);
+  const handleConfirmClick = () => {
+    alert(`${selectedModeState} 모드가 선택되었습니다.`);
 
-    if (selectedMode === "DRAFT") {
-      // DRAFT 모드가 선택되면 DraftModal을 열기
-      setIsDraftModalOpen(true); // 여기서 상태를 true로 설정
-    setHeaderText(`${selectedMode} 모드`);
+    // 부모로 선택된 모드를 전달 (이 부분을 문자열로 바로 전달)
+    setSelectedMode(selectedModeState);
+
+    if (selectedModeState === "DRAFT") {
+      setIsDraftModalOpen(true); // DRAFT 모드에서 DraftModal 열기
+    }
+
     closeModal();
   };
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center font-blackHanSans"
+      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center font-blackHanSans"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
     >
-      <div className="bg-white border-[3px] border-[#C89B3C] p-8 rounded-lg w-[450px] shadow-lg relative overflow-hidden">
+      <div className="bg-white border-[3px] border-[#C89B3C] p-8 rounded-lg w-full max-w-[450px] shadow-lg relative overflow-hidden">
         <div className="flex justify-center items-center space-x-4 mb-6">
           {["RANDOM", "DRAFT", "BALANCE"].map((mode) => (
             <button
               key={mode}
-              onClick={() => handleModeClick(mode)}
+              onClick={() => handleModeClick(mode)} // 상태만 업데이트
               className={`px-3 py-2 font-bold text-lg border-[3px] border-[#C89B3C] transition-all duration-300 ${
-                selectedMode === mode ? "text-[#0F2041]" : "text-gray-600"
+                selectedModeState === mode ? "text-[#0F2041]" : "text-gray-600"
               } focus:outline-none`}
               style={{
                 cursor: "pointer",
@@ -79,42 +70,36 @@ export default function SelectModeModal({
           ))}
         </div>
 
-        <div className="relative h-[200px] mb-4 flex items-center justify-center  rounded-lg">
+        <div className="relative h-[300px] mb-4 flex items-center justify-center rounded-lg">
           <div
             className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-              isTransitioning ? "opacity-0" : "opacity-100"
+              selectedModeState === "DRAFT" ? "opacity-100" : "opacity-0"
             }`}
           >
             <img
-              src={modeImages[selectedMode]}
-              alt={`${selectedMode} 모드 이미지`}
+              src={modeImages[selectedModeState]}
+              alt={`${selectedModeState} 모드 이미지`}
               className="max-h-full"
             />
           </div>
         </div>
 
-        <div
-          className={`transition-opacity duration-300 ${
-            isTransitioning ? "opacity-0" : "opacity-100"
-          }`}
-        >
+        <div className="transition-opacity duration-300">
           <p className="text-center text-sm font-bold text-gray-700">
-            {modeDescriptions[selectedMode]}
+            {modeDescriptions[selectedModeState]}
           </p>
         </div>
 
         <div className="flex justify-center space-x-4 mt-6">
           <button
-            onClick={() => {
-              handleConfirm();
-            }}
-            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
+            onClick={handleConfirmClick} // 부모에 전달할 때 문자열을 직접 전달
+            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg transition-colors"
           >
             확인
           </button>
           <button
             onClick={closeModal}
-            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg  transition-colors"
+            className="bg-[#F0E6D2] px-6 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg transition-colors"
           >
             취소
           </button>
