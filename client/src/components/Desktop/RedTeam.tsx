@@ -1,12 +1,17 @@
 import none from "./../../assets/line_img/line-none.png";
-import sett from "./../../assets/sett.png";
 import tier from "./../../assets/tier.png";
+import PlusIcon from "../../assets/svg/add.svg";
 
 import { useState } from "react";
 
 import LineModal from "../Mobile/chooseUser/LineModal";
+import { User } from "../../commonTypes";
 
-const RedTeam = () => {
+interface RedTeamProps {
+  user?: User;
+}
+
+const RedTeam: React.FC<RedTeamProps> = ({ user }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
   return (
@@ -19,25 +24,27 @@ const RedTeam = () => {
       />
       <div className="w-[100%]">
         <ul>
-          <li className="flex flex-row items-center justify-between">
-            <img src={sett} alt="most" className="w-8 h-8" />
-            <p className="text-xs">승률 50.2%</p>
-          </li>
-          <li className="flex flex-row items-center justify-between">
-            <img src={sett} alt="most" className="w-8 h-8" />
-            <p className="text-xs">승률 50.2%</p>
-          </li>
-          <li className="flex flex-row items-center justify-between">
-            <img src={sett} alt="most" className="w-8 h-8" />
-            <p className="text-xs">승률 50.2%</p>
-          </li>
+          {/* 유저 정보가 있을 경우 */}
+          {user ? (
+            <li
+              key={user.id}
+              className="flex flex-row items-center justify-between"
+            >
+              <p className="text-xs font-bold">{user.nickname}</p>
+            </li>
+          ) : (
+            // 유저 정보가 없을 경우
+            <li className="text-center text-gray-500">
+              <img src={PlusIcon} alt="Add" className="" />
+            </li>
+          )}
         </ul>
+        <p className="text-xs overflow-hidden text-ellipsis text-nowrap">
+          닉네임닉네입니다#KR1
+        </p>
+        <img src={tier} alt="tier" className="h-9" />
+        {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
       </div>
-      <p className="text-xs overflow-hidden text-ellipsis text-nowrap">
-        닉네임닉네입니다#KR1
-      </p>
-      <img src={tier} alt="tier" className="h-9" />
-      {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
     </div>
   );
 };
