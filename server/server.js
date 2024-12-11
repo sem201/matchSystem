@@ -1,15 +1,15 @@
-import dotenv from 'dotenv'; // dotenv 사용
+import dotenv from "dotenv"; // dotenv 사용
 dotenv.config();
 
-import { fileURLToPath } from 'url'; // fileURLToPath를 사용하여 현재 파일의 경로를 얻음
+import { fileURLToPath } from "url"; // fileURLToPath를 사용하여 현재 파일의 경로를 얻음
 
-
-import express from 'express'; // express 사용
-import session from 'express-session'; // express-session 사용
-import authRoutes from './routes/authRoutes.js'; // authRoutes 모듈 가져오기
-import apiRoute from './routes/route.js'; // apiRoute 모듈 가져오기
-import path from 'path'; // path 모듈 가져오기
-import sequelize from './config/db.js'; // sequelize 설정 가져오기
+import express from "express"; // express 사용
+import session from "express-session"; // express-session 사용
+import authRoutes from "./routes/authRoutes.js"; // authRoutes 모듈 가져오기
+import apiRoute from "./routes/route.js"; // apiRoute 모듈 가져오기
+import path from "path"; // path 모듈 가져오기
+import sequelize from "./config/db.js"; // sequelize 설정 가져오기
+import cors from "cors"; // cors 설정 추가 했습니다.
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -27,39 +27,47 @@ app.use(
   })
 );
 
+// CORS 설정
+app.use(
+  cors({
+    origin: "http://localhost:5173", // 요청을 허용할 클라이언트 도메인
+    methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
+  })
+);
+
 // 현재 파일의 경로를 __dirname처럼 사용하기
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // EJS 템플릿 엔진 설정
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views')); // views 디렉토리 경로 설정
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views")); // views 디렉토리 경로 설정
 
 // 정적 파일 제공
-app.use('/static', express.static(path.join(__dirname, 'static'))); // static 디렉토리 경로 설정
+app.use("/static", express.static(path.join(__dirname, "static"))); // static 디렉토리 경로 설정
 
 app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
 
 // 라우터 연결
-app.use('/', authRoutes);
-app.use('/', apiRoute);
+app.use("/", authRoutes);
+app.use("/", apiRoute);
 
 // 404 페이지 처리
-app.get('*', (req, res) => {
-  res.render('404');
+app.get("*", (req, res) => {
+  res.render("404");
 });
 
 // 홈 페이지 처리
-app.get('/', (req, res) => {
-  res.render('서버 실행중');
+app.get("/", (req, res) => {
+  res.render("서버 실행중");
 });
 
 // DB 연결 후 서버 시작
 sequelize
   .authenticate()
   .then(() => {
-    console.log('DB 연결 성공');
+    console.log("DB 연결 성공");
     return sequelize.sync({ force: false }); // 테이블 자동 생성, force: false는 기존 테이블을 유지하면서 동기화
   })
   .then(() => {
@@ -69,5 +77,5 @@ sequelize
     });
   })
   .catch((err) => {
-    console.error('DB 연결 실패:', err);
+    console.error("DB 연결 실패:", err);
   });
