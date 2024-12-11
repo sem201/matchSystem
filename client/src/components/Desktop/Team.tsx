@@ -1,8 +1,14 @@
 import BlueTeam from "./BlueTeam";
 import RedTeam from "./RedTeam";
 import Versus from "./Versus";
+import { User } from "../../commonTypes";
 
-export default function Team() {
+interface TeamProps {
+  redTeam: User[];
+  blueTeam: User[];
+}
+
+const Team: React.FC<TeamProps> = ({ redTeam, blueTeam }) => {
   const redTeamCount = 5;
   const blueTeamCount = 5;
   return (
@@ -10,7 +16,7 @@ export default function Team() {
       {/* Red Team 영역 */}
       <div className="w-[100%] h-[100%] flex xs:gap-[10px] lg:gap-[15px] xl:gap-[25px] justify-center">
         {Array.from({ length: redTeamCount }).map((_, idx) => (
-          <RedTeam key={idx} />
+          <RedTeam key={idx} user={redTeam[idx]} />
         ))}
       </div>
       <div>
@@ -19,9 +25,11 @@ export default function Team() {
       {/* Blue Team 영역 */}
       <div className="w-[100%] h-[100%] flex xs:gap-[10px] lg:gap-[15px] xl:gap-[25px] justify-center">
         {Array.from({ length: blueTeamCount }).map((_, idx) => (
-          <BlueTeam key={idx} />
+          <BlueTeam key={idx} user={blueTeam[idx]} />
         ))}
       </div>
     </div>
   );
-}
+};
+
+export default Team;
