@@ -59,7 +59,7 @@ export default function SelectModeModal({
             <button
               key={mode}
               onClick={() => handleModeClick(mode)} // 상태만 업데이트
-              className={`px-6 py-2 w-[110px] text-lg font-bold border-[3px] border-[#C89B3C] transition-colors duration-300 rounded-lg ${
+              className={`px-2 py-2 w-[110px] text-lg font-bold border-[3px] border-[#C89B3C] transition-colors duration-300 rounded-lg ${
                 selectedModeState === mode
                   ? "bg-[#C89B3C] text-[#ffffff]"
                   : "bg-[#ffffff] text-[#0F2041]"
@@ -67,19 +67,16 @@ export default function SelectModeModal({
               style={{
                 cursor: "pointer",
               }}
-  
-              <img
-                src={modeImages[selectedMode]}
-                alt={`${selectedMode} 모드 이미지`}
-                className="max-h-full"
-              />
-            </div>
-          </div>
+            >
+              {mode}
+            </button>
+          ))}
+        </div>
 
         {/* 이미지 전환 */}
         <div className="relative h-[300px] mb-4 flex items-center justify-center rounded-lg overflow-hidden">
           <div
-            className={`transition-opacity duration-300 ${
+            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
               isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -89,8 +86,8 @@ export default function SelectModeModal({
               className="max-h-full object-cover transition-opacity"
             />
           </div>
-         </div>
-            
+        </div>
+
         {/* 설명 텍스트 전환 */}
         <div
           className={`transition-opacity duration-300 ${
@@ -115,9 +112,8 @@ export default function SelectModeModal({
           >
             취소
           </button>
-          </div>
         </div>
       </div>
-    );
-  };
+    </div>
+  );
 }
