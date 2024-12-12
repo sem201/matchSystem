@@ -27,6 +27,7 @@ const MobileMainpage = () => {
   const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
   const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
+  const [selectedMode, setSelectedMode] = useState<string | null>(null); // 선택된 모드 상태
 
   const addUser = (user: User) => {
     if (redTeam.length < 5) {
@@ -58,6 +59,12 @@ const MobileMainpage = () => {
     setModalType(null);
   };
 
+  // 모드 선택 함수
+  const handleModeSelect = (mode: string) => {
+    setSelectedMode(mode); // 선택된 모드 업데이트
+    closeModal(); // 모달 닫기
+  };
+
   return (
     <div className="flex flex-col items-center justify-start w-[100vw] overflow-y-scroll">
       <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full mb-6 mt-5">
@@ -71,7 +78,7 @@ const MobileMainpage = () => {
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("selectMode")}
         >
-          모드선택
+          {selectedMode || "모드선택"} {/* 선택된 모드 텍스트 표시 */}
         </button>
         <button
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
@@ -98,7 +105,8 @@ const MobileMainpage = () => {
         <SelectModeModal
           isModalOpen={modalType !== null}
           closeModal={closeModal}
-          setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 prop 추가
+          setSelectedMode={setSelectedMode} // 선택된 모드 처리 함수 전달
+          setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 함수 전달
         />
       )}
       {modalType === "howToUse" && (
