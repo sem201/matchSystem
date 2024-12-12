@@ -67,16 +67,19 @@ export default function SelectModeModal({
               style={{
                 cursor: "pointer",
               }}
-            >
-              {mode}
-            </button>
-          ))}
-        </div>
+  
+              <img
+                src={modeImages[selectedMode]}
+                alt={`${selectedMode} 모드 이미지`}
+                className="max-h-full"
+              />
+            </div>
+          </div>
 
         {/* 이미지 전환 */}
         <div className="relative h-[300px] mb-4 flex items-center justify-center rounded-lg overflow-hidden">
           <div
-            className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+            className={`transition-opacity duration-300 ${
               isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           >
@@ -86,8 +89,8 @@ export default function SelectModeModal({
               className="max-h-full object-cover transition-opacity"
             />
           </div>
-        </div>
-
+         </div>
+            
         {/* 설명 텍스트 전환 */}
         <div
           className={`transition-opacity duration-300 ${
@@ -112,8 +115,9 @@ export default function SelectModeModal({
           >
             취소
           </button>
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 }
