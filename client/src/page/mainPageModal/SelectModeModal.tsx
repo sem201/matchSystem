@@ -59,7 +59,7 @@ export default function SelectModeModal({
             <button
               key={mode}
               onClick={() => handleModeClick(mode)} // 상태만 업데이트
-              className={`px-6 py-2 w-[110px] text-lg font-bold border-[3px] border-[#C89B3C] transition-colors duration-300 rounded-lg ${
+              className={`px-2 py-2 w-[110px] text-lg font-bold border-[3px] border-[#C89B3C] transition-colors duration-300 rounded-lg ${
                 selectedModeState === mode
                   ? "bg-[#C89B3C] text-[#ffffff]"
                   : "bg-[#ffffff] text-[#0F2041]"
