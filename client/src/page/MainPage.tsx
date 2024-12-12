@@ -22,6 +22,8 @@ const MainPage = () => {
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
 
+  // 추가된 유저 데이터
+
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
   const [blueTeam, setBlueTeam] = useState<User[]>([]);
@@ -41,6 +43,8 @@ const MainPage = () => {
     // allUser에서 제거
     setAllUser(allUser.filter((user) => user.id !== userId));
   };
+
+  // 팀에서 사용자 제거 로직
 
   // 모바일 / 데스크탑 크기 구분
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
