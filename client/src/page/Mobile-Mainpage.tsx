@@ -9,7 +9,23 @@ import BlueTeam from "../components/Mobile/Main/BlueTeam";
 
 import { User } from "../commonTypes";
 
-const MobileMainpage = () => {
+interface Props {
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
+  setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
+  selectedMode: string;
+  modalType: string;
+  isDraftModalOpen: boolean;
+}
+
+const MobileMainpage = ({
+  setModalType,
+  setIsDraftModalOpen,
+  setSelectedMode,
+  selectedMode,
+  modalType,
+  isDraftModalOpen,
+}: Props) => {
   const [allUsers, setAllUsers] = useState<User[]>([
     { id: 1, nickname: "User1", winRate: 50.4 },
     { id: 2, nickname: "User2", winRate: 52.1 },
@@ -23,11 +39,11 @@ const MobileMainpage = () => {
     { id: 10, nickname: "User10", winRate: 52.7 },
   ]); // 전체 사용자 목록
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
-  const [modalType, setModalType] = useState<string | null>(null); // 현재 열리는 모달 타입
   const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
   const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
-  const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
-  const [selectedMode, setSelectedMode] = useState<string | null>(null); // 선택된 모드 상태
+  // const [modalType, setModalType] = useState<string | null>(null); // 현재 열리는 모달 타입
+  // const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
+  // const [selectedMode, setSelectedMode] = useState<string>("RANDOM"); // 선택된 모드 상태
 
   const addUser = (user: User) => {
     if (redTeam.length < 5) {
@@ -56,13 +72,7 @@ const MobileMainpage = () => {
 
   // 모달 닫기
   const closeModal = () => {
-    setModalType(null);
-  };
-
-  // 모드 선택 함수
-  const handleModeSelect = (mode: string) => {
-    setSelectedMode(mode); // 선택된 모드 업데이트
-    closeModal(); // 모달 닫기
+    setModalType("");
   };
 
   return (
@@ -103,8 +113,8 @@ const MobileMainpage = () => {
       )}
       {modalType === "selectMode" && (
         <SelectModeModal
-          isModalOpen={modalType !== null}
           closeModal={closeModal}
+          selectedMode={selectedMode}
           setSelectedMode={setSelectedMode} // 선택된 모드 처리 함수 전달
           setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 함수 전달
         />

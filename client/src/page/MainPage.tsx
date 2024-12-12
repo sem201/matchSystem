@@ -18,6 +18,9 @@ const MainPage = () => {
     { id: 9, nickname: "User9", winRate: 49.1 },
     { id: 10, nickname: "User10", winRate: 52.7 },
   ]);
+  const [modalType, setModalType] = useState<string>(""); // 현재 열리는 모달 타입
+  const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
+  const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
 
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
@@ -60,9 +63,22 @@ const MainPage = () => {
   return (
     <div>
       {isMobile ? (
-        <MobileMainpage />
+        <MobileMainpage
+          modalType={modalType}
+          selectedMode={selectedMode}
+          setModalType={setModalType}
+          setIsDraftModalOpen={setIsDraftModalOpen}
+          setSelectedMode={setSelectedMode}
+          isDraftModalOpen={isDraftModalOpen}
+        />
       ) : (
         <DesktopMainPage
+          modalType={modalType}
+          selectedMode={selectedMode}
+          setModalType={setModalType}
+          setIsDraftModalOpen={setIsDraftModalOpen}
+          setSelectedMode={setSelectedMode}
+          isDraftModalOpen={isDraftModalOpen}
           allUser={allUser}
           redTeam={redTeam}
           blueTeam={blueTeam}
