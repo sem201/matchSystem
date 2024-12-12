@@ -1,6 +1,5 @@
-import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
-
+import { Sequelize } from 'sequelize';
 dotenv.config();
 
 const sequelize = new Sequelize(
@@ -13,5 +12,6 @@ const sequelize = new Sequelize(
     logging: false, // 콘솔에 SQL 쿼리 로그를 출력하지 않음
   }
 );
+
 
 export default sequelize;
