@@ -3,16 +3,21 @@ import React, { useState } from "react";
 
 interface ModalProps {
   closeModal: () => void;
+  selectedMode: string;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>; // 부모로부터 받은 setSelectedMode
+  setHeaderText?: (text: string) => void;
 }
 
 export default function SelectModeModal({
   closeModal,
   setIsDraftModalOpen,
   setSelectedMode, // 부모로부터 받은 setSelectedMode
+  selectedMode,
 }: ModalProps) {
-  const [selectedModeState, setSelectedModeState] = useState("RANDOM"); // 로컬 상태로 초기 설정
+  const [selectedModeState, setSelectedModeState] = useState(
+    selectedMode === "모드선택" ? "RANDOM" : selectedMode
+  ); // 로컬 상태로 초기 설정
   const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
 
   const modeDescriptions: Record<string, string> = {

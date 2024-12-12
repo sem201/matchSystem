@@ -11,6 +11,12 @@ interface DesktopMainPageProps {
   redTeam: User[];
   blueTeam: User[];
   onAddUserToTeam: (userId: number) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string | null>>;
+  setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
+  selectedMode: String;
+  modalType: String;
+  isDraftModalOpen: String;
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
@@ -18,6 +24,12 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   redTeam,
   blueTeam,
   onAddUserToTeam,
+  setModalType,
+  setIsDraftModalOpen,
+  setSelectedMode,
+  selectedMode,
+  modalType,
+  isDraftModalOpen,
 }) => {
   const [headerText, setHeaderText] = useState<string>("모드를 선택해주세요");
 
