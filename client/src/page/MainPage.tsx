@@ -21,6 +21,7 @@ const MainPage = () => {
   const [modalType, setModalType] = useState<string>(""); // 현재 열리는 모달 타입
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
+  const [headerText, setHeaderText] = useState<string>("모드를 선택해주세요");
 
   // 추가된 유저 데이터
 
@@ -74,6 +75,7 @@ const MainPage = () => {
           setIsDraftModalOpen={setIsDraftModalOpen}
           setSelectedMode={setSelectedMode}
           isDraftModalOpen={isDraftModalOpen}
+          setHeaderText={setHeaderText}
         />
       ) : (
         <DesktopMainPage
@@ -87,6 +89,8 @@ const MainPage = () => {
           redTeam={redTeam}
           blueTeam={blueTeam}
           onAddUserToTeam={handleAddUserToTeam}
+          headerText={headerText}
+          setHeaderText={setHeaderText}
         />
       )}
     </div>
