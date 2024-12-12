@@ -17,7 +17,8 @@ export default function SelectModeModal({
 
   const modeDescriptions: Record<string, string> = {
     RANDOM: "RANDOM 모드는 랜덤으로 팀을 구성합니다.",
-    DRAFT: "DRAFT 모드는 플레이어가 번갈아 가며 팀을 선택합니다.",
+    DRAFT:
+      "DRAFT 모드는 먼저 팀장 두명을 뽑고, \n각 팀의 팀장이 번갈아 가며 팀을 선택합니다.",
     BALANCE: "BALANCE 모드는 밸런스를 맞춰 팀을 자동으로 구성합니다.",
   };
 
@@ -94,7 +95,10 @@ export default function SelectModeModal({
             isTransitioning ? "opacity-0" : "opacity-100"
           }`}
         >
-          <p className="text-center text-sm font-bold text-gray-700">
+          <p
+            className="text-center text-sm font-bold text-gray-700"
+            style={{ whiteSpace: "pre-line" }}
+          >
             {modeDescriptions[selectedModeState]}
           </p>
         </div>
