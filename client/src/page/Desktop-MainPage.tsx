@@ -19,6 +19,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   blueTeam,
   onAddUserToTeam,
 }) => {
+  // headerText 변환 useState
   const [headerText, setHeaderText] = useState<string>("모드를 선택해주세요");
 
   return (
