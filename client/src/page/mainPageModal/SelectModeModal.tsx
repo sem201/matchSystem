@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
+// import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
 
 interface ModalProps {
   closeModal: () => void;
@@ -13,6 +13,7 @@ export default function SelectModeModal({
   setSelectedMode, // 부모로부터 받은 setSelectedMode
 }: ModalProps) {
   const [selectedModeState, setSelectedModeState] = useState("RANDOM"); // 로컬 상태로 초기 설정
+  const [isTransitioning, setIsTransitioning] = useState(false); // 애니메이션 상태
 
   const modeDescriptions: Record<string, string> = {
     RANDOM: "RANDOM 모드는 랜덤으로 팀을 구성합니다.",
@@ -27,13 +28,15 @@ export default function SelectModeModal({
   };
 
   const handleModeClick = (mode: string) => {
-    setSelectedModeState(mode); // 로컬 상태 업데이트
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setSelectedModeState(mode); // 로컬 상태 업데이트
+      setIsTransitioning(false);
+    }, 300); // 애니메이션 시간
   };
 
   const handleConfirmClick = () => {
     alert(`${selectedModeState} 모드가 선택되었습니다.`);
-
-    // 부모로 선택된 모드를 전달 (이 부분을 문자열로 바로 전달)
     setSelectedMode(selectedModeState);
 
     if (selectedModeState === "DRAFT") {
@@ -56,13 +59,13 @@ export default function SelectModeModal({
             <button
               key={mode}
               onClick={() => handleModeClick(mode)} // 상태만 업데이트
-              className={`px-3 py-2 font-bold text-lg border-[3px] border-[#C89B3C] transition-all duration-300 ${
-                selectedModeState === mode ? "text-[#0F2041]" : "text-gray-600"
-              } focus:outline-none`}
+              className={`px-6 py-2 w-[110px] text-lg font-bold border-[3px] border-[#C89B3C] transition-colors duration-300 rounded-lg ${
+                selectedModeState === mode
+                  ? "bg-[#C89B3C] text-[#ffffff]"
+                  : "bg-[#ffffff] text-[#0F2041]"
+              }`}
               style={{
                 cursor: "pointer",
-                borderRadius: "8px",
-                backgroundColor: "#F0E6D2",
               }}
             >
               {mode}
@@ -70,21 +73,27 @@ export default function SelectModeModal({
           ))}
         </div>
 
-        <div className="relative h-[300px] mb-4 flex items-center justify-center rounded-lg">
+        {/* 이미지 전환 */}
+        <div className="relative h-[300px] mb-4 flex items-center justify-center rounded-lg overflow-hidden">
           <div
             className={`absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
-              selectedModeState === "DRAFT" ? "opacity-100" : "opacity-0"
+              isTransitioning ? "opacity-0" : "opacity-100"
             }`}
           >
             <img
               src={modeImages[selectedModeState]}
               alt={`${selectedModeState} 모드 이미지`}
-              className="max-h-full"
+              className="max-h-full object-cover transition-opacity"
             />
           </div>
         </div>
 
-        <div className="transition-opacity duration-300">
+        {/* 설명 텍스트 전환 */}
+        <div
+          className={`transition-opacity duration-300 ${
+            isTransitioning ? "opacity-0" : "opacity-100"
+          }`}
+        >
           <p className="text-center text-sm font-bold text-gray-700">
             {modeDescriptions[selectedModeState]}
           </p>
