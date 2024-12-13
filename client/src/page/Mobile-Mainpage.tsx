@@ -10,6 +10,7 @@ import BlueTeam from "../components/Mobile/Main/BlueTeam";
 import { User } from "../commonTypes";
 
 interface Props {
+  allUsers: User[];
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const MobileMainpage = ({
+  allUsers,
   setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
@@ -28,18 +30,6 @@ const MobileMainpage = ({
   isDraftModalOpen,
   setHeaderText,
 }: Props) => {
-  const [allUsers, setAllUsers] = useState<User[]>([
-    { id: 1, nickname: "User1", winRate: 50.4 },
-    { id: 2, nickname: "User2", winRate: 52.1 },
-    { id: 3, nickname: "User3", winRate: 49.5 },
-    { id: 4, nickname: "User4", winRate: 48.9 },
-    { id: 5, nickname: "User5", winRate: 53.3 },
-    { id: 6, nickname: "User6", winRate: 51.2 },
-    { id: 7, nickname: "User7", winRate: 47.8 },
-    { id: 8, nickname: "User8", winRate: 50.0 },
-    { id: 9, nickname: "User9", winRate: 49.1 },
-    { id: 10, nickname: "User10", winRate: 52.7 },
-  ]); // 전체 사용자 목록
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
   const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
   const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록

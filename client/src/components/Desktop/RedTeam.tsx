@@ -10,9 +10,15 @@ import { User } from "../../commonTypes";
 
 interface RedTeamProps {
   user?: User;
+  handleRemoveUser: (user: User[]) => void;
+  handleAddUser: (user: User[]) => void;
 }
 
-const RedTeam: React.FC<RedTeamProps> = ({ user }) => {
+const RedTeam: React.FC<RedTeamProps> = ({
+  user,
+  handleRemoveUser,
+  handleAddUser,
+}) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
 
@@ -39,7 +45,15 @@ const RedTeam: React.FC<RedTeamProps> = ({ user }) => {
             <p className="text-xs font-bold">{user.nickname}</p>
             <img src={tier} alt="tier" className="h-9" />
             {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
-            <img src={close} alt="close" className="w-5 h-5 cursor-pointer" />
+            <img
+              src={close}
+              alt="close"
+              className="w-5 h-5 cursor-pointer"
+              onClick={() => {
+                handleRemoveUser(user);
+                handleAddUser(user);
+              }}
+            />
           </li>
         ) : (
           // 유저 정보가 없을 경우
