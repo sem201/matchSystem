@@ -6,7 +6,7 @@ import { User } from "../commonTypes";
 
 const MainPage = () => {
   // 유저 데이터 저장
-  const [allUser, setAllUser] = useState<User[]>([
+  const [allUsers, setAllUsers] = useState<User[]>([
     { id: 1, nickname: "User1", winRate: 50.4 },
     { id: 2, nickname: "User2", winRate: 52.1 },
     { id: 3, nickname: "User3", winRate: 49.5 },
@@ -23,15 +23,16 @@ const MainPage = () => {
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
   const [headerText, setHeaderText] = useState<string>("모드를 선택해주세요");
 
-  // 추가된 유저 데이터
+  // 추가 된 유저
+  const [addedUsers, setAddedUsers] = useState<User[]>([]);
 
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
   const [blueTeam, setBlueTeam] = useState<User[]>([]);
 
   // 사용자 추가 핸들러
-  const handleAddUserToTeam = (userId: number) => {
-    const selectedUser = allUser.find((user) => user.id === userId);
+  const handleAddUser = (user: User) => {
+    const selectedUser = allUsers.find((u) => u.id === user.id);
     if (!selectedUser) return;
 
     // Redteam -> BlueTeam 순서로 추가
@@ -42,56 +43,57 @@ const MainPage = () => {
     }
 
     // allUser에서 제거
-    setAllUser(allUser.filter((user) => user.id !== userId));
+    setAllUsers(allUsers.filter((u) => u.id !== user.id));
   };
 
   // 팀에서 사용자 제거 로직
+  const handleRemoveUser = (user: User) => {
+    // RedTeam에서 유저
+    if (redTeam.some((u) => u.id === user.id)) {
+      setRedTeam((prev) => prev.filter((u) => u.id !== user.id));
+    } else if (blueTeam.some((u) => u.id === user.id)) {
+      setBlueTeam((prev) => prev.filter((u) => u.id !== user.id));
+    }
+    // 제거된 사용자를 allUsers에 다시 추가
+    setAddedUsers((prev) => [...prev, user]);
+  };
 
   // 모바일 / 데스크탑 크기 구분
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
 
   // 화면 크기 변화에 따른 상태 업데이트
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 700);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 700);
 
     // 이벤트 리스너 추가
     window.addEventListener("resize", handleResize);
 
     // 컴포넌트가 언마운트 될 때 이벤트 리스너 제거
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   });
+
+  const sharedProps = {
+    allUsers,
+    redTeam,
+    blueTeam,
+    handleAddUser: handleAddUser,
+    handleRemoveUser: handleRemoveUser,
+    modalType,
+    setModalType,
+    isDraftModalOpen,
+    setIsDraftModalOpen,
+    selectedMode,
+    setSelectedMode,
+    headerText,
+    setHeaderText,
+  };
 
   return (
     <div>
       {isMobile ? (
-        <MobileMainpage
-          modalType={modalType}
-          selectedMode={selectedMode}
-          setModalType={setModalType}
-          setIsDraftModalOpen={setIsDraftModalOpen}
-          setSelectedMode={setSelectedMode}
-          isDraftModalOpen={isDraftModalOpen}
-          setHeaderText={setHeaderText}
-        />
+        <MobileMainpage {...sharedProps} />
       ) : (
-        <DesktopMainPage
-          modalType={modalType}
-          selectedMode={selectedMode}
-          setModalType={setModalType}
-          setIsDraftModalOpen={setIsDraftModalOpen}
-          setSelectedMode={setSelectedMode}
-          isDraftModalOpen={isDraftModalOpen}
-          allUser={allUser}
-          redTeam={redTeam}
-          blueTeam={blueTeam}
-          onAddUserToTeam={handleAddUserToTeam}
-          headerText={headerText}
-          setHeaderText={setHeaderText}
-        />
+        <DesktopMainPage {...sharedProps} />
       )}
     </div>
   );
