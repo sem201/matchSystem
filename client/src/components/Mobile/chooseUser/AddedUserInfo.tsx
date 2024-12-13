@@ -1,14 +1,15 @@
-import top from "../../../assets/line_img/line-top.png";
-import jg from "../../../assets/line_img/line-jug.png";
-import mid from "../../../assets/line_img/line-mid.png";
-import ad from "../../../assets/line_img/line-ad.png";
-import sup from "../../../assets/line_img/line-sup.png";
 import none from "../../../assets/line_img/line-none.png";
 import sett from "../../../assets/sett.png";
 import { useState } from "react";
 import LineModal from "./LineModal";
+import { User } from "../../../commonTypes";
 
-const UserInfo = () => {
+interface AddedUserInfoProps {
+  user: User;
+  onRemoveUser: (user: User) => void;
+}
+
+const UserInfo: React.FC<AddedUserInfoProps> = ({ user, onRemoveUser }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
   return (
@@ -20,12 +21,19 @@ const UserInfo = () => {
         onClick={() => setIsLine(!isLine)}
       />
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />
-      <div className="flex flex-col whitespace-nowrap">
-        <div className="text-[10px]">UNRANK</div>
-        <p className="text-[12px]">닉네임네임입니#KR1</p>
+      <div className="flex flex-col">
+        <div className="text-[10px] text-white">UNRANK</div>
+        <p className="max-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
+          닉네임네임입니#KR1
+        </p>
       </div>
-      <p className="text-[13px] text-nowrap">승률 50.4%</p>
-      <button className="ml-[-25px] bg-inherit">X</button>
+      <p className="text-[13px] text-nowrap text-white">승률 50.4%</p>
+      <button
+        className="w-[10px] bg-inherit text-white"
+        onClick={() => onRemoveUser(user)}
+      >
+        X
+      </button>
       {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
     </div>
   );

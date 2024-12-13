@@ -2,8 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import LoginPage from "./page/LoginPage";
 import Mainpage from "./page/MainPage";
 import MobileMainpage from "./page/Mobile-Mainpage";
+import DraftModal2 from "./components/Mobile/chooseUser/DraftModal2";
 import Mainpagetest from "./page/MainPageTest";
-import Account from "./components/Mobile/Login/Account";
+import Account from "./components/Login/Account";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
@@ -11,6 +12,7 @@ const router = createBrowserRouter([
   { path: "/main", element: <Mainpage /> },
   { path: "/maintest", element: <Mainpagetest /> },
   { path: "/test", element: <MobileMainpage /> },
+  { path: "/draftmodal2", element: <DraftModal2 /> },
 ]);
 
 export default router;

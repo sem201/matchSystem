@@ -8,19 +8,33 @@ interface ModalProps {
 
 export default function HowToUseModal({ closeModal }: ModalProps) {
   const images = [
-    "/src/assets/modeGif/salt.jpg", // 예시 이미지 경로
-    "/src/assets/modeGif/sugar.jpg",
-    "/src/assets/modeGif/tower.jpg",
-    "/src/assets/modeGif/sunrise.jpg",
-    "/src/assets/modeGif/rain.png",
+    "/src/assets/modeGif/userselect.png", // 예시 이미지 경로
+    "/src/assets/modeGif/userselect.png",
+    "/src/assets/modeGif/userAdd.png",
+    "src/assets/modeGif/teamChoose.png",
+    "src/assets/modeGif/modeselect.png",
+    "src/assets/modeGif/good.jpeg",
   ];
 
   const descriptions = [
-    "이 이미지는 첫 번째 사용법을 설명합니다. 이 이미지는 첫 번째 사용법을 설명합니다. 이 이미지는 첫 번째 사용법을 설명합니다.",
-    "이 이미지는 두 번째 사용법을 설명합니다.",
-    "이 이미지는 세 번째 사용법을 설명합니다.",
-    "이 이미지는 네 번째 사용법을 설명합니다.",
-    "이 이미지는 다섯 번째 사용법을 설명합니다.",
+    "인원 추가 버튼을 눌러 닉네임과 태그를 입력하고 \n검색버튼을 클릭하여 유저 정보가 존재하는지 확인합니다.",
+    "유저 정보가 확인되면 추가 버튼을 클릭하여\n 참여할 인원을 추가합니다.",
+    "최근에 함께한 유저의 경우 검색을 하지 않고\n +버튼을 클릭하여 추가할 수 있습니다",
+    "총 10명의 인원을 추가해야합니다. \n겹치는 라인이 없도록 추가해주세요",
+    <div className="space-y-4">
+      <p>
+        <strong className="font-bold">RANDOM :</strong> 팀을 무작위로 섞습니다.
+      </p>
+      <p>
+        <strong className="font-bold">DRAFT :</strong> 팀장 2명 선정 후, 라인별
+        2명씩 보여주고 팀장이 팀원을 선택합니다.
+      </p>
+      <p>
+        <strong className="font-bold">BALANCE :</strong> 알고리즘을 통해 팀 선정
+      </p>
+      <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
+    </div>,
+    "팀짜기 버튼을 클릭하면 팀이 구성됩니다.\n 재밌게 즐겨주세요!",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -55,9 +69,9 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         </div>
 
         {/* 설명 텍스트 */}
-        <p className="text-[#0F2041] mb-4 text-sm">
+        <div className="text-[#0F2041] mb-4 text-sm whitespace-pre-wrap">
           {descriptions[currentIndex]}
-        </p>
+        </div>
 
         {/* 이미지 이동 버튼과 페이지 번호 위치 조정 */}
         <div className="flex justify-between items-center mb-4">
@@ -70,7 +84,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
 
           {/* 페이지 번호 */}
           <div className="text-lg text-[#0F2041]">
-            <span>{`<${currentIndex + 1}>`}</span>
+            <span>{`< ${currentIndex + 1} >`}</span>
           </div>
 
           <button
@@ -85,9 +99,17 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         <div className="absolute top-4 right-4">
           <button
             onClick={closeModal}
-            className="bg-[#F0E6D2] px-4 py-2 border-[3px] border-[#C89B3C] text-[#0F2041] rounded-lg hover:bg-[#F5F5F5]"
+            className="bg-white hover:bg-[#F5F5F5] p-1 rounded-lg"
           >
-            닫기
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24px"
+              viewBox="0 -960 960 960"
+              width="24px"
+              fill="#000000"
+            >
+              <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+            </svg>
           </button>
         </div>
       </div>

@@ -1,12 +1,12 @@
-const axios = require("axios");
-const User = require("../models/User");
-const qs = require('qs');
-require("dotenv").config();
+import axios from 'axios';
+import User from '../models/User.js';
+import qs from 'qs';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const kakaoLogin = async (req, res) => {
   const { code } = req.query;
-
-  console.log("code : " , code);
 
   if (!code) {
     return res.status(400).send("인증 코드가 필요합니다");
@@ -29,9 +29,7 @@ const kakaoLogin = async (req, res) => {
       }
     );
 
-  
     const access_token = tokenResponse.data.access_token;
-    
     // 액세스 토큰을 사용하여 사용자 정보 요청
     const userResponse = await axios.get("https://kapi.kakao.com/v2/user/me", {
       headers: {
@@ -42,7 +40,7 @@ const kakaoLogin = async (req, res) => {
     const kakaoUser = userResponse.data;
    
     // 사용자 정보 DB에 저장 (혹은 업데이트)
-    const user = await User.findOrCreate({
+    const [user, created] = await User.findOrCreate({
       where: { nickname: kakaoUser.properties.nickname }, 
       defaults: {
         profileImage: kakaoUser.properties.profile_image,  
@@ -51,9 +49,12 @@ const kakaoLogin = async (req, res) => {
 
     // 세션에 사용자 정보 저장
     req.session.user = {
+      id : user.id,
       nickname: user.nickname,
       profileImage: user.profileImage,
     };
+
+    console.log("세션 저장:", req.session.user);
 
     // 로그인 후, 세션을 저장하고 리다이렉트
     res.redirect('http://localhost:5173/main');
@@ -74,6 +75,4 @@ const logout = (req, res) => {
   });
 };
 
-module.exports = {
-  kakaoLogin,logout
-};
+export { kakaoLogin, logout };
