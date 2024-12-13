@@ -7,14 +7,17 @@ import { User } from "../commonTypes";
 import ComposeButton from "../components/Desktop/ComposeButton";
 
 interface DesktopMainPageProps {
-  allUser: User[];
+  allUsers: User[];
   redTeam: User[];
   blueTeam: User[];
-  onAddUserToTeam: (userId: number) => void;
+  handleAddUser: (user: User[]) => void;
+  handleRemoveUser: (user: User[]) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
+  addedUser: User[];
+  setAddedUser: React.Dispatch<React.SetStateAction<User[]>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
@@ -22,10 +25,11 @@ interface DesktopMainPageProps {
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
-  allUser,
+  allUsers,
   redTeam,
   blueTeam,
-  onAddUserToTeam,
+  handleAddUser,
+  handleRemoveUser,
   setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
@@ -39,7 +43,12 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />
       <div className="lg:grid lg:grid-rows-3 lg:grid-cols-3 gap-6 lg:w-[100%] lg:h-[70%] px-[50px]">
-        <Team redTeam={redTeam} blueTeam={blueTeam} />
+        <Team
+          redTeam={redTeam}
+          blueTeam={blueTeam}
+          handleRemoveUser={handleRemoveUser}
+          handleAddUser={handleAddUser}
+        />
         <Menu
           modalType={modalType}
           selectedMode={selectedMode}
@@ -48,8 +57,8 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           setSelectedMode={setSelectedMode}
           isDraftModalOpen={isDraftModalOpen}
           setHeaderText={setHeaderText}
-          allUser={allUser}
-          onAddUserToTeam={onAddUserToTeam}
+          allUsers={allUsers}
+          handleAddUser={handleAddUser}
         />
       </div>
       <ComposeButton />

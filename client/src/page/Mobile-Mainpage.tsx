@@ -10,6 +10,7 @@ import BlueTeam from "../components/Mobile/Main/BlueTeam";
 import { User } from "../commonTypes";
 
 interface Props {
+  allUsers: User[];
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
@@ -20,6 +21,7 @@ interface Props {
 }
 
 const MobileMainpage = ({
+  allUsers,
   setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
@@ -28,18 +30,6 @@ const MobileMainpage = ({
   isDraftModalOpen,
   setHeaderText,
 }: Props) => {
-  const [allUsers, setAllUsers] = useState<User[]>([
-    { id: 1, nickname: "User1", winRate: 50.4 },
-    { id: 2, nickname: "User2", winRate: 52.1 },
-    { id: 3, nickname: "User3", winRate: 49.5 },
-    { id: 4, nickname: "User4", winRate: 48.9 },
-    { id: 5, nickname: "User5", winRate: 53.3 },
-    { id: 6, nickname: "User6", winRate: 51.2 },
-    { id: 7, nickname: "User7", winRate: 47.8 },
-    { id: 8, nickname: "User8", winRate: 50.0 },
-    { id: 9, nickname: "User9", winRate: 49.1 },
-    { id: 10, nickname: "User10", winRate: 52.7 },
-  ]); // 전체 사용자 목록
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
   const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
   const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
@@ -67,14 +57,22 @@ const MobileMainpage = ({
     setAddedUsers((prev) => prev.filter((u) => u.id !== user.id));
   };
 
-  // 모달 열기
   const openModal = (type: string) => {
     setModalType(type);
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setModalType("");
+  };
+
+  const handleTeamButtonClick = () => {
+    if (redTeam.length < 5 || blueTeam.length < 5) {
+      alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
+      return;
+    }
+    if (selectedMode === "DRAFT") {
+      setIsDraftModalOpen(true);
+    }
   };
 
   return (
@@ -90,7 +88,7 @@ const MobileMainpage = ({
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("selectMode")}
         >
-          {selectedMode || "모드선택"} {/* 선택된 모드 텍스트 표시 */}
+          {selectedMode || "모드선택"}
         </button>
         <button
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
@@ -102,7 +100,10 @@ const MobileMainpage = ({
       <RedTeam teamMembers={redTeam} onRemoveUser={removeUser} />
       <BlueTeam teamMembers={blueTeam} onRemoveUser={removeUser} />
 
-      <button className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap">
+      <button
+        className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+        onClick={handleTeamButtonClick}
+      >
         팀짜기
       </button>
 
@@ -128,10 +129,12 @@ const MobileMainpage = ({
           closeModal={closeModal}
         />
       )}
-
       {/* DraftModal 열기 */}
       {isDraftModalOpen && (
-        <DraftModal closeModal={() => setIsDraftModalOpen(false)} />
+        <DraftModal
+          closeModal={() => setIsDraftModalOpen(false)}
+          teamMembers={allUsers}
+        />
       )}
 
       <UserContainer

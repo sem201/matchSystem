@@ -3,13 +3,13 @@ import { User } from "../../commonTypes";
 import PlusIcon from "../../assets/svg/add.svg";
 
 interface UserContainerProps {
-  allUser: User[];
-  onAddUser: (userId: number) => void;
+  allUsers: User[];
+  handleAddUser: (userId: number) => void;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
-  allUser,
-  onAddUser,
+  allUsers,
+  handleAddUser,
 }) => {
   return (
     <div>
@@ -18,7 +18,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
           최근에 같이한 친구
         </div>
         <ul>
-          {allUser.map((user) => (
+          {allUsers.map((user) => (
             <li key={user.id} className="mb-2">
               <div className="flex gap-[5px] justify-center">
                 <span className="font-bold text-white">{user.nickname}</span>
@@ -27,7 +27,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
                   src={PlusIcon}
                   alt="Add"
                   className="cursor-pointer w-6 h-6"
-                  onClick={() => onAddUser(user.id)}
+                  onClick={() => handleAddUser(user.id)}
                 />
               </div>
             </li>

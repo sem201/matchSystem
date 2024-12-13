@@ -6,8 +6,8 @@ import { User } from "../../commonTypes";
 
 interface MenuProps {
   setHeaderText: (text: string) => void;
-  allUser: User[];
-  onAddUserToTeam: (userId: number) => void;
+  allUsers: User[];
+  handleAddUser: (userId: number) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
@@ -18,8 +18,8 @@ interface MenuProps {
 
 const Menu: React.FC<MenuProps> = ({
   setHeaderText,
-  allUser,
-  onAddUserToTeam,
+  allUsers,
+  handleAddUser,
   setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
@@ -39,7 +39,7 @@ const Menu: React.FC<MenuProps> = ({
         isDraftModalOpen={isDraftModalOpen}
       />
       <div className="lg:col-span-1 lg:row-span-3">
-        <UserContainer allUser={allUser} onAddUser={onAddUserToTeam} />
+        <UserContainer allUsers={allUsers} handleAddUser={handleAddUser} />
       </div>
     </div>
   );
