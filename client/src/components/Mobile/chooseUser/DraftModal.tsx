@@ -1,54 +1,49 @@
+// DraftModal.tsx
 import React, { useState } from "react";
-import DraftModal2 from "./DraftModal2"; // DraftModal2 추가
+import DraftModal2 from "./DraftModal2";
+import { User } from "../../../commonTypes";
 
 interface DraftModalProps {
   closeModal: () => void;
+  teamMembers: User[]; // teamMembers의 타입을 User[]로 받아옵니다.
 }
 
-const DraftModal = ({ closeModal }: DraftModalProps) => {
-  const [selectedTeam, setSelectedTeam] = useState<string | null>(null); // 선택된 팀
-  const [redTeamLeader, setRedTeamLeader] = useState<string | null>(null); // 레드팀 팀장
-  const [blueTeamLeader, setBlueTeamLeader] = useState<string | null>(null); // 블루팀 팀장
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
-  const [showNextModal, setShowNextModal] = useState(false); // DraftModal2 표시 상태
-
-  // 임시 팀원 데이터
-  const teamMembers = [
-    "홍길동",
-    "김철수",
-    "이영희",
-    "박민수",
-    "최지현",
-    "정은지",
-    "한동훈",
-    "강호동",
-    "유재석",
-    "신동엽",
-  ];
+const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
+  const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
+  const [redTeamLeader, setRedTeamLeader] = useState<string | null>(null);
+  const [blueTeamLeader, setBlueTeamLeader] = useState<string | null>(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [showNextModal, setShowNextModal] = useState(false);
 
   const handleTeamSelect = (team: string) => {
     setSelectedTeam(team);
-    setIsDropdownOpen(true); // 드롭다운 열기
+    setIsDropdownOpen(true);
   };
 
   const handleLeaderSelect = (leader: string) => {
     if (selectedTeam === "RED TEAM") {
-      setRedTeamLeader(leader); // 레드팀 팀장 설정
+      setRedTeamLeader(leader);
     } else if (selectedTeam === "BLUE TEAM") {
-      setBlueTeamLeader(leader); // 블루팀 팀장 설정
+      setBlueTeamLeader(leader);
     }
-    setIsDropdownOpen(false); // 드롭다운 닫기
+    setIsDropdownOpen(false);
   };
 
   const handleConfirm = () => {
     if (redTeamLeader && blueTeamLeader) {
-      setShowNextModal(true); // DraftModal2로 전환
+      setShowNextModal(true);
     }
   };
 
   if (showNextModal) {
-    // DraftModal2 표시
-    return <DraftModal2 closeModal={closeModal} />;
+    return (
+      <DraftModal2
+        closeModal={closeModal}
+        teamMembers={teamMembers.map((member) => member.nickname)}
+        redTeamLeader={redTeamLeader}
+        blueTeamLeader={blueTeamLeader}
+      />
+    );
   }
 
   return (
@@ -63,12 +58,12 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
         style={{ borderColor: "#C89B3C" }}
       >
         <p
-          className="text-center mb-7 font-bold text-lg whitespace-nowrap font-blackHanSans"
+          className="text-center mb-7 font-bold text-lg font-blackHanSans"
           style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
         >
           팀장을 뽑아주세요.
         </p>
-        {/* 팀 선택 버튼 */}
+
         <div className="flex justify-between gap-4 mb-4 font-blackHanSans">
           <button
             onClick={() => handleTeamSelect("RED TEAM")}
@@ -92,18 +87,17 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
           </button>
         </div>
 
-        {/* 드롭다운 리스트 */}
         {isDropdownOpen && (
           <div className="mt-4 border-2 border-[#C89B3C] rounded-lg p-4 bg-[#F9F5EB]">
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.map((member) => {
-                const isRedLeader = redTeamLeader === member;
-                const isBlueLeader = blueTeamLeader === member;
+                const isRedLeader = redTeamLeader === member.nickname;
+                const isBlueLeader = blueTeamLeader === member.nickname;
 
                 return (
                   <button
-                    key={member}
-                    onClick={() => handleLeaderSelect(member)}
+                    key={member.id}
+                    onClick={() => handleLeaderSelect(member.nickname)}
                     className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 ${
                       isRedLeader
                         ? "bg-[#8A2922] text-white cursor-not-allowed"
@@ -113,7 +107,7 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
                     }`}
                     disabled={isRedLeader || isBlueLeader}
                   >
-                    {member}
+                    {member.nickname}
                   </button>
                 );
               })}
@@ -121,7 +115,6 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
           </div>
         )}
 
-        {/* 선택된 팀장 표시 */}
         <div className="text-center text-lg my-4">
           {redTeamLeader && (
             <p className="font-bold text-[#8A2922]">
@@ -135,13 +128,12 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
           )}
         </div>
 
-        {/* 확인 및 닫기 버튼 */}
         <div className="flex justify-center gap-4 mt-10 font-blackHanSans">
           <button
             onClick={handleConfirm}
             className={`px-7 py-2 ${
               redTeamLeader && blueTeamLeader
-                ? "bg-[#F0E6D2] text-[#0F2041] font-bold hover:bg-[#A87F2D]"
+                ? "bg-[#F0E6D2] text-[#0F2041]"
                 : "bg-[#C89B3C] text-white font-bold cursor-not-allowed"
             } border-2 border-[#C89B3C] rounded-full`}
             disabled={!redTeamLeader || !blueTeamLeader}

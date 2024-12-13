@@ -39,10 +39,13 @@ const MobileMainpage = ({
     { id: 8, nickname: "User8", winRate: 50.0 },
     { id: 9, nickname: "User9", winRate: 49.1 },
     { id: 10, nickname: "User10", winRate: 52.7 },
-  ]);
+  ]); // 전체 사용자 목록
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
-  const [redTeam, setRedTeam] = useState<User[]>([]);
-  const [blueTeam, setBlueTeam] = useState<User[]>([]);
+  const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
+  const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
+  // const [modalType, setModalType] = useState<string | null>(null); // 현재 열리는 모달 타입
+  // const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
+  // const [selectedMode, setSelectedMode] = useState<string>("RANDOM"); // 선택된 모드 상태
 
   const addUser = (user: User) => {
     if (redTeam.length < 5) {
@@ -64,27 +67,21 @@ const MobileMainpage = ({
     setAddedUsers((prev) => prev.filter((u) => u.id !== user.id));
   };
 
-  // 모달 열기
   const openModal = (type: string) => {
     setModalType(type);
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setModalType("");
   };
 
-  // 팀짜기 버튼 클릭 시 드래프트 모드일 경우 DraftModal 열기
   const handleTeamButtonClick = () => {
-    // 팀이 각각 5명이 아닐 경우 알림창을 띄운다
     if (redTeam.length < 5 || blueTeam.length < 5) {
       alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
       return;
     }
-
-    // 드래프트 모드일 때만 DraftModal 열기
     if (selectedMode === "DRAFT") {
-      setIsDraftModalOpen(true); // 드래프트 모드일 때 DraftModal 열기
+      setIsDraftModalOpen(true);
     }
   };
 
@@ -101,7 +98,7 @@ const MobileMainpage = ({
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("selectMode")}
         >
-          {selectedMode || "모드선택"} {/* 선택된 모드 텍스트 표시 */}
+          {selectedMode || "모드선택"}
         </button>
         <button
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
@@ -115,7 +112,7 @@ const MobileMainpage = ({
 
       <button
         className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
-        onClick={handleTeamButtonClick} // 팀짜기 버튼 클릭 시 DraftModal 열기
+        onClick={handleTeamButtonClick}
       >
         팀짜기
       </button>
@@ -142,10 +139,12 @@ const MobileMainpage = ({
           closeModal={closeModal}
         />
       )}
-
       {/* DraftModal 열기 */}
       {isDraftModalOpen && (
-        <DraftModal closeModal={() => setIsDraftModalOpen(false)} />
+        <DraftModal
+          closeModal={() => setIsDraftModalOpen(false)}
+          teamMembers={allUsers}
+        />
       )}
 
       <UserContainer
