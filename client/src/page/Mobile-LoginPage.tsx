@@ -1,15 +1,17 @@
+import kakao from "../assets/login_Img/kakao_login_medium_narrow (1).png";
+
 const MobileLoginPage = () => {
-  const REST_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
-  const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
-  const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   const loginHandler = () => {
+    const REST_API_KEY = import.meta.env.VITE_KAKAO_API_KEY;
+    const REDIRECT_URI = import.meta.env.VITE_REDIRECT_URI;
+    const KAKAO_AUTH_URI = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
     window.location.href = KAKAO_AUTH_URI;
   };
   return (
     <div className="flex flex-col items-center w-[100vw] h-[100vh] bg-mobileScreen bg-cover bg-top ">
-      <div className="border-2 w-[200px] h-[300px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover mt-[40vh]">
+      <div className="border-2 w-[250px] h-[270px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover mt-[40vh] p-5">
         <p
-          className="text-[#FFFFFF] stroke-[#C8AA6E] text-center text-lg font-black"
+          className="text-[#FFFFFF] text-center text-lg font-black"
           style={{ WebkitTextStroke: "0.7px #C8AA6E" }}
         >
           리그 오브 레전드
@@ -18,12 +20,20 @@ const MobileLoginPage = () => {
           <br />
           팀원 자동 매칭 시스템
         </p>
-        <div className="flex flex-col justify-center items-center">
-          <div>Login</div>
-          <button
+        <div className="flex flex-col justify-center items-center mt-2">
+          <div
+            className="text-[#FFFFFF] text-center font-black text-5xl my-4"
+            style={{ WebkitTextStroke: "2px #C8AA6E" }}
+          >
+            Login
+          </div>
+
+          <img
+            src={kakao}
+            alt="카카오 로그인"
             onClick={loginHandler}
-            className=" bg-[url(./assets/kakao_login_small.png)] bg-no-repeat bg-full"
-          ></button>
+            className="w-[150px] mt-2"
+          />
         </div>
       </div>
       <p className="text-white text-xs absolute right-6 bottom-8">
