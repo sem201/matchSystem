@@ -67,14 +67,22 @@ const MobileMainpage = ({
     setAddedUsers((prev) => prev.filter((u) => u.id !== user.id));
   };
 
-  // 모달 열기
   const openModal = (type: string) => {
     setModalType(type);
   };
 
-  // 모달 닫기
   const closeModal = () => {
     setModalType("");
+  };
+
+  const handleTeamButtonClick = () => {
+    if (redTeam.length < 5 || blueTeam.length < 5) {
+      alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
+      return;
+    }
+    if (selectedMode === "DRAFT") {
+      setIsDraftModalOpen(true);
+    }
   };
 
   return (
@@ -90,7 +98,7 @@ const MobileMainpage = ({
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("selectMode")}
         >
-          {selectedMode || "모드선택"} {/* 선택된 모드 텍스트 표시 */}
+          {selectedMode || "모드선택"}
         </button>
         <button
           className="w-[20vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
@@ -102,7 +110,10 @@ const MobileMainpage = ({
       <RedTeam teamMembers={redTeam} onRemoveUser={removeUser} />
       <BlueTeam teamMembers={blueTeam} onRemoveUser={removeUser} />
 
-      <button className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap">
+      <button
+        className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+        onClick={handleTeamButtonClick}
+      >
         팀짜기
       </button>
 
@@ -128,10 +139,12 @@ const MobileMainpage = ({
           closeModal={closeModal}
         />
       )}
-
       {/* DraftModal 열기 */}
       {isDraftModalOpen && (
-        <DraftModal closeModal={() => setIsDraftModalOpen(false)} />
+        <DraftModal
+          closeModal={() => setIsDraftModalOpen(false)}
+          teamMembers={allUsers}
+        />
       )}
 
       <UserContainer
