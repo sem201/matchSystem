@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import DraftModal2 from "./DraftModal2"; // DraftModal2 추가
 
 interface DraftModalProps {
   closeModal: () => void;
@@ -9,6 +10,7 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
   const [redTeamLeader, setRedTeamLeader] = useState<string | null>(null); // 레드팀 팀장
   const [blueTeamLeader, setBlueTeamLeader] = useState<string | null>(null); // 블루팀 팀장
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // 드롭다운 상태
+  const [showNextModal, setShowNextModal] = useState(false); // DraftModal2 표시 상태
 
   // 임시 팀원 데이터
   const teamMembers = [
@@ -39,10 +41,15 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
   };
 
   const handleConfirm = () => {
-    console.log(`RED TEAM 팀장: ${redTeamLeader || "미정"}`);
-    console.log(`BLUE TEAM 팀장: ${blueTeamLeader || "미정"}`);
-    closeModal(); // 확인 버튼 클릭 시 모달 닫기
+    if (redTeamLeader && blueTeamLeader) {
+      setShowNextModal(true); // DraftModal2로 전환
+    }
   };
+
+  if (showNextModal) {
+    // DraftModal2 표시
+    return <DraftModal2 closeModal={closeModal} />;
+  }
 
   return (
     <div
@@ -90,7 +97,6 @@ const DraftModal = ({ closeModal }: DraftModalProps) => {
           <div className="mt-4 border-2 border-[#C89B3C] rounded-lg p-4 bg-[#F9F5EB]">
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.map((member) => {
-                // 스타일 설정
                 const isRedLeader = redTeamLeader === member;
                 const isBlueLeader = blueTeamLeader === member;
 

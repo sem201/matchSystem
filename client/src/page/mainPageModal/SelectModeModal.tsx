@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-// import DraftModal from "../../components/Mobile/chooseUser/DraftModal";
-
 interface ModalProps {
   closeModal: () => void;
   selectedMode: string;
@@ -11,7 +9,6 @@ interface ModalProps {
 
 export default function SelectModeModal({
   closeModal,
-  setIsDraftModalOpen,
   setSelectedMode, // 부모로부터 받은 setSelectedMode
   selectedMode,
 }: ModalProps) {
@@ -44,10 +41,6 @@ export default function SelectModeModal({
   const handleConfirmClick = () => {
     alert(`${selectedModeState} 모드가 선택되었습니다.`);
     setSelectedMode(selectedModeState);
-
-    if (selectedModeState === "DRAFT") {
-      setIsDraftModalOpen(true); // DRAFT 모드에서 DraftModal 열기
-    }
 
     closeModal();
   };
