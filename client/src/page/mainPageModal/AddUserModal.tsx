@@ -14,23 +14,26 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
   // 추가 버튼 활성화 상태
   const isAddEnabled = userAdded === true;
 
-  const handleAddUser = () => {
+  const handleAddUser = async () => {
     const trimmedInput = nicknameTag.trim(); // 공백 제거
-    const nicknameTagRegex = /^[^\s#]+#[A-Za-z0-9]+$/; // 정규식: 닉네임#태그 형태
+    const nicknameTagRegex = /^[^\#]+#[A-Za-z0-9]+$/; // 정규식: 닉네임#태그 형태
     if (!nicknameTagRegex.test(trimmedInput)) {
       setUserAdded(false); // 유효성 실패
       return;
     }
 
     // 입력값 분리
-    const [nickname, tag] = trimmedInput.split("#");
+    const [nickname, tag] = nicknameTag.split("#");
+    console.log("분리", nicknameTag.split("#"));
 
     // 태그를 대문자로 변환
     const normalizedTag = tag.toUpperCase();
 
     // 검색 로직 실행
     const data = { userid: nickname, tagLine: tag };
-    const response = apiCall("/noobs/lolUser", "post", data);
+    const response = await apiCall("/noobs/lolUser", "get", data);
+    console.log("nickname", nickname);
+    console.log("tag", tag);
     console.log(response);
 
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)

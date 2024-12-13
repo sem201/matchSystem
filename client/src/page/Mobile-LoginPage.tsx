@@ -6,8 +6,8 @@ const MobileLoginPage = () => {
     window.location.href = KAKAO_AUTH_URI;
   };
   return (
-    <div className="flex flex-col items-center justify-center w-[100vw] h-[100vh] bg-mobileScreen bg-cover bg-top">
-      <div className="border-2 w-[200px] h-[300px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover">
+    <div className="flex flex-col items-center w-[100vw] h-[100vh] bg-mobileScreen bg-cover bg-top ">
+      <div className="border-2 w-[200px] h-[300px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover mt-[40vh]">
         <p
           className="text-[#FFFFFF] stroke-[#C8AA6E] text-center text-lg font-black"
           style={{ WebkitTextStroke: "0.7px #C8AA6E" }}
@@ -26,6 +26,11 @@ const MobileLoginPage = () => {
           ></button>
         </div>
       </div>
+      <p className="text-white text-xs absolute right-6 bottom-8">
+        Leagueof Legendsand Riot Games are trademark <br />
+        sor registered trademarksof Riot Games, <br />
+        Inc. Leagueof Legends © Riot Games, Inc.
+      </p>
     </div>
   );
 };
