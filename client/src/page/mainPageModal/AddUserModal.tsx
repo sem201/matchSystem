@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import apiCall from "../../Api/Api";
+import { error } from "console";
 
 // ModalProps 수정
 interface ModalProps {
@@ -27,21 +28,19 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
     console.log("분리", nicknameTag.split("#"));
 
     // 태그를 대문자로 변환
-    const normalizedTag = tag.toUpperCase();
+    // const normalizedTag = tag.toUpperCase();
 
     // 검색 로직 실행
     const data = { userid: nickname, tagLine: tag };
-    const response = await apiCall("/noobs/lolUser", "get", data);
-    console.log("nickname", nickname);
-    console.log("tag", tag);
-    console.log(response);
+    try {
+      const response = await apiCall("/noobs/lolUser", "get", data);
+      console.log("res", response.data.data);
+      setUserAdded(true);
+    } catch (error) {
+      setUserAdded(false);
+    }
 
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)
-    if (nickname === "example" && normalizedTag === "KR1234") {
-      setUserAdded(true); // 유저 검색 성공
-    } else {
-      setUserAdded(false); // 검색 실패
-    }
   };
 
   const handleAddButtonClick = () => {
@@ -66,11 +65,11 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
         }}
       >
         <div
-          className="bg-white p-8 rounded-lg w-[450px] shadow-lg border-4"
+          className="bg-white p-3 rounded-lg w-[350px] shadow-lg border-4"
           style={{ borderColor: "#C89B3C" }}
         >
           <p
-            className="text-center mb-7 font-bold text-lg whitespace-nowrap font-blackHanSans"
+            className="text-center mb-7 font-bold text-sm whitespace-nowrap font-blackHanSans text-wrap"
             style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
           >
             추가할 유저의 닉네임과 태그를 입력하세요.
@@ -83,7 +82,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
               value={nicknameTag}
               onChange={(e) => setNicknameTag(e.target.value)}
               placeholder="예: 닉네임#KR1234"
-              className="flex-1 px-4 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
+              className="flex-1 px-3 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
             />
             <button
               onClick={handleAddUser}
