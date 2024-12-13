@@ -4,13 +4,14 @@ interface ModalProps {
   selectedMode: string;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>; // 부모로부터 받은 setSelectedMode
-  setHeaderText?: (text: string) => void;
+  setHeaderText: (text: string) => void;
 }
 
 export default function SelectModeModal({
   closeModal,
   setSelectedMode, // 부모로부터 받은 setSelectedMode
   selectedMode,
+  setHeaderText,
 }: ModalProps) {
   const [selectedModeState, setSelectedModeState] = useState(
     selectedMode === "모드선택" ? "RANDOM" : selectedMode
@@ -40,6 +41,10 @@ export default function SelectModeModal({
 
   const handleConfirmClick = () => {
     alert(`${selectedModeState} 모드가 선택되었습니다.`);
+    {
+      setHeaderText &&
+        setHeaderText(`${selectedModeState} 모드가 선택되었습니다.`);
+    }
     setSelectedMode(selectedModeState);
 
     closeModal();

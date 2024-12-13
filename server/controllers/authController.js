@@ -8,8 +8,6 @@ dotenv.config();
 const kakaoLogin = async (req, res) => {
   const { code } = req.query;
 
-  console.log("code : ", code);
-
   if (!code) {
     return res.status(400).send("인증 코드가 필요합니다");
   }
@@ -32,11 +30,6 @@ const kakaoLogin = async (req, res) => {
     );
 
     const access_token = tokenResponse.data.access_token;
-
-    console.log("token", tokenResponse);
-    console.log("access_token", access_token);
-
-    console.log(`Authorization header: Bearer ${access_token}`);
     // 액세스 토큰을 사용하여 사용자 정보 요청
     const userResponse = await axios.get("https://kapi.kakao.com/v2/user/me", {
       headers: {

@@ -13,6 +13,7 @@ interface Props {
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
+  setHeaderText: React.Dispatch<React.SetStateAction<string>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
@@ -25,6 +26,7 @@ const MobileMainpage = ({
   selectedMode,
   modalType,
   isDraftModalOpen,
+  setHeaderText,
 }: Props) => {
   const [allUsers, setAllUsers] = useState<User[]>([
     { id: 1, nickname: "User1", winRate: 50.4 },
@@ -131,6 +133,7 @@ const MobileMainpage = ({
           selectedMode={selectedMode}
           setSelectedMode={setSelectedMode} // 선택된 모드 처리 함수 전달
           setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 함수 전달
+          setHeaderText={setHeaderText}
         />
       )}
       {modalType === "howToUse" && (

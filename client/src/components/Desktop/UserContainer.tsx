@@ -14,13 +14,15 @@ const UserContainer: React.FC<UserContainerProps> = ({
   return (
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto bg-[#F0E6D2] border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">
-        <div className="ml-3 mb-5 mt-3">최근에 같이한 친구</div>
+        <div className="text-center mb-5 mt-3 text-white">
+          최근에 같이한 친구
+        </div>
         <ul>
           {allUser.map((user) => (
             <li key={user.id} className="mb-2">
               <div className="flex gap-[5px] justify-center">
-                <span className="font-bold">{user.nickname}</span>
-                <span>{user.winRate}%</span>
+                <span className="font-bold text-white">{user.nickname}</span>
+                <span className="text-white">{user.winRate}%</span>
                 <img
                   src={PlusIcon}
                   alt="Add"
