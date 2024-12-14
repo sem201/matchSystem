@@ -5,7 +5,6 @@ interface LatestUserInfoProps {
   onAddUser: (user: User) => void;
 }
 const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
-  console.log("alluser", user);
   return (
     <div className="flex flex-row items-center h-[55px] mx-2 my-1 gap-2 relative">
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />

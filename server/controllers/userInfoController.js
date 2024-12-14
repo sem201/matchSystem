@@ -158,7 +158,6 @@ const userAdd = async (req, res) => {
   console.log("세션 : ", req.session);
   console.log("세션ID", req.session.id);
 
-
   if (!userid || !tagLine) {
     return res.status(400).json({ message: "소환사 명을 입력하세요" });
   }
@@ -176,35 +175,32 @@ const userAdd = async (req, res) => {
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
     } else {
+      // 추가되어있는 유저인지 확인
+      // DB에서 사용자 검색
+      const userFriendData = await NoobsRecentFriend.findOne({
+        where: {
+          gameName: userid,
+          tagLine: tagLine,
+        },
+      });
 
-        // 추가되어있는 유저인지 확인
-        // DB에서 사용자 검색
-        const userFriendData = await NoobsRecentFriend.findOne({
-            where: {
-            gameName: userid,
-            tagLine: tagLine,
-            },
+      if (!userFriendData) {
+        // DB 저장: 사용자 정보
+        const user = await NoobsRecentFriend.create({
+          user_id: req.session.user.id, // 세션에서 가져온 user_id 값
+          gameName: userSearchData.gameName,
+          tagLine: userSearchData.tagLine,
+          profileIconId: userSearchData.profileIconId,
+          tier: userSearchData.tier,
+          rank: userSearchData.rank,
+          wins: userSearchData.wins,
+          losses: userSearchData.losses,
+          winRate: userSearchData.winRate,
         });
-
-        if(!userFriendData) {
-            // DB 저장: 사용자 정보
-            const user = await NoobsRecentFriend.create({
-                user_id: req.session.user.id, // 세션에서 가져온 user_id 값
-                gameName: userSearchData.gameName,
-                tagLine: userSearchData.tagLine,
-                profileIconId: userSearchData.profileIconId,
-                tier: userSearchData.tier,
-                rank: userSearchData.rank,
-                wins: userSearchData.wins,
-                losses: userSearchData.losses,
-                winRate: userSearchData.winRate,
-            });
-            return res.status(200).json({ userSearchData });
-        } else {
-            res.status(201).json({message : '이미 추가된 유저입니다. '});
-        }  
-      
-      return res.status(200).json({ userSearchData });
+        return res.status(200).json({ userSearchData });
+      } else {
+        res.status(201).json({ message: "이미 추가된 유저입니다. " });
+      }
     }
   } catch (error) {
     console.error("DB 처리 중 에러 발생:", error);
@@ -212,4 +208,4 @@ const userAdd = async (req, res) => {
   }
 };
 
-export { userSearch , userAdd };
+export { userSearch, userAdd };
