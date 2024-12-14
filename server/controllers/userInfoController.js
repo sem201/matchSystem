@@ -2,7 +2,6 @@ import axios from "axios";
 import dotenv from "dotenv";
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
-import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
 
 dotenv.config(); // .env 파일 로드
 
@@ -196,4 +195,4 @@ const userAdd = async (req, res) => {
   }
 };
 
-export { userSearch, userAdd };
+export { userSearch };
