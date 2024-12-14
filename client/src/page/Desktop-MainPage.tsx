@@ -17,7 +17,7 @@ interface DesktopMainPageProps {
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
   addedUsers: User[];
-  setAddedUser: React.Dispatch<React.SetStateAction<User[]>>;
+  setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
