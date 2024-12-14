@@ -10,8 +10,8 @@ interface DesktopMainPageProps {
   allUsers: User[];
   redTeam: User[];
   blueTeam: User[];
-  handleAddUser: (user: User[]) => void;
-  handleRemoveUser: (user: User[]) => void;
+  handleAddUser: (user: User) => void;
+  handleRemoveUser: (user: User) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
