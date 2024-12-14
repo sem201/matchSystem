@@ -74,8 +74,12 @@ const MainPage = () => {
 
   const sharedProps = {
     allUsers,
+    addedUsers,
+    setAddedUsers,
     redTeam,
+    setRedTeam,
     blueTeam,
+    setBlueTeam,
     handleAddUser: handleAddUser,
     handleRemoveUser: handleRemoveUser,
     modalType,

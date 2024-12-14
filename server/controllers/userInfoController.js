@@ -157,6 +157,7 @@ const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
 
   console.log("세션 : ", req.session);
+  console.log("세션ID", req.session.id);
 
   if (!userid || !tagLine) {
     return res.status(400).json({ message: "소환사 명을 입력하세요" });
@@ -177,7 +178,7 @@ const userAdd = async (req, res) => {
     } else {
       // DB 저장: 사용자 정보
       const user = await NoobsRecentFriend.create({
-        user_id: userid, // 세션에서 가져온 user_id 값
+        user_id: req.session.user.id, // 세션에서 가져온 user_id 값
         gameName: userSearchData.gameName,
         tagLine: userSearchData.tagLine,
         profileIconId: userSearchData.profileIconId,

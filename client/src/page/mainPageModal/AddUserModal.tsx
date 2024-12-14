@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import apiCall from "../../Api/Api";
-import { error } from "console";
 
 // ModalProps 수정
 interface ModalProps {
