@@ -10,8 +10,8 @@ import { User } from "../../commonTypes";
 
 interface RedTeamProps {
   user?: User;
-  handleRemoveUser: (user: User[]) => void;
-  handleAddUser: (user: User[]) => void;
+  handleRemoveUser: (user: User) => void;
+  handleAddUser: (user: User) => void;
 }
 
 const RedTeam: React.FC<RedTeamProps> = ({
