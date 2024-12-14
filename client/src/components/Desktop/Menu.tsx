@@ -7,13 +7,15 @@ import { User } from "../../commonTypes";
 interface MenuProps {
   setHeaderText: (text: string) => void;
   allUsers: User[];
-  handleAddUser: (userId: number) => void;
+  handleAddUser: (user: User) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
+  addedUsers: User[];
+  setAddedUsers: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -26,6 +28,7 @@ const Menu: React.FC<MenuProps> = ({
   selectedMode,
   modalType,
   isDraftModalOpen,
+  addedUsers,
 }) => {
   return (
     <div className="relative">

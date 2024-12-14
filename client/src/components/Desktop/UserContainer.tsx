@@ -4,7 +4,7 @@ import PlusIcon from "../../assets/svg/add.svg";
 
 interface UserContainerProps {
   allUsers: User[];
-  handleAddUser: (userId: number) => void;
+  handleAddUser: (user: User) => void;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
@@ -27,7 +27,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
                   src={PlusIcon}
                   alt="Add"
                   className="cursor-pointer w-6 h-6"
-                  onClick={() => handleAddUser(user.id)}
+                  onClick={() => handleAddUser(user)}
                 />
               </div>
             </li>

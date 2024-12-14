@@ -16,7 +16,7 @@ interface DesktopMainPageProps {
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
-  addedUser: User[];
+  addedUsers: User[];
   setAddedUser: React.Dispatch<React.SetStateAction<User[]>>;
   selectedMode: string;
   modalType: string;
@@ -38,6 +38,8 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   isDraftModalOpen,
   headerText,
   setHeaderText,
+  addedUsers,
+  setAddedUsers,
 }) => {
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
@@ -59,6 +61,8 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           setHeaderText={setHeaderText}
           allUsers={allUsers}
           handleAddUser={handleAddUser}
+          addedUsers={addedUsers}
+          setAddedUsers={setAddedUsers}
         />
       </div>
       <ComposeButton />
