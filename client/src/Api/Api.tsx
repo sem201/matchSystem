@@ -12,7 +12,10 @@ type configProps = {
   params: object | null | undefined;
 };
 
-const API = axios.create({ baseURL: import.meta.env.VITE_BACK_API_URL });
+const API = axios.create({
+  baseURL: import.meta.env.VITE_BACK_API_URL,
+  withCredentials: true,
+});
 
 const apiCall = async (
   url: string,

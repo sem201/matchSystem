@@ -44,6 +44,10 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
   };
 
   const handleAddButtonClick = () => {
+    const [nickname, tag] = nicknameTag.split("#");
+    const data = { userid: nickname, tagLine: tag };
+    const response = apiCall("noobs/lolUserAdd", "post", data);
+    console.log(response);
     // 추가 버튼 클릭 시 초기화
     setNicknameTag(""); // 입력 필드 초기화
     setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
