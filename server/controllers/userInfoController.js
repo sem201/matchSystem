@@ -3,110 +3,82 @@ import dotenv from "dotenv";
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
 import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
+import Champion from "../models/Champion.js";
+import Profile from "../models/Profile.js";
+import RankInfo from "../models/RankInfo.js";
+import TierScore from "../models/TierScore.js";
+
+
 
 dotenv.config(); // .env 파일 로드
 
 const userSearch = async (req, res) => {
-  const { userid, tagLine } = req.query;
+    let { userid, tagLine } = req.query;
 
-  if (!userid || !tagLine) {
-    return res.status(400).json({ message: "소환사 명을 입력하세요" });
-  }
-
-  if (!process.env.RIOT_API_KEY) {
-    return res.status(500).json({ message: "API KEY 를 확인하세요" });
-  }
-
-  const headers = {
-    "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
-    "Accept-Language": "ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
-    Origin: "https://developer.riotgames.com",
-    "X-Riot-Token": process.env.RIOT_API_KEY, // env에서 API 키 가져오기
-  };
-
-  try {
-    // DB에서 사용자 검색
-    const userSearchData = await NoobsUserInfo.findOne({
-      where: {
-        gameName: userid,
-        tagLine: tagLine,
-      },
-    });
-
-    if (userSearchData) {
-      console.log(
-        "사용자 데이터가 db에 존재합니다. db에서 데이터를 요청합니다."
-      );
-      return res
-        .status(200)
-        .json({ message: "사용자 db 요청 완료", data: userSearchData });
-    } else {
-      // 1차 API 요청: 계정 정보 가져오기
-      const url = `https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(
-        userid
-      )}/${encodeURIComponent(tagLine)}`;
-      const response = await axios.get(url, { headers });
-      const { puuid, gameName, tagLine: retrievedTagLine } = response.data;
-
-      // 2차 API 요청: 소환사 정보 가져오기
-      const userInfo_url = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
-      const userInfo_response = await axios.get(userInfo_url, { headers });
-      const {
-        id: secretId,
-        profileIconId,
-        summonerLevel,
-      } = userInfo_response.data;
-
-      // 3차 API 요청: 솔로랭크 데이터 가져오기
-      const userLeagueInfo_URL = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
-      const userLeague_Response = await axios.get(userLeagueInfo_URL, {
-        headers,
+    // 앞 뒤 공백제거
+    userid = userid.trim();
+    tagLine = tagLine.trim();
+  
+    // 필수 값 검증
+    if (!userid || !tagLine) {
+      return res.status(400).json({ message: "소환사 명을 입력하세요" });
+    }
+  
+    // API 키 확인
+    if (!process.env.RIOT_API_KEY) {
+      return res.status(500).json({ message: "API KEY 를 확인하세요" });
+    }
+  
+    const headers = {
+      "User-Agent": "Mozilla/5.0",
+      "Accept-Language": "ko-KR",
+      "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+      Origin: "https://developer.riotgames.com",
+      "X-Riot-Token": process.env.RIOT_API_KEY,
+    };
+  
+    try {
+      // 1. DB에서 사용자 검색
+      const user = await NoobsUserInfo.findOne({
+        where: { gameName: userid, tagLine },
       });
-      const rankedSoloData = userLeague_Response.data.find(
-        (entry) => entry.queueType === "RANKED_SOLO_5x5"
-      );
-
-      let latedQueueType = null;
-      let tier = null;
-      let rank = null;
-      let wins = null;
-      let losses = null;
-      let winRate = null;
-
-      if (rankedSoloData) {
-        ({
-          queueType: latedQueueType,
-          tier,
-          rank,
-          wins,
-          losses,
-        } = rankedSoloData);
-        winRate = ((wins / (wins + losses)) * 100).toFixed(1);
-        latedQueueType =
-          latedQueueType === "RANKED_SOLO_5x5"
-            ? "개인/2인 랭크 게임"
-            : latedQueueType;
-      } else {
-        console.log("솔로랭크 전적이 없습니다.");
-        latedQueueType = "no rank data";
-        tier = "no data";
-        rank = "no data";
-        wins = "no data";
-        losses = "no data";
-        winRate = "no data";
+  
+      if (user) {
+        console.log("사용자 데이터가 DB에 존재합니다.");
+        return res.status(200).json({ message: "사용자 db 요청 완료", data: user });
       }
-
-      // 4차 API 요청: 모스트 챔피언 데이터 가져오기
-      const userMaster_Champ_URL = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`;
-      const userMaster_Response = await axios.get(userMaster_Champ_URL, {
-        headers,
-      });
-      const masterData = userMaster_Response.data;
-
-      // DB 저장: 사용자 정보
-      const user = await NoobsUserInfo.create({
+  
+      // 2. 사용자 정보 API 요청
+      const accountUrl = `https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(userid)}/${encodeURIComponent(tagLine)}`;
+      const accountResponse = await axios.get(accountUrl, { headers });
+      const { puuid, gameName, tagLine: retrievedTagLine } = accountResponse.data;
+  
+      // 3. 소환사 정보 API 요청
+      const summonerUrl = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${puuid}`;
+      const summonerResponse = await axios.get(summonerUrl, { headers });
+      const { id: secretId, profileIconId, summonerLevel } = summonerResponse.data;
+  
+      // 4. 랭크 정보 API 요청
+      const leagueUrl = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
+      const leagueResponse = await axios.get(leagueUrl, { headers });
+      const rankedSoloData = leagueResponse.data.find(entry => entry.queueType === "RANKED_SOLO_5x5") || {};
+  
+      const {
+        queueType: latedQueueType = "개인/2인 랭크 게임",
+        tier = "Unranked",
+        rank = "Unranked",
+        wins = "nodata",
+        losses = "nodata",
+      } = rankedSoloData;
+      const winRate = wins !== "nodata" ? ((wins / (wins + losses)) * 100).toFixed(1) : "nodata";
+  
+      // 5. 모스트 챔피언 데이터 API 요청
+      const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`;
+      const masteryResponse = await axios.get(masteryUrl, { headers });
+      const masterData = masteryResponse.data;
+  
+      // 6. DB에 사용자 데이터 저장
+      const newUser = await NoobsUserInfo.create({
         puuid,
         gameName,
         tagLine: retrievedTagLine,
@@ -120,60 +92,61 @@ const userSearch = async (req, res) => {
         losses,
         winRate,
       });
-
-      const userId = user.id;
-
-      if (userId) {
-        // DB 저장: 모스트 챔피언 데이터
-        for (const {
-          championId,
-          championLevel,
-          championPoints,
-        } of masterData) {
+  
+      // 7. DB에 모스트 챔피언 데이터 저장
+      const mostChampExists = await NoobsMasterChamp.findOne({ where: { user_id: newUser.id } });
+  
+      if (!mostChampExists) {
+        for (const { championId, championLevel, championPoints } of masterData) {
           await NoobsMasterChamp.create({
-            user_id: userId,
+            user_id: newUser.id,
             championId,
             championLevel,
             championPoints,
           });
         }
       }
-
-      res.status(200).json({
-        message: "사용자 데이터 등록 완료",
-        data: user,
-      });
+  
+      return res.status(200).json({ message: "사용자 데이터 등록 완료", data: newUser });
+  
+    } catch (error) {
+      console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
+      const status = error.response?.status || 500;
+  
+      const errorMessages = {
+        404: "등록되지 않은 소환사 입니다.",
+        403: "API 키 만료.",
+        500: "서버 내부 오류가 발생했습니다.",
+      };
+  
+      return res.status(status).json({ message: errorMessages[status] || "알 수 없는 오류" });
     }
-  } catch (error) {
-    console.error("API 요청 또는 DB 처리 중 에러 발생:");
-    if (error.status == 404) {
-      return res.status(200).json({ message: "등록되지 않은 소환사 입니다." });
-    } else if (error.status == 403) {
-      return res.status(200).json({ message: "API 키 만료." });
-    } else if (error.status == 500) {
-      return res
-        .status(500)
-        .json({ message: "서버 내부 오류가 발생했습니다." });
-    }
-
-    if (error.response) {
-      if (res.status == 404) {
-        console.log("등록되지 않은 소환사 정보입니다.");
-      }
-    }
-  }
-};
+  };
+  
 
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
+  const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
 
   if (!userid || !tagLine) {
     return res.status(400).json({ message: "소환사 명을 입력하세요" });
   }
-
-  // 해당 사용자 db에서 검색
+    // 사용자 추가 제한 걸기
   try {
+
+    const userFriendCount = await NoobsRecentFriend.count({
+        where : {
+            user_id : req.session.user.id,
+        },
+    });
+
+    if (userFriendCount >= FRIEND_MAX) {
+        return res.status(400).json({ message : '더이상 추가 할 수 없습니다.' });
+    }
+
+
+    // 해당 사용자 db에서 검색
     // DB에서 사용자 검색
     const userSearchData = await NoobsUserInfo.findOne({
       where: {
@@ -182,6 +155,7 @@ const userAdd = async (req, res) => {
       },
     });
 
+    
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
     } else {
@@ -209,7 +183,7 @@ const userAdd = async (req, res) => {
         });
         return res.status(200).json({ user });
       } else {
-        res.status(201).json({ message: "이미 추가된 유저입니다. " });
+        return res.status(400).json({ message: "이미 추가된 유저입니다. " });
       }
     }
   } catch (error) {
@@ -220,20 +194,86 @@ const userAdd = async (req, res) => {
 
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
-    try {
-        const friendUser = await NoobsRecentFriend.findAll({
+    
+  try {
+    // 사용자 목록 조회
+    const friendUser = await NoobsRecentFriend.findAll({
+      where: {
+        user_id: req.session.user.id,
+      },
+    });
+
+    // 친구가 없을 경우
+    if (!friendUser || friendUser.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "같이한 사용자 목록이 없습니다." });
+    }
+
+    // 각 친구에 대해 추가 정보 조회
+    for (const friend of friendUser) {
+      // 챔피언 데이터 조회
+      const champData = await NoobsMasterChamp.findAll({
+        where: {
+          user_id: friend.id, // friend의 id를 기준으로 챔피언 데이터 검색
+        },
+        limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
+      });
+
+      // 소환사 프로필 정보 조회
+      const profileData = await Profile.findOne({
+        where: {
+          Profile_key: friend.profileIconId,
+        },
+      });
+
+      // 소환사 티어이미지 조회
+      const userRankImg = await RankInfo.findOne({
+        where : {
+            rank : friend.tier,
+        }
+      });
+
+      // 티어별 점수 조회
+      const userRankScore = await TierScore.findOne({
+        where : {
+            rank : friend.tier,
+            tier : friend.rank,   
+        }
+      });
+
+
+      friend.dataValues.tierImg = userRankImg;
+      friend.dataValues.tierScore = userRankScore;
+      friend.dataValues.profileInfo = profileData;
+      friend.dataValues.MostChamp = champData;
+      // 친구 객체에 추가된 데이터 삽입
+
+      if (champData.length > 0) {
+        for (let i = 0; i < friend.dataValues.MostChamp.length; i++) {
+          const champ = friend.dataValues.MostChamp[i];
+          // 가장 많이 사용한 챔피언 데이터 조회
+          const champDataMost = await Champion.findOne({
             where: {
-              user_id: req.session.user.id,
+              champKey: champ.dataValues.championId,
             },
           });
-        return res.status(200).json({ data : friendUser});
-    
-    } catch (error) {
-        console.error('API 요청 또는 DB 처리 중 에러 발생:', error);
-        return res.status(500).json({
-          message: '서버 내부 오류가 발생했습니다.',
-        });
+          champ.dataValues.champInfo = champDataMost;
+        }
       }
-}
+    }
 
-export { userSearch, userAdd , friendUserBr};
+    // 최종 JSON 응답 보내기
+    return res.status(200).json({
+      message: "data success",
+      data: friendUser, // 친구 데이터
+    });
+  } catch (error) {
+    console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
+    return res.status(500).json({
+      message: "서버 내부 오류가 발생했습니다.",
+    });
+  }
+};
+
+export { userSearch, userAdd, friendUserBr };
