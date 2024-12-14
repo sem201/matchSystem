@@ -5,11 +5,13 @@ import PlusIcon from "../../assets/svg/add.svg";
 interface UserContainerProps {
   allUsers: User[];
   handleAddUser: (user: User) => void;
+  setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
   allUsers,
   handleAddUser,
+  setAddedUsers,
 }) => {
   return (
     <div>
