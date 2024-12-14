@@ -39,6 +39,14 @@ app.use(
   })
 );
 
+// CORS 설정
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5173", // 요청을 허용할 클라이언트 도메인
+    credentials: true,
+    methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
+  })
+);
 
 // 현재 파일의 경로를 __dirname처럼 사용하기
 const __filename = fileURLToPath(import.meta.url);

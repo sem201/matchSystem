@@ -1,4 +1,4 @@
-import kakao from "../assets/login_Img/kakao_login_medium_narrow (1).png";
+import kakao from "../assets/login_Img/kakao_login_medium_narrow.png";
 
 const MobileLoginPage = () => {
   const loginHandler = () => {
