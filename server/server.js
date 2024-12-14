@@ -30,7 +30,8 @@ app.use(
 // CORS 설정
 app.use(
   cors({
-    origin: "http://localhost:5173", // 요청을 허용할 클라이언트 도메인
+    origin: "http://127.0.0.1:5173", // 요청을 허용할 클라이언트 도메인
+    credentials: true,
     methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
   })
 );
