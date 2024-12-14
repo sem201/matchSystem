@@ -14,15 +14,15 @@ import cors from "cors"; // cors 설정 추가 했습니다.
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// CORS 설정
 app.use(
   cors({
-    origin: "http://localhost:5173/", // 요청을 허용할 클라이언트 도메인
-    methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
+    origin: "http://127.0.0.1:5173", // 요청을 허용할 클라이언트 도메인
+    methods: ["GET", "POST", "UPDATE", "PATCH", "PUT", "DELETE"], // 허용할 HTTP 메서드
     credentials: true, // 쿠키를 허용
+    allowedHeaders: ["Content-Type", "Authorization"], // 허용할 헤더
+    optionsSuccessStatus: 200, // Preflight OPTIONS 요청 성공 상태 코드
   })
 );
-
 
 // 세션 설정
 app.use(
@@ -31,6 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: {
+      sameSite: 'none',
       httpOnly: true,
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 10 * 60 * 1000, // 세션 만료 10분

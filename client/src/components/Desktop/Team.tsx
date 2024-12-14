@@ -6,8 +6,8 @@ import { User } from "../../commonTypes";
 interface TeamProps {
   redTeam: User[];
   blueTeam: User[];
-  handleRemoveUser: (user: User[]) => void;
-  handleAddUser: (user: User[]) => void;
+  handleRemoveUser: (user: User) => void;
+  handleAddUser: (user: User) => void;
 }
 
 const Team: React.FC<TeamProps> = ({
