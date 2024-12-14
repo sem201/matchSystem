@@ -1,24 +1,25 @@
 import axios from "axios";
 
 // 테스트 데이터 생성 함수 (예시)
-const getTestData = async () => {
-  return new Promise((resolve) => {
-    const players = [
-      { id: 1, gameName: "test1", RankScore: 10, position: "탑" },
-      { id: 2, gameName: "test2", RankScore: 15, position: "탑" },
-      { id: 3, gameName: "test3", RankScore: 20, position: "정글" },
-      { id: 4, gameName: "test4", RankScore: 18, position: "정글" },
-      { id: 5, gameName: "test5", RankScore: 12, position: "미드" },
-      { id: 6, gameName: "test6", RankScore: 22, position: "미드" },
-      { id: 7, gameName: "test7", RankScore: 14, position: "원딜" },
-      { id: 8, gameName: "test8", RankScore: 17, position: "원딜" },
-      { id: 9, gameName: "test9", RankScore: 13, position: "서폿" },
-      { id: 10, gameName: "test10", RankScore: 19, position: "서폿" }
-    ];
+// 테스트용
+// const getTestData = async () => {
+//   return new Promise((resolve) => {
+//     const players = [
+//       { id: 1, gameName: "test1", RankScore: 10, position: "탑" },
+//       { id: 2, gameName: "test2", RankScore: 15, position: "탑" },
+//       { id: 3, gameName: "test3", RankScore: 20, position: "정글" },
+//       { id: 4, gameName: "test4", RankScore: 18, position: "정글" },
+//       { id: 5, gameName: "test5", RankScore: 12, position: "미드" },
+//       { id: 6, gameName: "test6", RankScore: 22, position: "미드" },
+//       { id: 7, gameName: "test7", RankScore: 14, position: "원딜" },
+//       { id: 8, gameName: "test8", RankScore: 17, position: "원딜" },
+//       { id: 9, gameName: "test9", RankScore: 13, position: "서폿" },
+//       { id: 10, gameName: "test10", RankScore: 19, position: "서폿" }
+//     ];
 
-    setTimeout(() => resolve(players), 1000);  // 1초 후 데이터를 반환
-  });
-};
+//     setTimeout(() => resolve(players), 1000);  // 1초 후 데이터를 반환
+//   });
+// };
 
 // 랜덤 팀 분배
 
@@ -58,14 +59,14 @@ const generateRandTeam = (players) => {
 };
 
 const randTeam = async (req, res) => {
-  const { mode } = req.body;  // mode 값 가져오기
+  const { mode, players } = req.body;  // mode 값 가져오기
   console.log("Received mode:", mode);
 
   try {
     // mode가 'rand'일 경우, 랜덤 팀을 생성하는 로직 실행
     if (mode === "rand") {
       // 비동기적으로 테스트 데이터를 가져오는 함수 호출
-      const players = await getTestData();
+      // const players = await getTestData(); // 테스트용 데이터
       console.log("Generated players:", players);
 
       const { readTeam, blueTeam } = generateRandTeam(players);
