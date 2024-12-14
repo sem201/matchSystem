@@ -1,7 +1,6 @@
 import Team from "../components/Desktop/Team";
 import Header from "../components/Desktop/Header";
 import Menu from "../components/Desktop/Menu";
-import { useState } from "react";
 
 import { User } from "../commonTypes";
 import ComposeButton from "../components/Desktop/ComposeButton";
