@@ -201,7 +201,7 @@ const userAdd = async (req, res) => {
             });
             return res.status(200).json({ userSearchData });
         } else {
-            res.status(201).json( {message : '이미 추가된 유저입니다. '});
+            res.status(201).json({message : '이미 추가된 유저입니다. '});
         }  
       
       return res.status(200).json({ userSearchData });
