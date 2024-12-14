@@ -39,7 +39,12 @@ const Menu: React.FC<MenuProps> = ({
         isDraftModalOpen={isDraftModalOpen}
       />
       <div className="lg:col-span-1 lg:row-span-3">
-        <UserContainer allUsers={allUsers} handleAddUser={handleAddUser} />
+        <UserContainer
+          allUsers={allUsers.filter(
+            (user) => !addedUsers.some((u) => u.id === user.id)
+          )}
+          handleAddUser={handleAddUser}
+        />
       </div>
     </div>
   );

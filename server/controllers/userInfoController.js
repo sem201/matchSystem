@@ -155,10 +155,9 @@ const userSearch = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
-
-  console.log("세션ID", req.session.id);
   console.log("세션 : ", req.session);
-//   const user_id = req.session.user.id;
+  console.log("세션ID", req.session.id);
+
 
   if (!userid || !tagLine) {
     return res.status(400).json({ message: "소환사 명을 입력하세요" });
@@ -177,6 +176,7 @@ const userAdd = async (req, res) => {
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
     } else {
+
         // 추가되어있는 유저인지 확인
         // DB에서 사용자 검색
         const userFriendData = await NoobsRecentFriend.findOne({
@@ -204,6 +204,7 @@ const userAdd = async (req, res) => {
             res.status(201).json( {message : '이미 추가된 유저입니다. '});
         }  
       
+      return res.status(200).json({ userSearchData });
     }
   } catch (error) {
     console.error("DB 처리 중 에러 발생:", error);

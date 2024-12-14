@@ -1,4 +1,3 @@
-import { useState } from "react";
 import UserContainer from "../components/Mobile/chooseUser/UserContainer";
 import AddUserModal from "./mainPageModal/AddUserModal";
 import SelectModeModal from "./mainPageModal/SelectModeModal";
@@ -15,9 +14,15 @@ interface Props {
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
+  setRedTeam: React.Dispatch<React.SetStateAction<User[]>>;
+  setBlueTeam: React.Dispatch<React.SetStateAction<User[]>>;
+  setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
+  addedUsers: User[];
+  redTeam: User[];
+  blueTeam: User[];
 }
 
 const MobileMainpage = ({
@@ -29,10 +34,16 @@ const MobileMainpage = ({
   modalType,
   isDraftModalOpen,
   setHeaderText,
+  redTeam,
+  blueTeam,
+  addedUsers,
+  setRedTeam,
+  setBlueTeam,
+  setAddedUsers,
 }: Props) => {
-  const [addedUsers, setAddedUsers] = useState<User[]>([]);
-  const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
-  const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
+  // const [addedUsers, setAddedUsers] = useState<User[]>([]);
+  // const [redTeam, setRedTeam] = useState<User[]>([]); // RedTeam 유저 목록
+  // const [blueTeam, setBlueTeam] = useState<User[]>([]); // BlueTeam 유저 목록
   // const [modalType, setModalType] = useState<string | null>(null); // 현재 열리는 모달 타입
   // const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   // const [selectedMode, setSelectedMode] = useState<string>("RANDOM"); // 선택된 모드 상태
@@ -106,6 +117,13 @@ const MobileMainpage = ({
       >
         팀짜기
       </button>
+      {/* 최근 함께한 유저 목록 */}
+      <UserContainer
+        users={allUsers.filter(
+          (user) => !addedUsers.some((u) => u.id === user.id)
+        )}
+        onAddUser={addUser}
+      />
 
       {/* 모달들 */}
       {modalType === "addUser" && (
@@ -136,13 +154,6 @@ const MobileMainpage = ({
           teamMembers={allUsers}
         />
       )}
-
-      <UserContainer
-        users={allUsers.filter(
-          (user) => !addedUsers.some((u) => u.id === user.id)
-        )}
-        onAddUser={addUser}
-      />
     </div>
   );
 };
