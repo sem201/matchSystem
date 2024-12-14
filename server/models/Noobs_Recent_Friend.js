@@ -15,6 +15,7 @@ const NoobsRecentFriend = sequelize.define('Noobs_Recent_Friend', {
   gameName: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
   tagLine: {
     type: DataTypes.STRING,
