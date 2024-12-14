@@ -2,6 +2,7 @@ import axios from "axios";
 import dotenv from 'dotenv';
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
+import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
 
 dotenv.config(); // .env 파일 로드
 
@@ -67,7 +68,7 @@ const userSearch = async (req, res) => {
 
         if (rankedSoloData) {
             ({ queueType: latedQueueType, tier, rank, wins, losses } = rankedSoloData);
-            winRate = ((wins / (wins + losses)) * 100).toFixed(2);
+            winRate = ((wins / (wins + losses)) * 100).toFixed(1);
             latedQueueType = latedQueueType === "RANKED_SOLO_5x5" ? "개인/2인 랭크 게임" : latedQueueType;
         } else {
             console.log('솔로랭크 전적이 없습니다.');
@@ -126,4 +127,52 @@ const userSearch = async (req, res) => {
     }
 };
 
-export { userSearch };
+// 같이 한 사용자 추가 로직
+const userAdd = async (req,res) => {
+    const { userid, tagLine } = req.query;  
+   
+
+    console.log('세션 : ' , req.session);
+
+    if (!userid || !tagLine) {
+        return res.status(400).json({ message: '소환사 명을 입력하세요' });
+    }
+
+    // 해당 사용자 db에서 검색
+    try {
+        // DB에서 사용자 검색
+        const userSearchData = await NoobsUserInfo.findOne({
+            where: {
+                gameName: userid,
+                tagLine: tagLine,
+            }
+        });
+
+        if (!userSearchData) {
+            res.status(404).json( { message : '해당 사용자를 찾을 수 없습니다. '});
+        } else {
+
+        // DB 저장: 사용자 정보
+        const user = await NoobsRecentFriend.create({
+            user_id: user_id,  // 세션에서 가져온 user_id 값
+            gameName: userSearchData.gameName,
+            tagLine: userSearchData.tagLine,
+            profileIconId: userSearchData.profileIconId,
+            tier: userSearchData.tier,
+            rank: userSearchData.rank,
+            wins: userSearchData.wins,
+            losses: userSearchData.losses,
+            winRate: userSearchData.winRate,
+        });
+            return res.status(200).json({ userSearchData });
+        }
+
+    } catch (error) {
+        console.error('DB 처리 중 에러 발생:', error);
+        return res.status(500).json({ message: '서버 오류' });
+    }
+    
+};
+
+
+export { userSearch, userAdd };
