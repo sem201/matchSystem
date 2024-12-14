@@ -45,7 +45,12 @@ const Team: React.FC<TeamProps> = ({
       {/* Blue Team 영역 */}
       <div className="w-[100%] h-[100%] flex xs:gap-[10px] lg:gap-[15px] xl:gap-[25px] justify-center">
         {blueTeamWithDefault.map((user, idx) => (
-          <BlueTeam key={idx} user={user} />
+          <BlueTeam
+            key={idx}
+            user={user}
+            handleRemoveUser={handleRemoveUser}
+            handleAddUser={handleAddUser}
+          />
         ))}
       </div>
     </div>

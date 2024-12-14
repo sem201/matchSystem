@@ -15,7 +15,7 @@ interface MenuProps {
   modalType: string;
   isDraftModalOpen: boolean;
   addedUsers: User[];
-  setAddedUsers: React.Dispatch<React.SetStateAction<string>>;
+  setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -29,6 +29,7 @@ const Menu: React.FC<MenuProps> = ({
   modalType,
   isDraftModalOpen,
   addedUsers,
+  setAddedUsers,
 }) => {
   return (
     <div className="relative">
@@ -47,6 +48,7 @@ const Menu: React.FC<MenuProps> = ({
             (user) => !addedUsers.some((u) => u.id === user.id)
           )}
           handleAddUser={handleAddUser}
+          setAddedUsers={setAddedUsers}
         />
       </div>
     </div>

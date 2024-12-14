@@ -42,8 +42,11 @@ const MainPage = () => {
       setBlueTeam([...blueTeam, selectedUser]);
     }
 
-    // allUser에서 제거
-    setAllUsers(allUsers.filter((u) => u.id !== user.id));
+    // allUsers에서 제거
+    setAllUsers((prev) => prev.filter((u) => u.id !== user.id));
+
+    // addedUsers에 추가
+    setAddedUsers((prev) => [...prev, user]);
   };
 
   // 팀에서 사용자 제거 로직
@@ -54,8 +57,12 @@ const MainPage = () => {
     } else if (blueTeam.some((u) => u.id === user.id)) {
       setBlueTeam((prev) => prev.filter((u) => u.id !== user.id));
     }
-    // 제거된 사용자를 allUsers에 다시 추가
-    setAddedUsers((prev) => [...prev, user]);
+
+    // addedUser에서 제거
+    setAddedUsers((prev) => prev.filter((u) => u.id !== user.id));
+
+    // allUser에서 생성
+    setAllUsers((prev) => [...prev, user]);
   };
 
   // 모바일 / 데스크탑 크기 구분

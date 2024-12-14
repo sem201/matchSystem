@@ -1,7 +1,6 @@
 import Team from "../components/Desktop/Team";
 import Header from "../components/Desktop/Header";
 import Menu from "../components/Desktop/Menu";
-import { useState } from "react";
 
 import { User } from "../commonTypes";
 import ComposeButton from "../components/Desktop/ComposeButton";
@@ -17,7 +16,7 @@ interface DesktopMainPageProps {
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
   addedUsers: User[];
-  setAddedUser: React.Dispatch<React.SetStateAction<User[]>>;
+  setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;

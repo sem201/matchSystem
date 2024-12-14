@@ -10,11 +10,11 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />
       <div className="flex flex-col">
         <div className="text-[10px] text-white">UNRANK</div>
-        <p className="max-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
-          닉네임네임입니#KR1
+        <p className="max-w-[115px] min-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
+          {user.nickname}
         </p>
       </div>
-      <p className="text-[13px] text-nowrap text-white">승률 50.4%</p>
+      <p className="text-[13px] text-nowrap text-white">승률 {user.winRate}%</p>
       <button
         onClick={() => onAddUser(user)}
         className="w-[10px] bg-inherit text-white"

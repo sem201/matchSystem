@@ -220,7 +220,6 @@ const userAdd = async (req, res) => {
 
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
-
     try {
         const friendUser = await NoobsRecentFriend.findAll({
             where: {
