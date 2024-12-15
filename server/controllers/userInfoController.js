@@ -145,7 +145,7 @@ const userSearch = async (req, res) => {
 };
 
 // 사용자 정보 갱신
-const lolUserUpdate = async (req, res) => {
+const friendUserBrUpdate = async (req, res) => {
   const { user_id } = req.body;
 
   const headers = {
@@ -236,7 +236,7 @@ const lolUserUpdate = async (req, res) => {
 
   } catch (error) {
     console.error("Error:", error);
-    return res.status(500).json({ message: "서버 내부 오류가 발생했습니다.", error: error.message });
+    return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
   }
 };
 
@@ -388,4 +388,27 @@ const friendUserBr = async (req, res) => {
   }
 };
 
-export { userSearch, userAdd, friendUserBr, lolUserUpdate };
+// 같이한 사용자 삭제하기
+const friendUserBrDel = async (req, res) => {
+  const { user_id } = req.body;
+
+  try {
+    const delUser = await NoobsUserInfo.destroy({
+      where : {
+        id : user_id
+      }
+    });
+
+    if (delUser == 0) {
+      return res.status(404).json({ message: "사용자가 존재하지 않습니다." });
+    } else {
+      return res.status(200).json({ message: "삭제 완료" });
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
+  }
+}
+
+
+export { userSearch, userAdd, friendUserBr, friendUserBrUpdate ,friendUserBrDel};

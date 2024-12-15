@@ -1,6 +1,6 @@
 import express from 'express';
 import { ChampionUpdate, profileUpdate } from  '../controllers/updateController.js'; // 확장자 .js 추가
-import { userSearch, userAdd, friendUserBr, lolUserUpdate  } from '../controllers/userInfoController.js';
+import { userSearch, userAdd, friendUserBr, friendUserBrUpdate, friendUserBrDel  } from '../controllers/userInfoController.js';
 import { randTeam  } from '../controllers/modeTeamController.js';
 import rateLimit from 'express-rate-limit';
 
@@ -34,8 +34,9 @@ router.post('/noobs/randTeam' , randTeam);
 // router.post('/noobs/lolUserUpdate', limiter, lolUserUpdate);
 
 // 사용자 정보 업데이트
-router.post('/noobs/lolUserUpdate', lolUserUpdate);
+router.post('/noobs/friendUserBrUpdate', friendUserBrUpdate);
 
 // 유저 삭제 [ 초근에 같이한 플에이어 ]
+router.post('/noobs/friendUserBrDel' ,friendUserBrDel );
 
 export default router; // ESM 방식으로 export
