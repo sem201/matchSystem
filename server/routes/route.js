@@ -1,7 +1,15 @@
 import express from 'express';
 import { ChampionUpdate, profileUpdate } from  '../controllers/updateController.js'; // 확장자 .js 추가
-import { userSearch, userAdd, friendUserBr  } from '../controllers/userInfoController.js';
+import { userSearch, userAdd, friendUserBr, lolUserUpdate  } from '../controllers/userInfoController.js';
 import { randTeam  } from '../controllers/modeTeamController.js';
+import rateLimit from 'express-rate-limit';
+
+const limiter = rateLimit({
+  windowMs : 300 * 1000,
+  max : 1,
+  message : '요청을 처리중입니다. 5분후에 다시 시도하세요',
+});
+
 
 const router = express.Router();
 
@@ -21,5 +29,13 @@ router.get('/noobs/friendUserBr', friendUserBr);
 
 // 랜덤 팀섞기
 router.post('/noobs/randTeam' , randTeam);
+
+// 사용자 정보 업데이트
+// router.post('/noobs/lolUserUpdate', limiter, lolUserUpdate);
+
+// 사용자 정보 업데이트
+router.post('/noobs/lolUserUpdate', lolUserUpdate);
+
+// 유저 삭제 [ 초근에 같이한 플에이어 ]
 
 export default router; // ESM 방식으로 export
