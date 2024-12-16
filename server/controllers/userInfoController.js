@@ -265,7 +265,6 @@ const userAdd = async (req, res) => {
     // DB에서 사용자 검색
     const userSearchData = await NoobsUserInfo.findOne({
       where: {
-        user_id : req.session.user.id,
         gameName: userid,
         tagLine: tagLine,
       },
