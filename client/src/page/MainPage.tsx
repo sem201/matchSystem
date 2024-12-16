@@ -3,21 +3,38 @@ import MobileMainpage from "./Mobile-Mainpage";
 import DesktopMainPage from "./Desktop-MainPage";
 
 import { User } from "../commonTypes";
+import apiCall from "../Api/Api";
 
 const MainPage = () => {
+  const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
   // 유저 데이터 저장
   const [allUsers, setAllUsers] = useState<User[]>([
-    { id: 1, nickname: "User1", winRate: 50.4 },
-    { id: 2, nickname: "User2", winRate: 52.1 },
-    { id: 3, nickname: "User3", winRate: 49.5 },
-    { id: 4, nickname: "User4", winRate: 48.9 },
-    { id: 5, nickname: "User5", winRate: 53.3 },
-    { id: 6, nickname: "User6", winRate: 51.2 },
-    { id: 7, nickname: "User7", winRate: 47.8 },
-    { id: 8, nickname: "User8", winRate: 50.0 },
-    { id: 9, nickname: "User9", winRate: 49.1 },
-    { id: 10, nickname: "User10", winRate: 52.7 },
+    // { id: 1, nickname: "User1", winRate: 50.4 },
+    // { id: 2, nickname: "User2", winRate: 52.1 },
+    // { id: 3, nickname: "User3", winRate: 49.5 },
+    // { id: 4, nickname: "User4", winRate: 48.9 },
+    // { id: 5, nickname: "User5", winRate: 53.3 },
+    // { id: 6, nickname: "User6", winRate: 51.2 },
+    // { id: 7, nickname: "User7", winRate: 47.8 },
+    // { id: 8, nickname: "User8", winRate: 50.0 },
+    // { id: 9, nickname: "User9", winRate: 49.1 },
+    // { id: 10, nickname: "User10", winRate: 52.7 },
   ]);
+  console.log("현재 기본 isUserAdded", isUserAdded);
+  // 최근 함께한 유저 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiCall("/noobs/friendUserBr", "get", null);
+        console.log("user 불러오기 실행", response);
+        console.log("상태 변경? isUserAdded", isUserAdded);
+        setAllUsers(response.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, [isUserAdded]);
   const [modalType, setModalType] = useState<string>(""); // 현재 열리는 모달 타입
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
@@ -97,6 +114,8 @@ const MainPage = () => {
     setSelectedMode,
     headerText,
     setHeaderText,
+    setIsUserAdded,
+    isUserAdded, // 임시
   };
 
   return (
