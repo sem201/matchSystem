@@ -1,7 +1,7 @@
 import express from 'express';
 import { ChampionUpdate, profileUpdate } from  '../controllers/updateController.js'; // 확장자 .js 추가
 import { userSearch, userAdd, friendUserBr, friendUserBrUpdate, friendUserBrDel  } from '../controllers/userInfoController.js';
-import { randTeam  } from '../controllers/modeTeamController.js';
+import { TeamMach  } from '../controllers/modeTeamController.js';
 import rateLimit from 'express-rate-limit';
 
 const limiter = rateLimit({
@@ -27,8 +27,8 @@ router.post('/noobs/lolUserAdd', userAdd);
 // 추가한 유저들 가져오기
 router.get('/noobs/friendUserBr', friendUserBr);
 
-// 랜덤 팀섞기
-router.post('/noobs/randTeam' , randTeam);
+// 모드별 팀섞기
+router.post('/noobs/TeamMach' , TeamMach);
 
 // 사용자 정보 업데이트
 // router.post('/noobs/lolUserUpdate', limiter, lolUserUpdate);
