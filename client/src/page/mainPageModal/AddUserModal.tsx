@@ -5,7 +5,7 @@ import apiCall from "../../Api/Api";
 interface ModalProps {
   closeModal: () => void;
   isModalOpen: boolean; // isModalOpen 속성 추가
-  setIsUserAdded: (value: boolean) => void;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   isUserAdded: boolean;
 }
 
@@ -53,18 +53,17 @@ export default function AddUserModal({
     const [nickname, tag] = nicknameTag.split("#");
     const data = { userid: nickname, tagLine: tag };
     try {
-      const response = apiCall("noobs/lolUserAdd", "post", data);
+      const response = await apiCall("noobs/lolUserAdd", "post", data);
       console.log(response);
-      setIsUserAdded(true);
-      console.log("isUserAdded 상태변경", isUserAdded);
+      setIsUserAdded((prev) => !prev);
     } catch (err) {
       console.log(err);
     }
-
+    console.log("isUserAdded 상태변경", isUserAdded);
     // 추가 버튼 클릭 시 초기화
     setNicknameTag(""); // 입력 필드 초기화
     setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
-    setIsUserAdded(false);
+
     console.log("isUserAdded 상태 초기화", isUserAdded);
   };
 
