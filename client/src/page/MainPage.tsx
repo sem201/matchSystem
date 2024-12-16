@@ -82,6 +82,48 @@ const MainPage = () => {
     setAllUsers((prev) => [...prev, user]);
   };
 
+  const handleTeamButtonClick = () => {
+    if (redTeam.length < 5 || blueTeam.length < 5) {
+      alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
+      return;
+    }
+
+    const shuffleTeams = (red: User[], blue: User[]): User[] => {
+      const allUsers = [...red, ...blue]; // 레드팀과 블루팀의 유저들을 합침
+      for (let i = allUsers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1)); // 랜덤 인덱스
+        [allUsers[i], allUsers[j]] = [allUsers[j], allUsers[i]]; // 두 유저를 교환
+      }
+      return allUsers;
+    };
+
+    if (selectedMode === "모드선택") {
+      alert("Mode를 선택해 주세요");
+    }
+
+    if (selectedMode === "RANDOM") {
+      // 랜덤모드일때 팀을 섞어 새로운 팀으로 설정
+      const shuffledUsers = shuffleTeams(redTeam, blueTeam);
+      const newRedTeam = shuffledUsers.slice(0, 5);
+      const newBlueTeam = shuffledUsers.slice(5);
+
+      setRedTeam(newRedTeam);
+      setBlueTeam(newBlueTeam);
+    }
+    if (selectedMode === "DRAFT") {
+      setIsDraftModalOpen(true);
+    }
+  };
+  // 모달 열기
+  const openModal = (type: string) => {
+    setModalType(type);
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setModalType("");
+  };
+
   // 모바일 / 데스크탑 크기 구분
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
 
@@ -114,6 +156,9 @@ const MainPage = () => {
     setSelectedMode,
     headerText,
     setHeaderText,
+    handleTeamButtonClick,
+    openModal,
+    closeModal,
     setIsUserAdded,
     isUserAdded, // 임시
   };

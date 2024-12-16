@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)

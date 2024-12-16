@@ -131,7 +131,7 @@ const MobileMainpage = ({
       {isDraftModalOpen && (
         <DraftModal
           closeModal={() => setIsDraftModalOpen(false)}
-          teamMembers={allUsers}
+          teamMembers={addedUsers}
         />
       )}
     </div>

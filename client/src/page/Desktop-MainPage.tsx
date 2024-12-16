@@ -11,7 +11,6 @@ interface DesktopMainPageProps {
   blueTeam: User[];
   handleAddUser: (user: User) => void;
   handleRemoveUser: (user: User) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   setHeaderText: React.Dispatch<React.SetStateAction<string>>;
@@ -21,6 +20,9 @@ interface DesktopMainPageProps {
   modalType: string;
   isDraftModalOpen: boolean;
   headerText: string;
+  handleTeamButtonClick: () => void;
+  openModal: (type: string) => void;
+  closeModal: () => void;
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
@@ -29,7 +31,6 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   blueTeam,
   handleAddUser,
   handleRemoveUser,
-  setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
   selectedMode,
@@ -39,6 +40,9 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   setHeaderText,
   addedUsers,
   setAddedUsers,
+  handleTeamButtonClick,
+  openModal,
+  closeModal,
 }) => {
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
@@ -53,7 +57,6 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
         <Menu
           modalType={modalType}
           selectedMode={selectedMode}
-          setModalType={setModalType}
           setIsDraftModalOpen={setIsDraftModalOpen}
           setSelectedMode={setSelectedMode}
           isDraftModalOpen={isDraftModalOpen}
@@ -62,9 +65,16 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           handleAddUser={handleAddUser}
           addedUsers={addedUsers}
           setAddedUsers={setAddedUsers}
+          openModal={openModal}
+          closeModal={closeModal}
         />
       </div>
-      <ComposeButton />
+      <ComposeButton
+        addedUsers={addedUsers}
+        handleTeamButtonClick={handleTeamButtonClick}
+        isDraftModalOpen={isDraftModalOpen}
+        setIsDraftModalOpen={setIsDraftModalOpen}
+      />
     </div>
   );
 };
