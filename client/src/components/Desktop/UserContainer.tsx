@@ -21,8 +21,8 @@ const UserContainer: React.FC<UserContainerProps> = ({
         <ul>
           {allUsers.map((user) => (
             <li key={user.id} className="mb-2">
-              <div className="flex gap-[5px] justify-center">
-                <span className="font-bold text-white">{user.nickname}</span>
+              <div className="flex gap-[20px] justify-center">
+                <span className="font-bold text-white">{user.gameName}</span>
                 <span className="text-white">{user.winRate}%</span>
                 <img
                   src={PlusIcon}

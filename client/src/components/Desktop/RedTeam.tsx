@@ -42,8 +42,15 @@ const RedTeam: React.FC<RedTeamProps> = ({
               className="w-5 h-5"
               onClick={() => setIsLine(!isLine)}
             />
-            <p className="text-xs font-bold">{user.nickname}</p>
-            <img src={tier} alt="tier" className="h-9" />
+            <div>
+              <p className="text-xs font-bold">
+                {user.MostChamp.map((champ, index) => (
+                  <div key={index}>{champ.champInfo.name}</div>
+                ))}
+              </p>
+            </div>
+            <p className="text-xs font-bold">{user.gameName}</p>
+            <img src={user.tierImg.rankImg} alt="tier" className="h-9" />
             {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
             <img
               src={close}
