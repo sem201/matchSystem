@@ -17,7 +17,7 @@ interface MostChamp {
 
 // user profile 관련 정보
 interface profileInfo {
-  profileImg: string;
+  Profile_img: string;
 }
 
 interface tierImg {
@@ -32,7 +32,7 @@ interface tierScore {
 export interface User {
   id: number; // 유저 고유 식별자
   Line?: string;
-  MostChamp: MostChamp[];
+  MostChamp: MostChamp;
   profileInfo: profileInfo;
   tierImg: tierImg;
   tierScore: tierScore;

@@ -4,10 +4,11 @@ interface LatestUserInfoProps {
   onAddUser: (user: User) => void;
 }
 const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
+  console.log("모스트", user.MostChamp);
   return (
     <div className="flex flex-row items-center h-[55px] mx-2 my-1 gap-2 relative">
       <img
-        src={`${user.MostChamp[0].champInfo.champ_img}`}
+        src={`${user.profileInfo.Profile_img}`}
         alt="most-champ-info"
         className="w-[20px] h-[20px]"
       />
