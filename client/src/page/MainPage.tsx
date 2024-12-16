@@ -65,6 +65,25 @@ const MainPage = () => {
     setAllUsers((prev) => [...prev, user]);
   };
 
+  const handleTeamButtonClick = () => {
+    if (redTeam.length < 5 || blueTeam.length < 5) {
+      alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
+      return;
+    }
+    if (selectedMode === "DRAFT") {
+      setIsDraftModalOpen(true);
+    }
+  };
+  // 모달 열기
+  const openModal = (type: string) => {
+    setModalType(type);
+  };
+
+  // 모달 닫기
+  const closeModal = () => {
+    setModalType("");
+  };
+
   // 모바일 / 데스크탑 크기 구분
   const [isMobile, setIsMobile] = useState(window.innerWidth < 700);
 
@@ -97,6 +116,9 @@ const MainPage = () => {
     setSelectedMode,
     headerText,
     setHeaderText,
+    handleTeamButtonClick,
+    openModal,
+    closeModal,
   };
 
   return (
