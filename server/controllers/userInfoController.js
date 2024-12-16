@@ -118,6 +118,7 @@ const userSearch = async (req, res) => {
       for (const { championId, championLevel, championPoints } of masterData) {
         await NoobsMasterChamp.create({
           user_id: newUser.id,
+          gameName : gameName,
           championId,
           championLevel,
           championPoints,
@@ -329,7 +330,7 @@ const friendUserBr = async (req, res) => {
       // 챔피언 데이터 조회
       const champData = await NoobsMasterChamp.findAll({
         where: {
-          user_id: friend.id, // friend의 id를 기준으로 챔피언 데이터 검색
+          gameName: friend.gameName, 
         },
         limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
       });
