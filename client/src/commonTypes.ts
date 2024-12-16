@@ -6,10 +6,37 @@ export interface Props {
 }
 
 // user 정보 저장
+interface ChampInfo {
+  champ_img: string; // 챔피언 이미지 경로
+}
+
+// MostChamp 요소 타입
+interface MostChamp {
+  champInfo: ChampInfo; // 챔피언 정보
+}
+
+// user profile 관련 정보
+interface profileInfo {
+  profileImg: string;
+}
+
+interface tierImg {
+  rankImg: string;
+}
+
+interface tierScore {
+  Rank: string;
+  RankScore: number;
+  tier: string;
+}
 export interface User {
-  line?: string;
   id: number; // 유저 고유 식별자
-  nickname: string; // 유저 닉네임
+  Line?: string;
+  MostChamp: MostChamp[];
+  profileInfo: profileInfo;
+  tierImg: tierImg;
+  tierScore: tierScore;
+  gameName: string; // 유저 닉네임
+  tagLine: string; // 유저 태그
   winRate: number; // 승률
-  tier?: string; //티어
 }

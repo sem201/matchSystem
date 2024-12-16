@@ -5,9 +5,16 @@ import apiCall from "../../Api/Api";
 interface ModalProps {
   closeModal: () => void;
   isModalOpen: boolean; // isModalOpen 속성 추가
+  setIsUserAdded: (value: boolean) => void;
+  isUserAdded: boolean;
 }
 
-export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
+export default function AddUserModal({
+  isModalOpen,
+  closeModal,
+  setIsUserAdded,
+  isUserAdded,
+}: ModalProps) {
   const [nicknameTag, setNicknameTag] = useState<string>(""); // 입력값
   const [userAdded, setUserAdded] = useState<boolean | null>(null); // 검색 결과
 
@@ -16,7 +23,7 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
 
   const handleAddUser = async () => {
     const trimmedInput = nicknameTag.trim(); // 공백 제거
-    const nicknameTagRegex = /^[^\#]+#[A-Za-z0-9]+$/; // 정규식: 닉네임#태그 형태
+    const nicknameTagRegex = /^[^#]+#[^#]+$/; // 정규식: 닉네임#태그 형태
     if (!nicknameTagRegex.test(trimmedInput)) {
       setUserAdded(false); // 유효성 실패
       return;
@@ -42,14 +49,23 @@ export default function AddUserModal({ isModalOpen, closeModal }: ModalProps) {
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)
   };
 
-  const handleAddButtonClick = () => {
+  const handleAddButtonClick = async () => {
     const [nickname, tag] = nicknameTag.split("#");
     const data = { userid: nickname, tagLine: tag };
-    const response = apiCall("noobs/lolUserAdd", "post", data);
-    console.log(response);
+    try {
+      const response = apiCall("noobs/lolUserAdd", "post", data);
+      console.log(response);
+      setIsUserAdded(true);
+      console.log("isUserAdded 상태변경", isUserAdded);
+    } catch (err) {
+      console.log(err);
+    }
+
     // 추가 버튼 클릭 시 초기화
     setNicknameTag(""); // 입력 필드 초기화
     setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
+    setIsUserAdded(false);
+    console.log("isUserAdded 상태 초기화", isUserAdded);
   };
 
   const handleCloseButtonClick = () => {

@@ -17,6 +17,7 @@ interface Props {
   setRedTeam: React.Dispatch<React.SetStateAction<User[]>>;
   setBlueTeam: React.Dispatch<React.SetStateAction<User[]>>;
   setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   handleAddUser: (user: User) => void;
   handleRemoveUser: (user: User) => void;
   selectedMode: string;
@@ -25,6 +26,7 @@ interface Props {
   addedUsers: User[];
   redTeam: User[];
   blueTeam: User[];
+  isUserAdded: boolean;
 }
 
 const MobileMainpage = ({
@@ -41,6 +43,8 @@ const MobileMainpage = ({
   addedUsers,
   handleAddUser,
   handleRemoveUser,
+  setIsUserAdded,
+  isUserAdded,
 }: Props) => {
   const openModal = (type: string) => {
     setModalType(type);
@@ -104,6 +108,8 @@ const MobileMainpage = ({
         <AddUserModal
           isModalOpen={modalType !== null}
           closeModal={closeModal}
+          setIsUserAdded={setIsUserAdded}
+          isUserAdded={isUserAdded}
         />
       )}
       {modalType === "selectMode" && (
