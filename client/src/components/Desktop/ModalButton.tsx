@@ -2,37 +2,27 @@ import React from "react";
 import AddUserModal from "../../page/mainPageModal/AddUserModal";
 import HowToUseModal from "../../page/mainPageModal/HowToUseModal";
 import SelectModeModal from "../../page/mainPageModal/SelectModeModal";
-import DraftModal from "../Mobile/chooseUser/DraftModal";
 
 interface ButtonProps {
   setHeaderText: (text: string) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedMode: React.Dispatch<React.SetStateAction<string>>;
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
+  openModal: (type: string) => void;
+  closeModal: () => void;
 }
 
 const Button: React.FC<ButtonProps> = ({
   setHeaderText,
-  setModalType,
   setIsDraftModalOpen,
   setSelectedMode,
   selectedMode,
   modalType,
-  isDraftModalOpen,
+  openModal,
+  closeModal,
 }) => {
-  // 모달 열기
-  const openModal = (type: string) => {
-    setModalType(type);
-  };
-
-  // 모달 닫기
-  const closeModal = () => {
-    setModalType("");
-  };
-
   return (
     <div className="lg:absolute lg:top-[-65px] lg:right-[0px] flex flex-col items-center justify-start xs:mt-7 xs:mb-7 lg:mt-3 lg:mb-3 lg:mx-auto lg:left-0 lg:right-0">
       <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full">
@@ -76,11 +66,6 @@ const Button: React.FC<ButtonProps> = ({
             isModalOpen={modalType !== null}
             closeModal={closeModal}
           />
-        )}
-
-        {/* DraftModal 열기 */}
-        {isDraftModalOpen && (
-          <DraftModal closeModal={() => setIsDraftModalOpen(false)} />
         )}
       </div>
     </div>
