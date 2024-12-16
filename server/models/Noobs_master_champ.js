@@ -12,6 +12,10 @@ const NoobsMasterChamp  = sequelize.define('Noobs_master_champ', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  gameName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   championId: {
     type: DataTypes.INTEGER,
     allowNull: false,
