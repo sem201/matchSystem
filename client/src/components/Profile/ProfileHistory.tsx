@@ -88,14 +88,14 @@ const RecentHistory: React.FC = () => {
               <p className="text-sm font-blackHanSans">랭크 : {champion.rank}</p>
             </div>
 
-            {/* 최근 이미지 3개 */}
-            <div className="recent-images mt-4 gap-2 flex justify-between">
+            {/* 최근 이미지 3개 넣을 이미지가 생각안남.. ㅠ 넣을거 있으면 주석 해제 */}
+            {/* <div className="recent-images mt-4 gap-2 flex justify-between">
               {champion.recentImages.slice(0, 3).map((image, index) => (
                 <div key={index} className="recent-image w-12 h-12 overflow-hidden rounded-lg">
                   <img src={image} alt={`Recent ${index + 1}`} className="w-full h-full object-cover" />
                 </div>
               ))}
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
