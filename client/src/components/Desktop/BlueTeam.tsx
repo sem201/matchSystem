@@ -1,5 +1,4 @@
 import none from "./../../assets/line_img/line-none.png";
-import tier from "./../../assets/tier.png";
 import PlusIcon from "../../assets/svg/add.svg";
 import close from "../../assets/svg/close.svg";
 
@@ -24,14 +23,19 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
   // 유저가 없을 경우 배경을 다르게 설정
   const backgroundClass = user ? "bg-[#B9CCDF]" : "bg-[#F0E6D2] bg-opacity-15";
 
+  // 숫자를 1,000과 같은 형식으로 변환
+  const formatNumberWithCommas = (number: number): string => {
+    return number.toLocaleString();
+  };
+
   return (
     <div
       className={`w-[18%] max-h-[100%] border-2 border-solid border-[#004A82] rounded-2xl flex flex-col items-center p-2 ${backgroundClass}`}
     >
-      <ul className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center justify-center h-full">
         {/* 유저 정보가 있을 경우 */}
         {user ? (
-          <li
+          <div
             key={user.id}
             className="flex flex-col items-center justify-between h-full"
           >
@@ -41,8 +45,26 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
               className="w-5 h-5"
               onClick={() => setIsLine(!isLine)}
             />
-            <p className="text-xs font-bold">{user.nickname}</p>
-            <img src={tier} alt="tier" className="h-9" />
+            <div className="w-[100%]">
+              {user.MostChamp.map((champ, index) => (
+                <div key={index} className="flex w-[100%] justify-between">
+                  <img
+                    src={champ.champInfo.champ_img}
+                    className="w-8 h-auto max-w-[50px]"
+                  />
+                  <p className="text-xs font-bold self-center font-blackHanSans">
+                    {champ.champInfo.name}
+                  </p>
+                  <p className="text-xs font-bold self-center font-blackHanSans">
+                    {formatNumberWithCommas(champ.championPoints)}
+                  </p>
+                </div>
+              ))}
+            </div>
+            <p className="text-md font-bold font-blackHanSans">
+              {user.gameName}
+            </p>
+            <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
             {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
             <img
               src={close}
@@ -53,14 +75,14 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
                 handleAddUser(user);
               }}
             />
-          </li>
+          </div>
         ) : (
           // 유저 정보가 없을 경우
           <li className="flex flex-col items-center justify-center text-gray-500 xs:h-[20vh] lg:h-full">
             <img src={PlusIcon} alt="Add" className="" />
           </li>
         )}
-      </ul>
+      </div>
     </div>
   );
 };
