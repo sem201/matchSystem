@@ -9,14 +9,11 @@ const MainPage = () => {
   const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
   // 유저 데이터 저장
   const [allUsers, setAllUsers] = useState<User[]>([]);
-  console.log("현재 기본 isUserAdded", isUserAdded);
   // 최근 함께한 유저 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await apiCall("/noobs/friendUserBr", "get", null);
-        console.log("user 불러오기 실행", response);
-        console.log("상태 변경? isUserAdded", isUserAdded);
         setAllUsers(response.data.data);
       } catch (error) {
         console.log(error);
@@ -24,7 +21,7 @@ const MainPage = () => {
     };
     fetchData();
   }, [isUserAdded]);
-
+  console.log("추가 : ", allUsers);
   const [modalType, setModalType] = useState<string>(""); // 현재 열리는 모달 타입
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태

@@ -6,16 +6,16 @@ import XLSX  from "xlsx";
 const getTestData = async () => {
   return new Promise((resolve) => {
     const players = [
-      { id: 1, gameName: "test1", RankScore: 10, position: "탑" },
-      { id: 2, gameName: "test2", RankScore: 15, position: "탑" },
-      { id: 3, gameName: "test3", RankScore: 20, position: "정글" },
-      { id: 4, gameName: "test4", RankScore: 18, position: "정글" },
-      { id: 5, gameName: "test5", RankScore: 12, position: "미드" },
-      { id: 6, gameName: "test6", RankScore: 22, position: "미드" },
-      { id: 7, gameName: "test7", RankScore: 14, position: "원딜" },
-      { id: 8, gameName: "test8", RankScore: 17, position: "원딜" },
-      { id: 9, gameName: "test9", RankScore: 13, position: "서폿" },
-      { id: 10, gameName: "test10", RankScore: 19, position: "서폿" }
+      { id: 1, gameName: "test1", RankScore: 10, position: "top" },
+      { id: 2, gameName: "test2", RankScore: 15, position: "top" },
+      { id: 3, gameName: "test3", RankScore: 20, position: "jug" },
+      { id: 4, gameName: "test4", RankScore: 18, position: "jug" },
+      { id: 5, gameName: "test5", RankScore: 12, position: "mid" },
+      { id: 6, gameName: "test6", RankScore: 22, position: "mid" },
+      { id: 7, gameName: "test7", RankScore: 14, position: "ad" },
+      { id: 8, gameName: "test8", RankScore: 17, position: "ad" },
+      { id: 9, gameName: "test9", RankScore: 13, position: "sup" },
+      { id: 10, gameName: "test10", RankScore: 19, position: "sup" }
     ];
 
     setTimeout(() => resolve(players), 1000);  // 1초 후 데이터를 반환
@@ -75,18 +75,18 @@ const generateRandTeam = (players) => {
   });
   return { readTeam,blueTeam };
 };
-
+// 밸런스 섞기
 const balanceTeams = (players) => {
   // 포지션별 점수 -> 정글-미드-원딜-탑-서폿
-  const positionPoints = { "정글": 5, "미드": 4, "원딜": 3, "탑": 2, "서폿": 1 };
+  const positionPoints = { "jug": 5, "mid": 4, "ad": 3, "top": 2, "sup": 1 };
 
   // 포지션별 그룹화
   const positionPlayers = {
-    "정글": [],
-    "미드": [],
-    "원딜": [],
-    "탑": [],
-    "서폿": [],
+    "jug": [],
+    "mid": [],
+    "ad": [],
+    "top": [],
+    "sup": [],
   };
 
   // 선수 데이터 새로 복사하고 랜덤 섞기
@@ -117,7 +117,7 @@ const balanceTeams = (players) => {
   const teams = [{ players: [], totalRankScore: 0 }, { players: [], totalRankScore: 0 }];
   
   // 포지션 순서대로 팀에 분배
-  const positionOrder = ["탑", "정글", "미드", "원딜", "서폿"];
+  const positionOrder = ["top", "jug", "mid", "ad", "sup"];
   
   // 각 포지션에서 한 명씩 배정
   positionOrder.forEach(position => {
@@ -152,7 +152,7 @@ const balanceTeams = (players) => {
 
   // 클라이언트로 전달할 때 탑 -> 정글 -> 미드 -> 원딜 -> 서폿 순으로 정렬
   const sortPositionClient = (team) => {
-    const positionOrder = ["탑", "정글", "미드", "원딜", "서폿"];
+    const positionOrder = ["top", "jug", "mid", "ad", "sup"];
     return positionOrder.map(position => {
       return team.players.filter(player => player.position === position);
     }).flat();
@@ -207,7 +207,8 @@ const TeamMach = async (req, res) => {
     } else if (mode == 'balance') {
 
       // 샘플 테스트용 데이터 입니다. 
-      // const players = await getTestData(); 
+      const players = await getTestData(); 
+      console.log(players);
       const { redTeam, blueTeam } = balanceTeams(players); 
       return res.status(200).json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
     } else if (mode == 'draft') {
