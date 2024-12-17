@@ -1,4 +1,5 @@
 import axios from "axios";
+import XLSX  from "xlsx";
 
 //테스트 데이터 생성 함수 (예시)
 //테스트용
@@ -224,4 +225,95 @@ const TeamMach = async (req, res) => {
   }
 };
 
-export { TeamMach };
+
+const sampleData = async () => {
+  const headers = {
+    "User-Agent": "Mozilla/5.0",
+    "Accept-Language": "ko-KR",
+    "Accept-Charset": "application/x-www-form-urlencoded; charset=UTF-8",
+    Origin: "https://developer.riotgames.com",
+    "X-Riot-Token": process.env.RIOT_API_KEY, // 환경 변수에 API 키 저장
+  };
+
+  const tiers = [
+    "IRON",
+    "BRONZE",
+    "SILVER",
+    "GOLD",
+    "PLATINUM",
+    "EMERALD",
+    "DIAMOND",
+    "MASTER",
+    "GRANDMASTER",
+    "CHALLENGER",
+  ];
+  const divisions = ["IV", "III", "II", "I"]; // IV부터 I까지
+  const resultData = [];
+
+  try {
+    for (const tier of tiers) {
+      for (const division of divisions) {
+        if (["MASTER", "GRANDMASTER", "CHALLENGER"].includes(tier)) {
+          // MASTER 이상은 Division이 없으므로 한 번만 요청
+          if (division !== "I") continue;
+        }
+
+        console.log(`Fetching data for Tier: ${tier}, Division: ${division}`);
+
+        // 1차 요청: Summoner ID 가져오기
+        const userDataUrl = `https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/${tier}/${division}?page=1`;
+        const userDataResponse = await axios.get(userDataUrl, { headers });
+
+        const limitedData = userDataResponse.data.slice(0, 10); // 각 Tier 및 Division 당 10명 제한
+
+        for (const item of limitedData) {
+          const { summonerId, tier, rank, leaguePoints, wins, losses } = item;
+
+          // 2초 대기
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // 2차 요청: Puuid 가져오기
+          const summonerUrl = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/${summonerId}`;
+          const summonerResponse = await axios.get(summonerUrl, { headers });
+          const { puuid } = summonerResponse.data;
+
+          // 2초 대기
+          await new Promise((resolve) => setTimeout(resolve, 2000));
+
+          // 3차 요청: GameName 및 TagLine 가져오기
+          const accountUrl = `https://asia.api.riotgames.com/riot/account/v1/accounts/by-puuid/${puuid}`;
+          const accountResponse = await axios.get(accountUrl, { headers });
+          const { gameName, tagLine } = accountResponse.data;
+
+          // GameName과 TagLine 합치기
+          const fullGameName = `${gameName}#${tagLine}`;
+
+          // 데이터 저장 (fullGameName을 가장 앞에 배치)
+          resultData.push({
+            fullGameName, // 합쳐진 GameName
+            tier,
+            rank,
+            leaguePoints,
+            wins,
+            losses,
+          });
+        }
+      }
+    }
+
+    // 데이터를 엑셀 파일로 저장
+    const worksheet = XLSX.utils.json_to_sheet(resultData); // JSON -> Worksheet 변환
+    const workbook = XLSX.utils.book_new(); // 새 워크북 생성
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Summoner Data"); // 워크북에 시트 추가
+
+    // 엑셀 파일 저장
+    const filename = "Summoner_Data_with_FullGameName.xlsx";
+    XLSX.writeFile(workbook, filename);
+    console.log(`Data successfully saved to ${filename}`);
+  } catch (error) {
+    console.error("Error fetching data:", error.message);
+  }
+};
+
+
+export { TeamMach, sampleData };
