@@ -38,7 +38,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
     return (
       <DraftModal2
         closeModal={closeModal}
-        teamMembers={teamMembers.map((member) => member.nickname)}
+        teamMembers={teamMembers.map((member) => member.gameName)}
         redTeamLeader={redTeamLeader}
         blueTeamLeader={blueTeamLeader}
       />
@@ -90,13 +90,13 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
           <div className="mt-4 border-2 border-[#C89B3C] rounded-lg p-4 bg-[#F9F5EB]">
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.map((member) => {
-                const isRedLeader = redTeamLeader === member.nickname;
-                const isBlueLeader = blueTeamLeader === member.nickname;
+                const isRedLeader = redTeamLeader === member.gameName;
+                const isBlueLeader = blueTeamLeader === member.gameName;
 
                 return (
                   <button
                     key={member.id}
-                    onClick={() => handleLeaderSelect(member.nickname)}
+                    onClick={() => handleLeaderSelect(member.gameName)}
                     className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 ${
                       isRedLeader
                         ? "bg-[#8A2922] text-white cursor-not-allowed"
@@ -106,7 +106,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
                     }`}
                     disabled={isRedLeader || isBlueLeader}
                   >
-                    {member.nickname}
+                    {member.gameName}
                   </button>
                 );
               })}
