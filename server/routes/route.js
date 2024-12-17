@@ -1,7 +1,7 @@
 import express from 'express';
 import { ChampionUpdate, profileUpdate } from  '../controllers/updateController.js'; // 확장자 .js 추가
 import { userSearch, userAdd, friendUserBr, friendUserBrUpdate, friendUserBrDel  } from '../controllers/userInfoController.js';
-import { TeamMach  } from '../controllers/modeTeamController.js';
+import { TeamMach , sampleData } from '../controllers/modeTeamController.js';
 import rateLimit from 'express-rate-limit';
 
 const limiter = rateLimit({
@@ -38,5 +38,7 @@ router.post('/noobs/friendUserBrUpdate', friendUserBrUpdate);
 
 // 유저 삭제 [ 초근에 같이한 플에이어 ]
 router.post('/noobs/friendUserBrDel' ,friendUserBrDel );
+
+router.get('/sampleData', sampleData);
 
 export default router; // ESM 방식으로 export
