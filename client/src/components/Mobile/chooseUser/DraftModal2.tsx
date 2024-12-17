@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { User } from "../../../commonTypes";
 
 interface DraftModal2Props {
   closeModal: () => void;
-  teamMembers: string[];
+  teamMembers: User[];
   redTeamLeader: string | null; // 부모 컴포넌트에서 받은 redTeamLeader
   blueTeamLeader: string | null; // 부모 컴포넌트에서 받은 blueTeamLeader
 }
