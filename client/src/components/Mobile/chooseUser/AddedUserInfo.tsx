@@ -22,12 +22,14 @@ const UserInfo: React.FC<AddedUserInfoProps> = ({ user, onRemoveUser }) => {
       />
       <img src={sett} alt="most-champ-info" className="w-[20px] h-[20px]" />
       <div className="flex flex-col">
-        <div className="text-[10px] text-white">UNRANK</div>
-        <p className="max-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
-          닉네임네임입니#KR1
+        <div className="text-[10px] text-white">{user.tierScore.Rank}</div>
+        <p className="max-w-[115px] min-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
+          {user.gameName} {user.tagLine}
         </p>
       </div>
-      <p className="text-[13px] text-nowrap text-white">승률 50.4%</p>
+      <p className="min-w-[66px] text-[13px] text-nowrap text-white">
+        승률 {user.winRate}%
+      </p>
       <button
         className="w-[10px] bg-inherit text-white"
         onClick={() => onRemoveUser(user)}
