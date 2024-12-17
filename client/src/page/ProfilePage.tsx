@@ -42,7 +42,7 @@ const ProfilePage: React.FC = () => {
 
           {/* 중앙 영역 */}
           <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between border-4 border-[rgb(200, 155, 60)]">
-            <div className="text-center text-2xl font-bold w-full">소환사 정보</div>
+            <div className="text-center text-2xl font-bold w-full font-blackHanSans">소환사 정보</div>
             <ProfileHeader />
           </div>
 

@@ -69,7 +69,7 @@ const RecentHistory: React.FC = () => {
 
   return (
     <div className="recent-history p-6 bg-gray-800 text-white rounded-lg">
-      <h2 className="text-2xl font-bold mb-6">숙련도 TOP5</h2>
+      <h2 className="text-2xl font-bold mb-6 font-blackHanSans">숙련도 TOP5</h2>
 
       {/* 챔피언 정보 5개를 flex로 배치, 모바일에서는 1줄로 보여지도록 설정 */}
       <div className="champions-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
@@ -82,10 +82,10 @@ const RecentHistory: React.FC = () => {
 
             {/* 챔피언 이름, 포인트, 레벨, 등급 */}
             <div className="champion-info text-center">
-              <h3 className="text-lg font-bold">{champion.name}</h3>
-              <p className="text-sm">점수 : {champion.points}</p>
-              <p className="text-sm">레벨 : {champion.level}</p>
-              <p className="text-sm">랭크 : {champion.rank}</p>
+              <h3 className="text-lg font-bold font-blackHanSans">{champion.name}</h3>
+              <p className="text-sm font-blackHanSans">{champion.points}</p>
+              <p className="text-sm font-blackHanSans">레벨 : {champion.level}</p>
+              <p className="text-sm font-blackHanSans">랭크 : {champion.rank}</p>
             </div>
 
             {/* 최근 이미지 3개 */}
