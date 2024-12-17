@@ -5,6 +5,7 @@ import MobileMainpage from "./page/Mobile-Mainpage";
 import DraftModal2 from "./components/Mobile/chooseUser/DraftModal2";
 import Mainpagetest from "./page/MainPageTest";
 import Account from "./components/Login/Account";
+import ProfilePage from "./page/ProfilePage";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage /> },
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
   { path: "/maintest", element: <Mainpagetest /> },
   { path: "/test", element: <MobileMainpage /> },
   { path: "/draftmodal2", element: <DraftModal2 /> },
+  { path: "/ProfilePage", element: <ProfilePage /> },
 ]);
 
 export default router;

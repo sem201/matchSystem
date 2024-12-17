@@ -18,6 +18,15 @@ export default {
         mobileScreen: "url('src/assets/login_img/mobile_Login.jpg')",
         mobileContainer: "url('src/assets/login_img/mobile_Container.jpg')",
       },
+      animation: {
+        fadeIn: "fadeIn 1s ease-out forwards",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: 0 },
+          "100%": { opacity: 1 },
+        },
+      },
     },
     mode: "jit",
   },
