@@ -36,7 +36,7 @@ const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
       <Link
         to="/ProfilePage"
         className="no-underline text-black"
-        state={user.id}
+        state={{ user_id: user.id }}
       >
         프로필 확인하기
       </Link>

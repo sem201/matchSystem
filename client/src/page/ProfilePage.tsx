@@ -1,5 +1,6 @@
 // ProfilePage.tsx
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Menu from "../components/Profile/menu";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileStats from "../components/Profile/ProfileStats";
@@ -12,13 +13,15 @@ import tierImgD from "../assets/modeGif/Rank=Diamond.png";
 import tierImgG from "../assets/modeGif/Rank=Grandmaster.png";
 
 const ProfilePage: React.FC = () => {
+  const location = useLocation();
+  const user_id = location.state.user_id;
+  console.log(user_id);
   return (
     <div
       className="bg-cover bg-center text-white min-h-screen p-6 flex justify-center"
       style={{ backgroundImage: `url(${BackImg})` }}
     >
       <div className="w-full max-w-6xl relative">
-        
         {/* 메뉴 영역 */}
         <div className="fixed top-0 left-0 w-full bg-gray-800 bg-opacity-90 z-50 py-4">
           <Menu />
@@ -42,7 +45,9 @@ const ProfilePage: React.FC = () => {
 
           {/* 중앙 영역 */}
           <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between border-4 border-[rgb(200, 155, 60)]">
-            <div className="text-center text-2xl font-bold w-full font-blackHanSans">소환사 정보</div>
+            <div className="text-center text-2xl font-bold w-full font-blackHanSans">
+              소환사 정보
+            </div>
             <ProfileHeader />
           </div>
 
