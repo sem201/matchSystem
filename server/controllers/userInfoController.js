@@ -50,7 +50,7 @@ const userSearch = async (req, res) => {
       console.log("사용자 데이터가 DB에 존재합니다.");
       return res
         .status(200)
-        .json({ message: "사용자 db 요청 완료", data: user });
+        .json({ message: "사용자 db 요청 완료", });
     }
 
     // 2. 사용자 정보 API 요청
@@ -129,7 +129,7 @@ const userSearch = async (req, res) => {
 
     return res
       .status(200)
-      .json({ message: "사용자 데이터 등록 완료", data: newUser });
+      .json({ message: "사용자 데이터 등록 완료" });
   } catch (error) {
     console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
     const status = error.response?.status || 500;
@@ -301,7 +301,7 @@ const userAdd = async (req, res) => {
           losses: userSearchData.losses,
           winRate: userSearchData.winRate,
         });
-        return res.status(200).json({ user });
+        return res.status(200).json({ message : "사용자 추가 완료!" });
       } else {
         return res.status(400).json({ message: "이미 추가된 유저입니다. " });
       }
@@ -373,6 +373,10 @@ const friendUserBr = async (req, res) => {
         },
       });
 
+      // 포지션 빈값 추가
+      const userPosition = '';
+      
+      friend.dataValues.Position = userPosition;
       friend.dataValues.updateId = updateId;
       friend.dataValues.tierImg = userRankImg;
       friend.dataValues.tierScore = userRankScore;
