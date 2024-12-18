@@ -4,20 +4,29 @@ import trash from "../../../assets/trashbin.png";
 import apiCall from "../../../Api/Api";
 interface Props {
   user: User;
+  setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const UserModal = ({ user }: Props) => {
+const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
   const reloadInfo = () => {
     const data = {
       user_id: user.id,
     };
     apiCall("/noobs/friendUserBrUpdate", "post", data);
+    console.log("클릭됨");
+    setUserModal(false);
   };
   const deleteFr = () => {
     const data = {
       user_id: user.id,
     };
-    apiCall("/noobs/friendUserBrUpdate", "post", data);
+    console.log(user);
+    console.log(user.id);
+    apiCall("/noobs/friendUserBrDel", "post", data);
+    console.log("클릭됨");
+    setUserModal(false);
+    setIsUserAdded((prev) => !prev);
   };
   return (
     <div className="flex gap-[5px] flex-col w-[180px] bg-[#F0E6D2] border-2 border-[#C8AA6E] rounded-lg absolute top-0 p-1 z-50">
