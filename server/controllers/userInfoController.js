@@ -7,10 +7,10 @@ import Champion from "../models/Champion.js";
 import Profile from "../models/Profile.js";
 import RankInfo from "../models/RankInfo.js";
 import TierScore from "../models/TierScore.js";
-import moment from 'moment-timezone';
+import moment from "moment-timezone";
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
-const seoulTime = moment().tz("Asia/Seoul").format('YYYY-MM-DD HH:mm:ss');
+const seoulTime = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
 dotenv.config(); // .env 파일 로드
 
@@ -118,7 +118,7 @@ const userSearch = async (req, res) => {
       for (const { championId, championLevel, championPoints } of masterData) {
         await NoobsMasterChamp.create({
           user_id: newUser.id,
-          gameName : gameName,
+          gameName: gameName,
           championId,
           championLevel,
           championPoints,
@@ -156,7 +156,7 @@ const friendUserBrUpdate = async (req, res) => {
     Origin: "https://developer.riotgames.com",
     "X-Riot-Token": process.env.RIOT_API_KEY,
   };
-  
+
   try {
     const userInfo = await NoobsUserInfo.findOne({
       where: { id: user_id },
@@ -176,14 +176,29 @@ const friendUserBrUpdate = async (req, res) => {
     // 소환사 정보
     const summonerUrl = `https://kr.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/${userPuuid}`;
     const summonerResponse = await axios.get(summonerUrl, { headers });
-    const { id: secretId, profileIconId, summonerLevel } = summonerResponse.data;
+    const {
+      id: secretId,
+      profileIconId,
+      summonerLevel,
+    } = summonerResponse.data;
 
     // 소환사 랭크 정보
     const leagueUrl = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
     const leagueResponse = await axios.get(leagueUrl, { headers });
-    const rankedSoloData = leagueResponse.data.find((entry) => entry.queueType === "RANKED_SOLO_5x5") || {};
-    const { tier = "Unranked", rank = "Unranked", wins = "nodata", losses = "nodata" } = rankedSoloData;
-    const winRate = wins !== "nodata" ? ((wins / (wins + losses)) * 100).toFixed(1) : "nodata";
+    const rankedSoloData =
+      leagueResponse.data.find(
+        (entry) => entry.queueType === "RANKED_SOLO_5x5"
+      ) || {};
+    const {
+      tier = "Unranked",
+      rank = "Unranked",
+      wins = "nodata",
+      losses = "nodata",
+    } = rankedSoloData;
+    const winRate =
+      wins !== "nodata"
+        ? ((wins / (wins + losses)) * 100).toFixed(1)
+        : "nodata";
 
     // 모스트 챔피언 데이터
     const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${userPuuid}/top?count=5`;
@@ -202,45 +217,44 @@ const friendUserBrUpdate = async (req, res) => {
         rank,
         wins,
         winRate,
-        updatedAt: seoulTime
+        updatedAt: seoulTime,
       },
       { where: { id: user_id } }
     );
 
     console.log(resultUpdateUser);
 
-
     if (resultUpdateUser[0] === 0) {
       return res.status(400).json({ message: "업데이트 실패" });
     }
 
     // 모스트 챔피언 업데이트
-    const updatePromises = masterData.map(({ championId, championLevel, championPoints }) => {
-      return NoobsMasterChamp.update(
-        {
-          championLevel,
-          championPoints,
-          updatedAt: seoulTime
-        },
-        {
-          where: {
-            user_id: user_id,
-            championId,
+    const updatePromises = masterData.map(
+      ({ championId, championLevel, championPoints }) => {
+        return NoobsMasterChamp.update(
+          {
+            championLevel,
+            championPoints,
+            updatedAt: seoulTime,
           },
-        }
-      );
-    });
+          {
+            where: {
+              user_id: user_id,
+              championId,
+            },
+          }
+        );
+      }
+    );
 
     await Promise.all(updatePromises);
 
     return res.status(200).json({ message: "소환사 업데이트 완료" });
-
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
   }
 };
-
 
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
@@ -278,7 +292,7 @@ const userAdd = async (req, res) => {
       // DB에서 사용자 검색
       const userFriendData = await NoobsRecentFriend.findOne({
         where: {
-          user_id : req.session.user.id,
+          user_id: req.session.user.id,
           gameName: userid,
           tagLine: tagLine,
         },
@@ -330,7 +344,7 @@ const friendUserBr = async (req, res) => {
       // 챔피언 데이터 조회
       const champData = await NoobsMasterChamp.findAll({
         where: {
-          gameName: friend.gameName, 
+          gameName: friend.gameName,
         },
         limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
       });
@@ -396,9 +410,9 @@ const friendUserBrDel = async (req, res) => {
 
   try {
     const delUser = await NoobsUserInfo.destroy({
-      where : {
-        id : user_id
-      }
+      where: {
+        id: user_id,
+      },
     });
 
     if (delUser == 0) {
@@ -410,7 +424,12 @@ const friendUserBrDel = async (req, res) => {
     console.error("Error:", error);
     return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
   }
-}
+};
 
-
-export { userSearch, userAdd, friendUserBr, friendUserBrUpdate ,friendUserBrDel};
+export {
+  userSearch,
+  userAdd,
+  friendUserBr,
+  friendUserBrUpdate,
+  friendUserBrDel,
+};
