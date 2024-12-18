@@ -159,7 +159,9 @@ const friendUserBrUpdate = async (req, res) => {
 
   try {
     const userInfo = await NoobsUserInfo.findOne({
-      where: { id: user_id },
+      where: {
+        id: user_id,
+      },
     });
 
     if (!userInfo) {
@@ -349,6 +351,15 @@ const friendUserBr = async (req, res) => {
         limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
       });
 
+      // 소환사 업데이트용 id 가져오기
+      const updateUser = await NoobsUserInfo.findOne({
+        where: {
+          gameName: friend.gameName,
+        },
+      });
+
+      const updateId = updateUser.dataValues.id;
+
       // 소환사 프로필 정보 조회
       const profileData = await Profile.findOne({
         where: {
@@ -371,6 +382,7 @@ const friendUserBr = async (req, res) => {
         },
       });
 
+      friend.dataValues.updateId = updateId;
       friend.dataValues.tierImg = userRankImg;
       friend.dataValues.tierScore = userRankScore;
       friend.dataValues.profileInfo = profileData;
@@ -407,13 +419,17 @@ const friendUserBr = async (req, res) => {
 // 같이한 사용자 삭제하기
 const friendUserBrDel = async (req, res) => {
   const { user_id } = req.body;
+  console.log(user_id);
 
   try {
-    const delUser = await NoobsUserInfo.destroy({
+    const delUser = await NoobsRecentFriend.destroy({
       where: {
+        user_id: req.session.user.id,
         id: user_id,
       },
     });
+
+    console.log(delUser);
 
     if (delUser == 0) {
       return res.status(404).json({ message: "사용자가 존재하지 않습니다." });
