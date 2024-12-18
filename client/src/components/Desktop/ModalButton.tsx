@@ -10,6 +10,7 @@ interface ButtonProps {
   selectedMode: string;
   modalType: string;
   isDraftModalOpen: boolean;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   openModal: (type: string) => void;
   closeModal: () => void;
 }
@@ -20,6 +21,7 @@ const Button: React.FC<ButtonProps> = ({
   setSelectedMode,
   selectedMode,
   modalType,
+  setIsUserAdded,
   openModal,
   closeModal,
 }) => {
@@ -50,6 +52,7 @@ const Button: React.FC<ButtonProps> = ({
           <AddUserModal
             isModalOpen={modalType !== null}
             closeModal={closeModal}
+            setIsUserAdded={setIsUserAdded}
           />
         )}
         {modalType === "selectMode" && (

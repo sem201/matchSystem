@@ -6,14 +6,12 @@ interface ModalProps {
   closeModal: () => void;
   isModalOpen: boolean; // isModalOpen 속성 추가
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
-  isUserAdded: boolean;
 }
 
 export default function AddUserModal({
   isModalOpen,
   closeModal,
   setIsUserAdded,
-  isUserAdded,
 }: ModalProps) {
   const [nicknameTag, setNicknameTag] = useState<string>(""); // 입력값
   const [userAdded, setUserAdded] = useState<boolean | null>(null); // 검색 결과
@@ -53,18 +51,14 @@ export default function AddUserModal({
     const [nickname, tag] = nicknameTag.split("#");
     const data = { userid: nickname, tagLine: tag };
     try {
-      const response = await apiCall("noobs/lolUserAdd", "post", data);
-      console.log(response);
+      await apiCall("noobs/lolUserAdd", "post", data);
       setIsUserAdded((prev) => !prev);
     } catch (err) {
       console.log(err);
     }
-    console.log("isUserAdded 상태변경", isUserAdded);
     // 추가 버튼 클릭 시 초기화
     setNicknameTag(""); // 입력 필드 초기화
     setUserAdded(null); // 유저 추가 완료/실패 문구 초기화
-
-    console.log("isUserAdded 상태 초기화", isUserAdded);
   };
 
   const handleCloseButtonClick = () => {

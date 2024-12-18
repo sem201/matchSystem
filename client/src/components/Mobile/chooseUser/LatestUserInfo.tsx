@@ -4,8 +4,13 @@ import UserModal from "../userModal/UserModal";
 interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
+const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
+  user,
+  onAddUser,
+  setIsUserAdded,
+}) => {
   const [userModal, setUserModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -52,7 +57,11 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
       </button>
       {userModal && (
         <div ref={modalRef} className="absolute top-0 left-0 z-10">
-          <UserModal user={user} />
+          <UserModal
+            user={user}
+            setUserModal={setUserModal}
+            setIsUserAdded={setIsUserAdded}
+          />
         </div>
       )}
     </div>
