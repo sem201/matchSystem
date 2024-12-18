@@ -6,11 +6,13 @@ interface UserContainerProps {
   allUsers: User[];
   handleAddUser: (user: User) => void;
   setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
   allUsers,
   handleAddUser,
+  setIsUserAdded,
 }) => {
   return (
     <div>
@@ -24,6 +26,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
               key={user.id}
               user={user}
               onAddUser={handleAddUser}
+              setIsUserAdded={setIsUserAdded}
             />
           ))}
         </div>

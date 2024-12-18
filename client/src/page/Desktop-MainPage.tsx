@@ -21,6 +21,7 @@ interface DesktopMainPageProps {
   isDraftModalOpen: boolean;
   headerText: string;
   handleTeamButtonClick: () => void;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   openModal: (type: string) => void;
   closeModal: () => void;
 }
@@ -41,6 +42,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   addedUsers,
   setAddedUsers,
   handleTeamButtonClick,
+  setIsUserAdded,
   openModal,
   closeModal,
 }) => {
@@ -53,6 +55,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           blueTeam={blueTeam}
           handleRemoveUser={handleRemoveUser}
           handleAddUser={handleAddUser}
+          selectedMode={selectedMode}
         />
         <Menu
           modalType={modalType}
@@ -67,6 +70,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           setAddedUsers={setAddedUsers}
           openModal={openModal}
           closeModal={closeModal}
+          setIsUserAdded={setIsUserAdded}
         />
       </div>
       <ComposeButton

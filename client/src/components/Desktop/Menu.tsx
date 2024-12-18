@@ -15,6 +15,7 @@ interface MenuProps {
   isDraftModalOpen: boolean;
   addedUsers: User[];
   setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   openModal: (type: string) => void;
   closeModal: () => void;
 }
@@ -30,6 +31,7 @@ const Menu: React.FC<MenuProps> = ({
   isDraftModalOpen,
   addedUsers,
   setAddedUsers,
+  setIsUserAdded,
   openModal,
   closeModal,
 }) => {
@@ -42,6 +44,7 @@ const Menu: React.FC<MenuProps> = ({
         setIsDraftModalOpen={setIsDraftModalOpen}
         setSelectedMode={setSelectedMode}
         isDraftModalOpen={isDraftModalOpen}
+        setIsUserAdded={setIsUserAdded}
         openModal={openModal}
         closeModal={closeModal}
       />
@@ -52,6 +55,7 @@ const Menu: React.FC<MenuProps> = ({
           )}
           handleAddUser={handleAddUser}
           setAddedUsers={setAddedUsers}
+          setIsUserAdded={setIsUserAdded}
         />
       </div>
     </div>

@@ -26,7 +26,6 @@ interface Props {
   addedUsers: User[];
   redTeam: User[];
   blueTeam: User[];
-  isUserAdded: boolean;
 }
 
 const MobileMainpage = ({
@@ -46,7 +45,6 @@ const MobileMainpage = ({
   handleAddUser,
   handleRemoveUser,
   setIsUserAdded,
-  isUserAdded,
 }: Props) => {
   const openModal = (type: string) => {
     setModalType(type);
@@ -126,6 +124,7 @@ const MobileMainpage = ({
           (user) => !addedUsers.some((u) => u.id === user.id)
         )}
         onAddUser={handleAddUser}
+        setIsUserAdded={setIsUserAdded}
       />
 
       {/* 모달들 */}
@@ -134,7 +133,6 @@ const MobileMainpage = ({
           isModalOpen={modalType !== null}
           closeModal={closeModal}
           setIsUserAdded={setIsUserAdded}
-          isUserAdded={isUserAdded}
         />
       )}
       {modalType === "selectMode" && (

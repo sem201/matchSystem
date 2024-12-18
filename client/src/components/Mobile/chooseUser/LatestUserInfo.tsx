@@ -1,11 +1,18 @@
 import { useState, useRef, useEffect } from "react";
 import { User } from "../../../commonTypes";
 import UserModal from "../userModal/UserModal";
+import none from "../../../assets/none_profile.jpg";
+
 interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
-const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
+const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
+  user,
+  onAddUser,
+  setIsUserAdded,
+}) => {
   const [userModal, setUserModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -31,7 +38,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
       }}
     >
       <img
-        src={`${user.profileInfo.Profile_img}`}
+        src={`${user.profileInfo?.Profile_img || none}`}
         alt="most-champ-info"
         className="w-[20px] h-[20px]"
       />
@@ -45,14 +52,21 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({ user, onAddUser }) => {
         승률 {user.winRate}%
       </p>
       <button
-        onClick={() => onAddUser(user)}
+        onClick={(e) => {
+          onAddUser(user);
+          e.stopPropagation();
+        }}
         className="w-[10px] bg-inherit text-white"
       >
         +
       </button>
       {userModal && (
         <div ref={modalRef} className="absolute top-0 left-0 z-10">
-          <UserModal user={user} />
+          <UserModal
+            user={user}
+            setUserModal={setUserModal}
+            setIsUserAdded={setIsUserAdded}
+          />
         </div>
       )}
     </div>
