@@ -41,4 +41,5 @@ export interface User {
   gameName: string; // 유저 닉네임
   tagLine: string; // 유저 태그
   winRate: number; // 승률
+  updateId: number;
 }
