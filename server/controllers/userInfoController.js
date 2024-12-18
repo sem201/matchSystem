@@ -315,6 +315,9 @@ const userAdd = async (req, res) => {
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
 
+  console.log('서버쪽입니다.' , req.session);
+  console.log('서버쪽입니다.' , req.session.id);
+
   try {
     // 사용자 목록 조회
     const friendUser = await NoobsRecentFriend.findAll({
