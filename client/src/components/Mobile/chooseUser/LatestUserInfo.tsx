@@ -52,7 +52,10 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         승률 {user.winRate}%
       </p>
       <button
-        onClick={() => onAddUser(user)}
+        onClick={(e) => {
+          onAddUser(user);
+          e.stopPropagation();
+        }}
         className="w-[10px] bg-inherit text-white"
       >
         +

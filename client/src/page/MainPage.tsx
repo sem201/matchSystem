@@ -37,6 +37,10 @@ const MainPage = () => {
   const handleAddUser = (user: User) => {
     const selectedUser = allUsers.find((u) => u.id === user.id);
     if (!selectedUser) return;
+    if (addedUsers.length > 9) {
+      alert("사용자는 10명 이상 추가할 수 없습니다!");
+      return;
+    }
 
     // Redteam -> BlueTeam 순서로 추가
     if (redTeam.length <= blueTeam.length) {
