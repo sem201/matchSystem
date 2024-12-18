@@ -7,6 +7,7 @@ import Champion from "../models/Champion.js";
 import Profile from "../models/Profile.js";
 import RankInfo from "../models/RankInfo.js";
 import TierScore from "../models/TierScore.js";
+import GameRank from "../models/Game_Ranking.js";
 import moment from 'moment-timezone';
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
