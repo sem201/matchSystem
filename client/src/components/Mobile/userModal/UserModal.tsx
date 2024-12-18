@@ -21,8 +21,6 @@ const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
     const data = {
       user_id: user.id,
     };
-    console.log(user);
-    console.log(user.id);
     apiCall("/noobs/friendUserBrDel", "post", data);
     console.log("클릭됨");
     setUserModal(false);
