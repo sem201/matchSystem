@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { User } from "../../../commonTypes";
 import UserModal from "../userModal/UserModal";
+import none from "../../../assets/none_profile.jpg";
+
 interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
@@ -36,7 +38,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
       }}
     >
       <img
-        src={`${user.profileInfo.Profile_img}`}
+        src={`${user.profileInfo?.Profile_img || none}`}
         alt="most-champ-info"
         className="w-[20px] h-[20px]"
       />
