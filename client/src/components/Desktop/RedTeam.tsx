@@ -48,9 +48,15 @@ const RedTeam: React.FC<RedTeamProps> = ({
             />
             <div className="w-[100%]">
               {user.MostChamp.map((champ, index) => (
-                <div key={index} className="flex w-[100%] justify-between">
-                  <img src={champ.champInfo.champ_img} className="w-[1.5vw]" />
-                  <p className="text-xs font-bold self-center font-blackHanSans">
+                <div
+                  key={index}
+                  className="flex w-[100%] change:justify-around xl:justify-between"
+                >
+                  <img
+                    src={champ.champInfo.champ_img}
+                    className="change:w-6 xl:w-8 h-auto max-w-[50px]"
+                  />
+                  <p className="text-xs font-bold self-center font-blackHanSans change:hidden xl:block">
                     {champ.champInfo.name}
                   </p>
                   <p className="text-xs font-bold self-center point font-blackHanSans">
@@ -59,7 +65,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
                 </div>
               ))}
             </div>
-            <p className="text-md font-bold font-blackHanSans">
+            <p className="text-md font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xs">
               {user.gameName}
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />

@@ -13,6 +13,7 @@ export default {
       },
       screens: {
         xs: "425px",
+        change: "700px",
       },
       backgroundImage: {
         mobileScreen: "url('src/assets/login_img/mobile_Login.jpg')",
