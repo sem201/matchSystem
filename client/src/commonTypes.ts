@@ -8,11 +8,13 @@ export interface Props {
 // user 정보 저장
 interface ChampInfo {
   champ_img: string; // 챔피언 이미지 경로
+  name: string;
 }
 
 // MostChamp 요소 타입
 interface MostChamp {
   champInfo: ChampInfo; // 챔피언 정보
+  championPoints: number;
 }
 
 // user profile 관련 정보
@@ -32,7 +34,7 @@ interface tierScore {
 export interface User {
   id: number; // 유저 고유 식별자
   Line?: string;
-  MostChamp: MostChamp;
+  MostChamp: MostChamp[];
   profileInfo: profileInfo;
   tierImg: tierImg;
   tierScore: tierScore;

@@ -21,7 +21,6 @@ const MainPage = () => {
     };
     fetchData();
   }, [isUserAdded]);
-  console.log("추가 : ", allUsers);
   const [modalType, setModalType] = useState<string>(""); // 현재 열리는 모달 타입
   const [isDraftModalOpen, setIsDraftModalOpen] = useState(false); // DraftModal 상태 관리
   const [selectedMode, setSelectedMode] = useState<string>("모드선택"); // 선택된 모드 상태
@@ -147,7 +146,6 @@ const MainPage = () => {
     openModal,
     closeModal,
     setIsUserAdded,
-    isUserAdded, // 임시
   };
 
   return (

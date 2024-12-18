@@ -4,12 +4,14 @@ import { User } from "../../../commonTypes";
 interface UserContainerProps extends Props {
   users: User[];
   onAddUser: (user: User) => void;
+  setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
   children,
   users,
   onAddUser,
+  setIsUserAdded,
 }) => {
   return (
     <>
@@ -17,7 +19,12 @@ const UserContainer: React.FC<UserContainerProps> = ({
         <div className="ml-3 mb-5 mt-3 text-white">최근에 같이한 친구</div>
         <hr />
         {users.map((user) => (
-          <LatestUserInfo key={user.id} user={user} onAddUser={onAddUser} />
+          <LatestUserInfo
+            key={user.id}
+            user={user}
+            onAddUser={onAddUser}
+            setIsUserAdded={setIsUserAdded}
+          />
         ))}
         {children}
       </div>
