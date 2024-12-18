@@ -71,7 +71,7 @@ export default function AddUserModal({
   return (
     isModalOpen && (
       <div
-        className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+        className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
         onClick={(e) => {
           if (e.target === e.currentTarget) closeModal();
         }}
@@ -112,7 +112,7 @@ export default function AddUserModal({
           )}
           {userAdded === false && (
             <span className="block text-red-500 text-sm mb-4 text-center">
-              닉네임과 태그를 확인해주세요!
+              해당 사용자를 찾을 수 없습니다
             </span>
           )}
 

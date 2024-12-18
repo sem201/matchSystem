@@ -10,9 +10,11 @@ interface Props {
 }
 
 const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
+  console.log(user);
+  console.log(user.updateId);
   const reloadInfo = () => {
     const data = {
-      user_id: user.id,
+      user_id: user.updateId,
     };
     apiCall("/noobs/friendUserBrUpdate", "post", data);
     console.log("클릭됨");
