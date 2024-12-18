@@ -1,6 +1,7 @@
 import { User } from "../../commonTypes";
 import { useEffect, useRef, useState } from "react";
 import UserModal from "../Mobile/userModal/UserModal";
+import none from "../../assets/none_profile.jpg";
 interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
@@ -37,7 +38,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
       }}
     >
       <img
-        src={`${user.profileInfo.Profile_img}`}
+        src={`${user.profileInfo?.Profile_img || none}`}
         alt="most-champ-info"
         className="w-[20px] h-[20px]"
       />
@@ -54,7 +55,10 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         승률 {user.winRate}%
       </p>
       <button
-        onClick={() => onAddUser(user)}
+        onClick={(e) => {
+          onAddUser(user);
+          e.stopPropagation();
+        }}
         className="w-[10px] bg-inherit text-white"
       >
         +

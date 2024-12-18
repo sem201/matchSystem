@@ -2,6 +2,7 @@ import { User } from "../../../commonTypes";
 import reload from "../../../assets/reload.png";
 import trash from "../../../assets/trashbin.png";
 import apiCall from "../../../Api/Api";
+import { Link } from "react-router-dom";
 interface Props {
   user: User;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -9,9 +10,11 @@ interface Props {
 }
 
 const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
+  console.log(user);
+  console.log(user.updateId);
   const reloadInfo = () => {
     const data = {
-      user_id: user.id,
+      user_id: user.updateId,
     };
     apiCall("/noobs/friendUserBrUpdate", "post", data);
     console.log("클릭됨");
@@ -32,7 +35,13 @@ const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
         {user.gameName} {user.tagLine}
       </p>
       <hr className="border-[#C8AA6E] text-center" />
-      <p>프로필 확인하기</p>
+      <Link
+        to="/ProfilePage"
+        className="no-underline text-black"
+        state={{ user_id: user.id }}
+      >
+        프로필 확인하기
+      </Link>
       <div className="flex flex-row items-center gap-2" onClick={reloadInfo}>
         <img src={reload} alt="reloadImg" className="w-[16px] h-[16px]" />
         <p className="text-red">전적 갱신하기</p>

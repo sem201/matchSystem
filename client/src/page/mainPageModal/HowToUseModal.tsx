@@ -51,7 +51,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
