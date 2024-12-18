@@ -25,7 +25,7 @@ router.get('/noobs/lolUser', userSearch);
 router.post('/noobs/lolUserAdd', userAdd);
 
 // 추가한 유저들 가져오기
-router.post('/noobs/friendUserBr', friendUserBr);
+router.get('/noobs/friendUserBr', friendUserBr);
 
 // 모드별 팀섞기
 router.post('/noobs/TeamMach' , TeamMach);
