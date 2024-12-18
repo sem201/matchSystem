@@ -35,27 +35,33 @@ const MainPage = () => {
 
   // 사용자 추가 핸들러
   const handleAddUser = (user: User) => {
-    const selectedUser = allUsers.find((u) => u.id === user.id);
-    if (!selectedUser) return;
-    if (addedUsers.length > 9) {
-      alert("사용자는 10명 이상 추가할 수 없습니다!");
-      return;
-    }
-
-    // Redteam -> BlueTeam 순서로 추가
-    if (redTeam.length <= blueTeam.length) {
-      setRedTeam([...redTeam, selectedUser]);
+    if (addedUsers.some((u) => u.id === user.id)) {
+      setAddedUsers((prev) => prev.map((u) => (u.id === user.id ? user : u)));
     } else {
-      setBlueTeam([...blueTeam, selectedUser]);
+      if (addedUsers.length > 9) {
+        alert("사용자는 10명 이상 추가할 수 없습니다!");
+        return;
+      }
+      // Redteam -> BlueTeam 순서로 추가
+      if (redTeam.length <= blueTeam.length) {
+        setRedTeam([...redTeam, user]);
+      } else {
+        setBlueTeam([...blueTeam, user]);
+      }
+      // addedUsers에 추가
+      setAddedUsers((prev) => [...prev, user]);
     }
-
     // allUsers에서 제거
-    setAllUsers((prev) => prev.filter((u) => u.id !== user.id));
-
-    // addedUsers에 추가
-    setAddedUsers((prev) => [...prev, user]);
+    setAllUsers((prev) => {
+      // 중복 방지: 이미 allUsers에 존재하는지 확인
+      const exists = prev.some((u) => u.id === user.id);
+      if (!exists) {
+        return [...prev, { ...user }]; // 새로운 객체를 추가
+      }
+      return prev; // 이미 존재하면 그대로 반환
+    });
   };
-
+  console.log("추가된 유저", addedUsers);
   // 팀에서 사용자 제거 로직
   const handleRemoveUser = (user: User) => {
     // RedTeam에서 유저
@@ -67,11 +73,17 @@ const MainPage = () => {
 
     // addedUser에서 제거
     setAddedUsers((prev) => prev.filter((u) => u.id !== user.id));
-
     // allUser에서 생성
-    setAllUsers((prev) => [...prev, user]);
+    setAllUsers((prev) => {
+      if (prev.some((u) => u.id === user.id)) {
+        return prev; // 중복 방지
+      }
+      return [...prev, user];
+    });
   };
-
+  useEffect(() => {
+    console.log("모든 유저 업데이트됨:", allUsers);
+  }, [allUsers]);
   const handleTeamButtonClick = () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
       alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");

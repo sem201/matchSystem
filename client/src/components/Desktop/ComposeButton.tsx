@@ -15,7 +15,6 @@ const ComposeButton: React.FC<ComposeButtonProps> = ({
   isDraftModalOpen,
   setIsDraftModalOpen,
 }) => {
-  console.log(addedUsers);
   return (
     <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full my-[20px]">
       <button

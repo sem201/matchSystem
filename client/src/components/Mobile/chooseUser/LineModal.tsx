@@ -6,39 +6,34 @@ import sup from "../../../assets/line_img/line-sup.png";
 interface Props {
   setLine: (line: string) => void;
   setIsLine: (isLine: boolean) => void;
+  setLineSrc: (line: string) => void;
 }
-const LineModal = ({ setLine, setIsLine }: Props) => {
-  const handleClick = (newLine: string) => {
-    setLine(newLine);
-    setIsLine(false);
+const LineModal = ({ setLine, setIsLine, setLineSrc }: Props) => {
+  const lines = [
+    { name: "top", icon: top },
+    { name: "jg", icon: jg },
+    { name: "mid", icon: mid },
+    { name: "ad", icon: ad },
+    { name: "sup", icon: sup },
+  ];
+
+  const handleClick = (newLineSrc: string, newLineName: string) => {
+    setLine(newLineName); // 선택된 라인 정보를 부모로 전달
+    setLineSrc(newLineSrc);
+    setIsLine(false); // 모달 닫기
   };
+
   return (
-    <div className="absolute flex flex-row bg-white border-[1.5px] border-[#C8AA6E] rounded-[15px] w-[120px] h-[20px] items-center justify-around">
-      <img
-        src={top}
-        className="w-[15px] h-[15px] cursor-pointer"
-        onClick={() => handleClick(top)}
-      />
-      <img
-        src={jg}
-        className="w-[15px] h-[15px] cursor-pointer"
-        onClick={() => handleClick(jg)}
-      />
-      <img
-        src={mid}
-        className="w-[15px] h-[15px] cursor-pointer"
-        onClick={() => handleClick(mid)}
-      />
-      <img
-        src={ad}
-        className="w-[15px] h-[15px] cursor-pointer"
-        onClick={() => handleClick(ad)}
-      />
-      <img
-        src={sup}
-        className="w-[15px] h-[15px] cursor-pointer"
-        onClick={() => handleClick(sup)}
-      />
+    <div className="absolute flex flex-row bg-white border-[1.5px] border-[#C8AA6E] rounded-[15px] w-[150px] h-[30px] items-center justify-around z-50">
+      {lines.map((line) => (
+        <img
+          key={line.name}
+          src={line.icon}
+          alt={line.name}
+          className="w-[20px] h-[20px] cursor-pointer"
+          onClick={() => handleClick(line.icon, line.name)} // 라인의 이름을 전달
+        />
+      ))}
     </div>
   );
 };
