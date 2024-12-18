@@ -9,12 +9,14 @@ import { User } from "../../commonTypes";
 
 interface RedTeamProps {
   user?: User;
+  selectedMode: string;
   handleRemoveUser: (user: User) => void;
   handleAddUser: (user: User) => void;
 }
 
 const RedTeam: React.FC<RedTeamProps> = ({
   user,
+  selectedMode,
   handleRemoveUser,
   handleAddUser,
 }) => {
@@ -43,7 +45,13 @@ const RedTeam: React.FC<RedTeamProps> = ({
             <img
               src={line}
               alt="라인 이미지"
-              className="w-5 h-5"
+              className={`w-5 h-5 ${
+                selectedMode === "RANDOM" ||
+                selectedMode === "모드선택" ||
+                selectedMode === "DRAFT"
+                  ? "hidden"
+                  : ""
+              }`}
               onClick={() => setIsLine(!isLine)}
             />
             <div className="w-[100%]">

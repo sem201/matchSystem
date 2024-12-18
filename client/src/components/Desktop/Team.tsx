@@ -6,6 +6,7 @@ import { User } from "../../commonTypes";
 interface TeamProps {
   redTeam: User[];
   blueTeam: User[];
+  selectedMode: string;
   handleRemoveUser: (user: User) => void;
   handleAddUser: (user: User) => void;
 }
@@ -13,6 +14,7 @@ interface TeamProps {
 const Team: React.FC<TeamProps> = ({
   redTeam,
   blueTeam,
+  selectedMode,
   handleRemoveUser,
   handleAddUser,
 }) => {
@@ -36,6 +38,7 @@ const Team: React.FC<TeamProps> = ({
             user={user}
             handleRemoveUser={handleRemoveUser}
             handleAddUser={handleAddUser}
+            selectedMode={selectedMode}
           />
         ))}
       </div>
@@ -50,6 +53,7 @@ const Team: React.FC<TeamProps> = ({
             user={user}
             handleRemoveUser={handleRemoveUser}
             handleAddUser={handleAddUser}
+            selectedMode={selectedMode}
           />
         ))}
       </div>
