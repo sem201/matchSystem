@@ -55,6 +55,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           blueTeam={blueTeam}
           handleRemoveUser={handleRemoveUser}
           handleAddUser={handleAddUser}
+          selectedMode={selectedMode}
         />
         <Menu
           modalType={modalType}
