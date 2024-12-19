@@ -72,6 +72,8 @@ const userSearch = async (req, res) => {
     // 4. 랭크 정보 API 요청
     const leagueUrl = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
     const leagueResponse = await axios.get(leagueUrl, { headers });
+    console.log(leagueResponse.data);
+
     const rankedSoloData =
       leagueResponse.data.find(
         (entry) => entry.queueType === "RANKED_SOLO_5x5"
@@ -109,6 +111,45 @@ const userSearch = async (req, res) => {
       losses,
       winRate,
     });
+
+     // gameRank에 랭킹정보 저장하기
+    // NoobsuserInfo -> id 값 -> gameId에 저장
+    console.log(newUser.id);
+    const leagueData = leagueResponse.data.map(item => {
+      const queueTypeT = item.queueType === 'RANKED_FLEX_SR' ? '자유랭' : 
+                         item.queueType === 'RANKED_SOLO_5x5' ? '개인/2인랭' : 'Unranked';
+      const tier = item.tier || 'Unranked';
+      const rank = item.rank || 'Unranked';
+      
+      const leaguePoints = item.leaguePoints || 0;
+      const wins = item.wins || 0;
+      const losses = item.losses || 0;
+
+      return {
+        queueTypeT,
+        tier,
+        rank,
+        summonerId: item.summonerId,
+        leaguePoints,
+        wins,
+        losses,
+      }
+    });
+
+    const gameRankData = leagueData.map(item => ({
+      game_id : newUser.id,
+      queueType : item.queueTypeT,
+      tier : item.tier,
+      rank : item.rank,
+      LP : item.leaguePoints,
+      wins : item.wins,
+      losses : item.losses,
+      winRate: item.wins && item.losses ? (item.wins / (item.wins + item.losses)) * 100 : 0, // winRate 계산
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+
+    await GameRank.bulkCreate(gameRankData);
 
     // 7. DB에 모스트 챔피언 데이터 저장
     const mostChampExists = await NoobsMasterChamp.findOne({
