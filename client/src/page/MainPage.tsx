@@ -211,6 +211,8 @@ const MainPage = () => {
     setIsUserAdded,
   };
 
+  const [sessionValid, setSessionValid] = useState<boolean | null>(null);
+
   return (
     <div>
       {isMobile ? (

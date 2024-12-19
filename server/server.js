@@ -21,10 +21,11 @@ app.use(
     secret: process.env.SESSION_SECRET, // 세션 암호화 키
     resave: false,
     saveUninitialized: true,
+    rolling: false,
     cookie: {
       sameSite : 'lax',
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
-      maxAge: 30 * 60 * 1000, // 세션 만료 10분
+      maxAge: 10 * 60 * 1000, // 세션 만료 10분
     },
   })
 );
@@ -56,14 +57,24 @@ app.use(express.json()); // JSON 데이터 파싱
 app.use("/", authRoutes);
 app.use("/", apiRoute);
 
-// 404 페이지 처리
-app.get("*", (req, res) => {
-  res.render("404");
+app.get("/check-session", (req, res) => {
+  if (req.session.user) {
+    res.json({ sessionValid: true });
+  } else {
+    res.json({ sessionValid: false });
+  }
 });
+
 
 // 홈 페이지 처리
 app.get("/", (req, res) => {
   res.render("서버 실행중");
+});
+
+
+// 404 페이지 처리
+app.get("*", (req, res) => {
+  res.render("404");
 });
 
 // DB 연결 후 서버 시작

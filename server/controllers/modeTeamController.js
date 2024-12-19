@@ -213,13 +213,19 @@ const TeamMach = async (req, res) => {
 
       const { readTeam, blueTeam } = generateRandTeam(players);
       // 응답으로 생성된 플레이어 목록 반환
+
+      return res.status(200).json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
+    } else if (mode == 'balance') {
+
+      console.log(players);
+      const { redTeam, blueTeam } = balanceTeams(players); 
+      return res.status(200).json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
+    } else if (mode == 'draft') {
+
       return res
         .status(200)
         .json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
     } else if (mode == "balance") {
-      // 샘플 테스트용 데이터 입니다.
-      // const players = await getTestData();
-      // console.log(players);
       const { redTeam, blueTeam } = balanceTeams(players);
       return res
         .status(200)
