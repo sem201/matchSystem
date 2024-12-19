@@ -85,7 +85,6 @@ const generateRandTeam = (players) => {
 const balanceTeams = (players) => {
   // 포지션별 점수 -> 정글-미드-원딜-탑-서폿
   const positionPoints = { jug: 5, mid: 4, ad: 3, top: 2, sup: 1 };
-  console.log(players);
 
   // 포지션별 그룹화
   const positionPlayers = {

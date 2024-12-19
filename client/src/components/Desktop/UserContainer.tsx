@@ -14,11 +14,6 @@ const UserContainer: React.FC<UserContainerProps> = ({
   handleAddUser,
   setIsUserAdded,
 }) => {
-  const [state, setState] = useState(true);
-  useEffect(() => {
-    setState((prev) => !prev);
-  }, [allUsers]);
-
   return (
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">

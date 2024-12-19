@@ -31,12 +31,13 @@ const RedTeam: React.FC<RedTeamProps> = ({
   const formatNumberWithCommas = (number: number): string => {
     return number.toLocaleString();
   };
+
   const handleLineSelection = (newLine: string) => {
     setLine(newLine); // Line 상태 업데이트
 
     // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
     if (user) {
-      const updatedUser = { ...user, Position: newLine }; // line 추가
+      const updatedUser = { ...user, position: newLine }; // line 추가
       handleAddUser(updatedUser); // 업데이트된 user 전달
     }
   };
@@ -88,7 +89,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
             {isLine && (
               <LineModal
-                setLine={handleLineSelection}
+                handleLineSelection={handleLineSelection}
                 setIsLine={setIsLine}
                 setLineSrc={setLineSrc}
               />
