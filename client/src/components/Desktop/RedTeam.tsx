@@ -100,6 +100,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
               className="w-5 h-5 cursor-pointer"
               onClick={() => {
                 handleRemoveUser(user);
+                setLineSrc(none);
                 handleAddUser(user);
               }}
             />

@@ -100,6 +100,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
               onClick={() => {
                 handleRemoveUser(user);
                 handleAddUser(user);
+                setLineSrc(none);
               }}
             />
           </div>
