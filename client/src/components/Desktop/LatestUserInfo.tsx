@@ -32,7 +32,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
   }, [userModal]);
   return (
     <div
-      className="font-blackHanSans flex flex-row items-center h-[55px] mx-2 my-1 gap-2 relative justify-center"
+      className="font-blackHanSans flex flex-row items-center h-[55px] w-[100%] mx-2 my-1 relative justify-around"
       onClick={() => {
         setUserModal(true);
       }}
@@ -40,18 +40,18 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
       <img
         src={`${user.profileInfo?.Profile_img || none}`}
         alt="most-champ-info"
-        className="w-[20px] h-[20px]"
+        className="w-[30px] h-[30px]"
       />
       <div className="flex flex-col">
-        <div className="text-[10px] text-white">
+        <div className="text-sm text-white">
           {user.tierScore.Rank}
           {user.tierScore.tier}
         </div>
-        <p className="max-w-[115px] min-w-[115px] text-[12px] text-ellipsis overflow-hidden text-white text-nowrap">
+        <p className="max-w-[150px] min-w-[115px] text-lg text-ellipsis overflow-hidden text-white text-nowrap">
           {user.gameName} {user.tagLine}
         </p>
       </div>
-      <p className="min-w-[66px] text-[13px] text-nowrap text-white">
+      <p className="min-w-[66px] text-base text-nowrap text-white">
         승률 {user.winRate}%
       </p>
       <button
