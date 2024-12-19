@@ -5,21 +5,40 @@ import { User } from "../../../commonTypes";
 
 interface AddedUserInfoProps {
   user: User;
+  selectedMode: string;
   onRemoveUser: (user: User) => void;
+  handleAddUser: (user: User) => void;
 }
 
-const UserInfo: React.FC<AddedUserInfoProps> = ({ user, onRemoveUser }) => {
+const UserInfo: React.FC<AddedUserInfoProps> = ({
+  user,
+  selectedMode,
+  onRemoveUser,
+  handleAddUser,
+}) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
-  console.log(user.MostChamp);
+  const [lineSrc, setLineSrc] = useState(none);
+
+  const handleLineSelection = (newLine: string) => {
+    setLine(newLine); // Line 상태 업데이트
+
+    // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
+    if (user) {
+      const updatedUser = { ...user, position: newLine }; // line 추가
+      handleAddUser(updatedUser); // 업데이트된 user 전달
+    }
+  };
   return (
     <div className="flex flex-row items-center h-[55px] mx-2 my-1 gap-2 relative">
-      <img
-        src={line}
-        alt="line-info"
-        className="w-[15px] h-[15px]"
-        onClick={() => setIsLine(!isLine)}
-      />
+      {selectedMode == "BALANCE" && (
+        <img
+          src={lineSrc}
+          alt="line-info"
+          className="w-[15px] h-[15px]"
+          onClick={() => setIsLine(!isLine)}
+        />
+      )}
       <img
         src={user.MostChamp[0].champInfo.champ_img}
         alt="most-champ-info"
@@ -40,7 +59,13 @@ const UserInfo: React.FC<AddedUserInfoProps> = ({ user, onRemoveUser }) => {
       >
         X
       </button>
-      {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
+      {isLine && (
+        <LineModal
+          handleLineSelection={handleLineSelection}
+          setIsLine={setIsLine}
+          setLineSrc={setLineSrc}
+        />
+      )}
     </div>
   );
 };

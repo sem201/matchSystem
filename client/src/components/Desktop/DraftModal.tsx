@@ -97,7 +97,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
                   <button
                     key={member.id}
                     onClick={() => handleLeaderSelect(member.gameName)}
-                    className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 ${
+                    className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 break-all ${
                       isRedLeader
                         ? "bg-[#8A2922] text-white cursor-not-allowed"
                         : isBlueLeader
