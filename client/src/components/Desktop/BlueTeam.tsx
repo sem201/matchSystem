@@ -35,7 +35,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
 
     // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
     if (user) {
-      const updatedUser = { ...user, Position: newLine }; // line 추가
+      const updatedUser = { ...user, position: newLine }; // line 추가
       handleAddUser(updatedUser); // 업데이트된 user 전달
     }
   };
