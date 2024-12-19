@@ -4,21 +4,21 @@ import mid from "../../../assets/line_img/line-mid.png";
 import ad from "../../../assets/line_img/line-ad.png";
 import sup from "../../../assets/line_img/line-sup.png";
 interface Props {
-  setLine: (line: string) => void;
+  handleLineSelection: (line: string) => void;
   setIsLine: (isLine: boolean) => void;
   setLineSrc: (line: string) => void;
 }
-const LineModal = ({ setLine, setIsLine, setLineSrc }: Props) => {
+const LineModal = ({ handleLineSelection, setIsLine, setLineSrc }: Props) => {
   const lines = [
     { name: "top", icon: top },
-    { name: "jg", icon: jg },
+    { name: "jug", icon: jg },
     { name: "mid", icon: mid },
     { name: "ad", icon: ad },
     { name: "sup", icon: sup },
   ];
 
   const handleClick = (newLineSrc: string, newLineName: string) => {
-    setLine(newLineName); // 선택된 라인 정보를 부모로 전달
+    handleLineSelection(newLineName); // 선택된 라인 정보를 부모로 전달
     setLineSrc(newLineSrc);
     setIsLine(false); // 모달 닫기
   };

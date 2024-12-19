@@ -88,7 +88,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
             {isLine && (
               <LineModal
-                setLine={handleLineSelection}
+                handleLineSelection={handleLineSelection}
                 setIsLine={setIsLine}
                 setLineSrc={setLineSrc}
               />

@@ -42,5 +42,5 @@ export interface User {
   tagLine: string; // 유저 태그
   winRate: number; // 승률
   updateId: number;
-  Position?: string;
+  position?: string;
 }

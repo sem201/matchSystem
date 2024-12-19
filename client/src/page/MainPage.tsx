@@ -51,6 +51,7 @@ const MainPage = () => {
       // addedUsers에 추가
       setAddedUsers((prev) => [...prev, user]);
     }
+
     // allUsers에서 제거
     setAllUsers((prev) => {
       // 중복 방지: 이미 allUsers에 존재하는지 확인
@@ -82,12 +83,7 @@ const MainPage = () => {
   };
 
   // 응답을 기반으로 팀 재배열
-  const updateTeams = (
-    addUsers: User[],
-    redTeam: User[],
-    blueTeam: User[],
-    response: any
-  ) => {
+  const updateTeams = (addUsers: User[], response: any) => {
     const redTeamIds = response.redTeam.players.map((player: any) => player.id);
     const blueTeamIds = response.blueTeam.players.map(
       (player: any) => player.id
@@ -99,15 +95,13 @@ const MainPage = () => {
         .filter(Boolean) as User[];
     };
     const newRedTeam = sortTeam(addUsers, redTeamIds);
-    console.log(newRedTeam);
     const newBlueTeam = sortTeam(addUsers, blueTeamIds);
 
     return { newRedTeam, newBlueTeam };
   };
   useEffect(() => {
-    console.log("redTeam 업데이트됨:", redTeam);
-    console.log("blueTeam 업데이트됨:", blueTeam);
-  }, [redTeam]);
+    console.log("add:", addedUsers);
+  }, [addedUsers]);
   const handleTeamButtonClick = async () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
       alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
@@ -129,7 +123,7 @@ const MainPage = () => {
           id: user.id,
           gameName: user.gameName,
           RankScore: user.tierScore.RankScore,
-          position: user.Position,
+          position: user.position,
         })),
         mode: "balance",
       };
@@ -139,8 +133,6 @@ const MainPage = () => {
         console.log(response.data);
         const { newRedTeam, newBlueTeam } = updateTeams(
           addedUsers,
-          redTeam,
-          blueTeam,
           response.data
         );
 
