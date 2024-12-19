@@ -12,6 +12,10 @@ const NoobsRecentFriend = sequelize.define('Noobs_Recent_Friend', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  puuid: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   gameName: {
     type: DataTypes.STRING,
     allowNull: false,
