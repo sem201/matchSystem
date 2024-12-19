@@ -22,6 +22,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
   const [line, setLine] = useState(none);
+  const [lineSrc, setLineSrc] = useState(none);
 
   // 유저가 없을 경우 배경을 다르게 설정
   const backgroundClass = user ? "bg-[#D1C3C3]" : "bg-[#F0E6D2] bg-opacity-15";
@@ -30,7 +31,15 @@ const RedTeam: React.FC<RedTeamProps> = ({
   const formatNumberWithCommas = (number: number): string => {
     return number.toLocaleString();
   };
+  const handleLineSelection = (newLine: string) => {
+    setLine(newLine); // Line 상태 업데이트
 
+    // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
+    if (user) {
+      const updatedUser = { ...user, Position: newLine }; // line 추가
+      handleAddUser(updatedUser); // 업데이트된 user 전달
+    }
+  };
   return (
     <div
       className={`w-[18%] max-h-[100%] border-2 border-solid border-[#8A2922] rounded-2xl flex flex-col items-center p-2 ${backgroundClass}`}
@@ -43,7 +52,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
             className="flex flex-col items-center justify-between h-full"
           >
             <img
-              src={line}
+              src={lineSrc}
               alt="라인 이미지"
               className={`w-5 h-5 ${
                 selectedMode === "RANDOM" ||
@@ -77,7 +86,13 @@ const RedTeam: React.FC<RedTeamProps> = ({
               {user.gameName}
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
-            {isLine && <LineModal setLine={setLine} setIsLine={setIsLine} />}
+            {isLine && (
+              <LineModal
+                setLine={handleLineSelection}
+                setIsLine={setIsLine}
+                setLineSrc={setLineSrc}
+              />
+            )}
             <img
               src={close}
               alt="close"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import XLSX  from "xlsx";
+import XLSX from "xlsx";
 
 //테스트 데이터 생성 함수 (예시)
 //테스트용
@@ -15,18 +15,18 @@ const getTestData = async () => {
       { id: 7, gameName: "test7", RankScore: 14, position: "ad" },
       { id: 8, gameName: "test8", RankScore: 17, position: "ad" },
       { id: 9, gameName: "test9", RankScore: 13, position: "sup" },
-      { id: 10, gameName: "test10", RankScore: 19, position: "sup" }
+      { id: 10, gameName: "test10", RankScore: 19, position: "sup" },
     ];
 
-    setTimeout(() => resolve(players), 1000);  // 1초 후 데이터를 반환
+    setTimeout(() => resolve(players), 1000); // 1초 후 데이터를 반환
   });
 };
 
 const getTestDraftData = async () => {
   return new Promise((resolve) => {
     const players = [
-      { id: 1, gameName: "test1", RankScore: 10, leader:true },
-      { id: 2, gameName: "test2", RankScore: 15, leader:true },
+      { id: 1, gameName: "test1", RankScore: 10, leader: true },
+      { id: 2, gameName: "test2", RankScore: 15, leader: true },
       { id: 3, gameName: "test3", RankScore: 20 },
       { id: 4, gameName: "test4", RankScore: 18 },
       { id: 5, gameName: "test5", RankScore: 12 },
@@ -34,9 +34,9 @@ const getTestDraftData = async () => {
       { id: 7, gameName: "test7", RankScore: 14 },
       { id: 8, gameName: "test8", RankScore: 17 },
       { id: 9, gameName: "test9", RankScore: 13 },
-      { id: 10, gameName: "test10", RankScore: 19 }
+      { id: 10, gameName: "test10", RankScore: 19 },
     ];
-    setTimeout(() => resolve(players), 1000);  // 1초 후 데이터를 반환
+    setTimeout(() => resolve(players), 1000); // 1초 후 데이터를 반환
   });
 };
 
@@ -44,15 +44,15 @@ const getTestDraftData = async () => {
 const generateRandTeam = (players) => {
   // 포지션별 그룹화
   const positions = {
-    탑 : [],
-    정글 : [],
-    미드 : [],
-    원딜 : [],
-    서폿 : []
+    탑: [],
+    정글: [],
+    미드: [],
+    원딜: [],
+    서폿: [],
   };
 
   // 플레이어 포지션 분류
-  players.forEach(player => {
+  players.forEach((player) => {
     positions[player.position].push(player);
   });
 
@@ -61,32 +61,39 @@ const generateRandTeam = (players) => {
   const blueTeam = [];
 
   // 각 포지션별 무작위로 팀배정
-  Object.keys(positions).forEach(position => {
+  Object.keys(positions).forEach((position) => {
     const playerinPosition = positions[position];
 
     // 랜덤하게 2명씩 뽑아서 팀배정
     while (playerinPosition.length) {
-      const randomPlayer1 = playerinPosition.splice(Math.floor(Math.random() * playerinPosition.length), 1)[0];
-      const randomPlayer2 = playerinPosition.splice(Math.floor(Math.random() * playerinPosition.length), 1)[0];
+      const randomPlayer1 = playerinPosition.splice(
+        Math.floor(Math.random() * playerinPosition.length),
+        1
+      )[0];
+      const randomPlayer2 = playerinPosition.splice(
+        Math.floor(Math.random() * playerinPosition.length),
+        1
+      )[0];
 
       readTeam.push(randomPlayer1);
       blueTeam.push(randomPlayer2);
     }
   });
-  return { readTeam,blueTeam };
+  return { readTeam, blueTeam };
 };
 // 밸런스 섞기
 const balanceTeams = (players) => {
   // 포지션별 점수 -> 정글-미드-원딜-탑-서폿
-  const positionPoints = { "jug": 5, "mid": 4, "ad": 3, "top": 2, "sup": 1 };
+  const positionPoints = { jug: 5, mid: 4, ad: 3, top: 2, sup: 1 };
+  console.log(players);
 
   // 포지션별 그룹화
   const positionPlayers = {
-    "jug": [],
-    "mid": [],
-    "ad": [],
-    "top": [],
-    "sup": [],
+    jug: [],
+    mid: [],
+    ad: [],
+    top: [],
+    sup: [],
   };
 
   // 선수 데이터 새로 복사하고 랜덤 섞기
@@ -94,7 +101,7 @@ const balanceTeams = (players) => {
   shufflePlayers(shuffledPlayers);
 
   // 복사된 선수들을 포지션별로 분류
-  shuffledPlayers.forEach(player => {
+  shuffledPlayers.forEach((player) => {
     positionPlayers[player.position].push(player);
   });
 
@@ -103,7 +110,7 @@ const balanceTeams = (players) => {
     const playersInPosition = positionPlayers[position];
 
     // rankScore가 20 이상인 선수만 점수 추가
-    playersInPosition.forEach(player => {
+    playersInPosition.forEach((player) => {
       if (player.RankScore >= 20) {
         player.RankScore += positionPoints[position];
       }
@@ -114,13 +121,16 @@ const balanceTeams = (players) => {
   shuffledPlayers.sort((a, b) => b.RankScore - a.RankScore);
 
   // 두 팀으로 균등 분배 (각 팀에 5명씩)
-  const teams = [{ players: [], totalRankScore: 0 }, { players: [], totalRankScore: 0 }];
-  
+  const teams = [
+    { players: [], totalRankScore: 0 },
+    { players: [], totalRankScore: 0 },
+  ];
+
   // 포지션 순서대로 팀에 분배
   const positionOrder = ["top", "jug", "mid", "ad", "sup"];
-  
+
   // 각 포지션에서 한 명씩 배정
-  positionOrder.forEach(position => {
+  positionOrder.forEach((position) => {
     const team1Player = positionPlayers[position].shift();
     const team2Player = positionPlayers[position].shift();
 
@@ -140,7 +150,7 @@ const balanceTeams = (players) => {
   remainingPlayers = shufflePlayers(remainingPlayers);
 
   // 남은 선수들을 순차적으로 팀에 추가
-  remainingPlayers.forEach(player => {
+  remainingPlayers.forEach((player) => {
     if (teams[0].players.length < 5) {
       teams[0].players.push(player);
       teams[0].totalRankScore += player.RankScore;
@@ -153,9 +163,11 @@ const balanceTeams = (players) => {
   // 클라이언트로 전달할 때 탑 -> 정글 -> 미드 -> 원딜 -> 서폿 순으로 정렬
   const sortPositionClient = (team) => {
     const positionOrder = ["top", "jug", "mid", "ad", "sup"];
-    return positionOrder.map(position => {
-      return team.players.filter(player => player.position === position);
-    }).flat();
+    return positionOrder
+      .map((position) => {
+        return team.players.filter((player) => player.position === position);
+      })
+      .flat();
   };
 
   // 각 팀의 포지션 순서대로 정렬 후 전달
@@ -165,11 +177,11 @@ const balanceTeams = (players) => {
   return {
     blueTeam: {
       players: blueTeam,
-      totalRankScore: teams[0].totalRankScore
+      totalRankScore: teams[0].totalRankScore,
     },
     redTeam: {
       players: redTeam,
-      totalRankScore: teams[1].totalRankScore
+      totalRankScore: teams[1].totalRankScore,
     },
   };
 };
@@ -183,15 +195,15 @@ const shufflePlayers = (arr) => {
 };
 
 const draftTeams = (players) => {
-  const filterPlayers = players.filter(player => !player.leader);
+  const filterPlayers = players.filter((player) => !player.leader);
 
-  const sortPlayers = filterPlayers.sort((a,b) => b.RankScore - a.RankScore);
+  const sortPlayers = filterPlayers.sort((a, b) => b.RankScore - a.RankScore);
 
-  return { draftTeam : sortPlayers };
-}
+  return { draftTeam: sortPlayers };
+};
 
 const TeamMach = async (req, res) => {
-  const { mode, players } = req.body;  
+  const { mode, players } = req.body;
   console.log("Received mode:", mode);
 
   try {
@@ -201,8 +213,8 @@ const TeamMach = async (req, res) => {
       console.log("Generated players:", players);
 
       const { readTeam, blueTeam } = generateRandTeam(players);
-
       // 응답으로 생성된 플레이어 목록 반환
+
       return res.status(200).json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
     } else if (mode == 'balance') {
 
@@ -211,10 +223,21 @@ const TeamMach = async (req, res) => {
       return res.status(200).json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
     } else if (mode == 'draft') {
 
+      return res
+        .status(200)
+        .json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
+    } else if (mode == "balance") {
+      const { redTeam, blueTeam } = balanceTeams(players);
+      return res
+        .status(200)
+        .json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
+    } else if (mode == "draft") {
       const players = await getTestDraftData();
       const { draftTeam } = draftTeams(players);
 
-      return res.status(200).json({ message: "드래프트 팀 생성 완료", draftTeam })
+      return res
+        .status(200)
+        .json({ message: "드래프트 팀 생성 완료", draftTeam });
     } else {
       return res.status(400).json({ message: "유효하지 않은 모드" });
     }
@@ -223,7 +246,6 @@ const TeamMach = async (req, res) => {
     return res.status(500).json({ message: "서버 오류", error: error.message });
   }
 };
-
 
 const sampleData = async () => {
   const headers = {
@@ -313,6 +335,5 @@ const sampleData = async () => {
     console.error("Error fetching data:", error.message);
   }
 };
-
 
 export { TeamMach, sampleData };
