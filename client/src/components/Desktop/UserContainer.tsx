@@ -14,16 +14,10 @@ const UserContainer: React.FC<UserContainerProps> = ({
   handleAddUser,
   setIsUserAdded,
 }) => {
-  const [state, setState] = useState(true);
-  useEffect(() => {
-    setState((prev) => !prev);
-    console.log("실행됨?", allUsers);
-  }, [allUsers]);
-
   return (
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">
-        <div className="font-blackHanSans text-center mb-5 mt-3 text-white">
+        <div className="font-blackHanSans text-3xl text-center mb-5 mt-3 text-white">
           최근에 같이한 친구
         </div>
         <div>

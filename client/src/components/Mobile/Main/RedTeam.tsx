@@ -2,9 +2,16 @@ import AddedUserInfo from "../chooseUser/AddedUserInfo";
 import { User } from "../../../commonTypes";
 interface RedTeamProps {
   teamMembers: User[];
+  selectedMode: string;
   onRemoveUser: (user: User) => void;
+  handleAddUser: (user: User) => void;
 }
-const RedTeam: React.FC<RedTeamProps> = ({ teamMembers, onRemoveUser }) => {
+const RedTeam: React.FC<RedTeamProps> = ({
+  teamMembers,
+  selectedMode,
+  onRemoveUser,
+  handleAddUser,
+}) => {
   return (
     <>
       <p
@@ -21,7 +28,13 @@ const RedTeam: React.FC<RedTeamProps> = ({ teamMembers, onRemoveUser }) => {
         <div className="h-[1px] bg-[#ffffff] bg-opacity-30 w-[80%] absolute top-[180px] left-[calc(150px-40%)]"></div>
         <div className="h-[1px] bg-[#ffffff] bg-opacity-30 w-[80%] absolute top-[240px] left-[calc(150px-40%)]"></div>
         {teamMembers.map((user, index) => (
-          <AddedUserInfo key={index} user={user} onRemoveUser={onRemoveUser} />
+          <AddedUserInfo
+            key={index}
+            user={user}
+            onRemoveUser={onRemoveUser}
+            handleAddUser={handleAddUser}
+            selectedMode={selectedMode}
+          />
         ))}
       </div>
     </>

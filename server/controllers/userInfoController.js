@@ -112,7 +112,6 @@ const userSearch = async (req, res) => {
 
     // gameRank에 랭킹정보 저장하기
     // NoobsuserInfo -> id 값 -> gameId에 저장
-    console.log(newUser.id);
     const leagueData = leagueResponse.data.map((item) => {
       const queueTypeT =
         item.queueType === "RANKED_FLEX_SR"
@@ -236,6 +235,7 @@ const friendUserBrUpdate = async (req, res) => {
       leagueResponse.data.find(
         (entry) => entry.queueType === "RANKED_SOLO_5x5"
       ) || {};
+
     const {
       tier = "Unranked",
       rank = "Unranked",
@@ -247,10 +247,77 @@ const friendUserBrUpdate = async (req, res) => {
         ? ((wins / (wins + losses)) * 100).toFixed(1)
         : "nodata";
 
+    const leagueData = leagueResponse.data.map((item) => {
+      // queueType에 따라 랭크 종류 수정
+      const queueType =
+        item.queueType === "RANKED_FLEX_SR"
+          ? "자유랭"
+          : item.queueType === "RANKED_SOLO_5x5"
+          ? "개인/2인랭"
+          : "기타";
+
+      // tier와 rank가 없으면 Unranked로 처리
+      const tier = item.tier || "Unranked";
+      const rank = item.rank || "Unranked";
+
+      // leaguePoints, wins, losses 값이 없다면 0으로 초기화
+      const leaguePoints = item.leaguePoints || 0;
+      const wins = item.wins || 0;
+      const losses = item.losses || 0;
+
+      return {
+        queueType,
+        tier,
+        rank,
+        summonerId: item.summonerId,
+        leaguePoints,
+        wins,
+        losses,
+        winRate: wins && losses ? (wins / (wins + losses)) * 100 : 0, // winRate 계산
+      };
+    });
+
     // 모스트 챔피언 데이터
     const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${userPuuid}/top?count=5`;
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
+
+    // 랭크정보 업데이트
+    for (const rankData of leagueData) {
+      const existingData = await GameRank.findOne({
+        where: {
+          game_id: user_id,
+          queueType: rankData.queueType,
+        },
+      });
+
+      // 기존 데이터 존재하면 업데이트
+      if (existingData) {
+        await existingData.update({
+          tier: rankData.tier,
+          rank: rankData.rank,
+          LP: rankData.leaguePoints,
+          wins: rankData.wins,
+          losses: rankData.losses,
+          winRate: rankData.winRate,
+          updatedAt: new Date(),
+        })
+      } else {
+        // 없으면 새로 추가
+        await GameRank.create({
+          game_id : user_id,
+          queueType : rankData.queueType,
+          tier : rankData.tier,
+          rank : rankData.rank,
+          LP : rankData.leaguePoints,
+          wins : rankData.wins,
+          losses : rankData.losses,
+          winRate : rankData.winRate,
+          createdAt : new Date(),
+          updatedAt : new Date(),
+        })
+      }
+    }
 
     // 사용자 정보 업데이트
     const resultUpdateUser = await NoobsUserInfo.update(
@@ -271,6 +338,26 @@ const friendUserBrUpdate = async (req, res) => {
 
     console.log(resultUpdateUser);
 
+    // 같이한 사용자 테이블 업데이트
+    await NoobsRecentFriend.update(
+    {
+      gameName,
+      tagLine,
+      profileIconId,
+      tier,
+      rank,
+      wins,
+      losses,
+      winRate,
+      updatedAt : new Date(),
+    },
+    {
+      where : {
+        puuid : userPuuid,
+      }
+    }
+  )
+
     if (resultUpdateUser[0] === 0) {
       return res.status(400).json({ message: "업데이트 실패" });
     }
@@ -282,7 +369,7 @@ const friendUserBrUpdate = async (req, res) => {
           {
             championLevel,
             championPoints,
-            updatedAt: seoulTime,
+            updatedAt: new Date(),
           },
           {
             where: {
@@ -306,8 +393,6 @@ const friendUserBrUpdate = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
-  console.log(userid, tagLine);
-
   const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
 
   if (!userid || !tagLine) {
@@ -333,7 +418,8 @@ const userAdd = async (req, res) => {
         tagLine: tagLine,
       },
     });
-    console.log("userSearchData", userSearchData);
+
+    console.log(userSearchData);
 
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
@@ -352,6 +438,7 @@ const userAdd = async (req, res) => {
         // DB 저장: 사용자 정보
         const user = await NoobsRecentFriend.create({
           user_id: req.session.user.id, // 세션에서 가져온 user_id 값
+          puuid : userSearchData.puuid,
           gameName: userSearchData.gameName,
           tagLine: userSearchData.tagLine,
           profileIconId: userSearchData.profileIconId,
@@ -436,7 +523,7 @@ const friendUserBr = async (req, res) => {
       // 포지션 빈값 추가
       const userPosition = "";
 
-      friend.dataValues.Position = userPosition;
+      friend.dataValues.position = userPosition;
       friend.dataValues.updateId = updateId;
       friend.dataValues.tierImg = userRankImg;
       friend.dataValues.tierScore = userRankScore;
