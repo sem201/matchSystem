@@ -7,6 +7,7 @@ import Champion from "../models/Champion.js";
 import Profile from "../models/Profile.js";
 import RankInfo from "../models/RankInfo.js";
 import TierScore from "../models/TierScore.js";
+import GameRank from "../models/Game_Ranking.js";
 import moment from "moment-timezone";
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
@@ -47,9 +48,7 @@ const userSearch = async (req, res) => {
 
     if (user) {
       console.log("사용자 데이터가 DB에 존재합니다.");
-      return res
-        .status(200)
-        .json({ message: "사용자 db 요청 완료", data: user });
+      return res.status(200).json({ message: "사용자 db 요청 완료" });
     }
 
     // 2. 사용자 정보 API 요청
@@ -71,6 +70,8 @@ const userSearch = async (req, res) => {
     // 4. 랭크 정보 API 요청
     const leagueUrl = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
     const leagueResponse = await axios.get(leagueUrl, { headers });
+    console.log(leagueResponse.data);
+
     const rankedSoloData =
       leagueResponse.data.find(
         (entry) => entry.queueType === "RANKED_SOLO_5x5"
@@ -109,6 +110,52 @@ const userSearch = async (req, res) => {
       winRate,
     });
 
+    // gameRank에 랭킹정보 저장하기
+    // NoobsuserInfo -> id 값 -> gameId에 저장
+    console.log(newUser.id);
+    const leagueData = leagueResponse.data.map((item) => {
+      const queueTypeT =
+        item.queueType === "RANKED_FLEX_SR"
+          ? "자유랭"
+          : item.queueType === "RANKED_SOLO_5x5"
+          ? "개인/2인랭"
+          : "Unranked";
+      const tier = item.tier || "Unranked";
+      const rank = item.rank || "Unranked";
+
+      const leaguePoints = item.leaguePoints || 0;
+      const wins = item.wins || 0;
+      const losses = item.losses || 0;
+
+      return {
+        queueTypeT,
+        tier,
+        rank,
+        summonerId: item.summonerId,
+        leaguePoints,
+        wins,
+        losses,
+      };
+    });
+
+    const gameRankData = leagueData.map((item) => ({
+      game_id: newUser.id,
+      queueType: item.queueTypeT,
+      tier: item.tier,
+      rank: item.rank,
+      LP: item.leaguePoints,
+      wins: item.wins,
+      losses: item.losses,
+      winRate:
+        item.wins && item.losses
+          ? (item.wins / (item.wins + item.losses)) * 100
+          : 0, // winRate 계산
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+
+    await GameRank.bulkCreate(gameRankData);
+
     // 7. DB에 모스트 챔피언 데이터 저장
     const mostChampExists = await NoobsMasterChamp.findOne({
       where: { user_id: newUser.id },
@@ -126,9 +173,7 @@ const userSearch = async (req, res) => {
       }
     }
 
-    return res
-      .status(200)
-      .json({ message: "사용자 데이터 등록 완료", data: newUser });
+    return res.status(200).json({ message: "사용자 데이터 등록 완료" });
   } catch (error) {
     console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
     const status = error.response?.status || 500;
@@ -313,7 +358,7 @@ const userAdd = async (req, res) => {
           losses: userSearchData.losses,
           winRate: userSearchData.winRate,
         });
-        return res.status(200).json({ user });
+        return res.status(200).json({ message: "사용자 추가 완료!" });
       } else {
         return res.status(400).json({ message: "이미 추가된 유저입니다. " });
       }
@@ -326,6 +371,9 @@ const userAdd = async (req, res) => {
 
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
+  console.log("서버쪽입니다.", req.session);
+  console.log("서버쪽입니다.", req.session.id);
+
   try {
     // 사용자 목록 조회
     const friendUser = await NoobsRecentFriend.findAll({
@@ -382,6 +430,10 @@ const friendUserBr = async (req, res) => {
         },
       });
 
+      // 포지션 빈값 추가
+      const userPosition = "";
+
+      friend.dataValues.Position = userPosition;
       friend.dataValues.updateId = updateId;
       friend.dataValues.tierImg = userRankImg;
       friend.dataValues.tierScore = userRankScore;
