@@ -12,9 +12,9 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
   onAddUser,
   setIsUserAdded,
 }) => {
-  console.log("모스트", user.MostChamp);
   const [userModal, setUserModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleOutsideClick = (e: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(e.target as Node)) {

@@ -3,54 +3,38 @@ import axios from "axios";
 import logoImg from "../../assets/modeGif/Noobs.png";
 
 const Navbar: React.FC = () => {
-  const [logoutTime, setLogoutTime] = useState(10 * 6); // 10분을 초로 설정
+  const [logoutTime, setLogoutTime] = useState(30 * 60); // 10분을 초로 설정
   const [isMenuOpen, setIsMenuOpen] = useState(false); // 메뉴 열림 상태 관리
   const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
+  const hasLoggedOut = useRef(false); // 로그아웃 중복 호출 방지 플래그
 
   // 타이머 감소
   useEffect(() => {
     // 타이머 실행
-    const startTimer = () => {
-      timerRef.current = setInterval(() => {
-        setLogoutTime((prevTime) => {
-          if (prevTime > 0) {
-            return prevTime - 1;
-          } else {
-            // 타이머가 0에 도달하면 로그아웃 처리
+    timerRef.current = setInterval(() => {
+      setLogoutTime((prevTime) => {
+        if (prevTime > 0) {
+          return prevTime - 1;
+        } else {
+          if (!hasLoggedOut.current) {
+            hasLoggedOut.current = true; // 로그아웃 처리 중복 방지
             logout();
-            return 0;
           }
-        });
-      }, 1000);
-    };
+          return 0;
+        }
+      });
+    }, 1000);
 
-    startTimer(); // 타이머 시작
-
-    // 활동을 감지하여 타이머 초기화
-    const resetTimer = () => {
-      setLogoutTime(10 * 6); // 타이머 리셋
-      if (timerRef.current) {
-        clearInterval(timerRef.current); // 기존 타이머 정리
-      }
-      startTimer(); // 새 타이머 시작
-    };
-
-    // 활동 이벤트 리스너 (마우스 이동, 키보드 입력)
-    window.addEventListener("mousemove", resetTimer);
-    window.addEventListener("keydown", resetTimer);
-
-    // 컴포넌트가 unmount될 때 이벤트 리스너와 타이머 정리
+    // 컴포넌트가 unmount될 때 타이머 정리
     return () => {
-      clearInterval(timerRef.current!);
-      window.removeEventListener("mousemove", resetTimer);
-      window.removeEventListener("keydown", resetTimer);
+      if (timerRef.current) clearInterval(timerRef.current);
     };
   }, []);
 
   // 로그아웃 요청 함수
   const logout = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/logout", { withCredentials: true });
+      await axios.get("http://127.0.0.1:8000/logout");
       alert("로그아웃 되었습니다.");
       window.location.href = "/";
     } catch (error) {
@@ -158,8 +142,8 @@ const Navbar: React.FC = () => {
           isMenuOpen ? "translate-x-0" : "translate-x-full"
         } z-40`}
       >
-        <div className="flex flex-col items-center justify-start space-y-9 pt-25 ">
-          <span className="text-white text-lg font-semibold">환영합니다</span>
+        <div className="flex flex-col items-center justify-start space-y-9 pt-36">
+          <span className="text-white text-lg font-semibold">성은총님 환영합니다</span>
           <a
             href="#"
             className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"

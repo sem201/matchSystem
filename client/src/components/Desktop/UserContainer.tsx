@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { User } from "../../commonTypes";
 import LatestUserInfo from "./LatestUserInfo";
 
@@ -14,6 +14,12 @@ const UserContainer: React.FC<UserContainerProps> = ({
   handleAddUser,
   setIsUserAdded,
 }) => {
+  const [state, setState] = useState(true);
+  useEffect(() => {
+    setState((prev) => !prev);
+    console.log("실행됨?", allUsers);
+  }, [allUsers]);
+
   return (
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">

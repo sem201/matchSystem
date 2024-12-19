@@ -1,16 +1,34 @@
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
 import NoobsRecentFriends from "../models/Noobs_Recent_Friend.js";
+import GameRank from "../models/Game_Ranking.js"
 import Users from "../models/User.js";
-
+// 1:N (하나의 사용자 - 여러 개의 챔피언)
+// NoobsUserInfo id값 -> MasterChamp user_id f키로 연결
 NoobsUserInfo.hasMany(NoobsMasterChamp, {
   foreignKey : 'user_id',
   sourceKey: 'id',
   onDelete: 'CASCADE', 
 });
-
+// 1:N (하나의 사용자 - 여러 개의 챔피언)
+// NoobsUserInfo id값 -> MasterChamp user_id f키로 연결
 NoobsMasterChamp.belongsTo(NoobsUserInfo, {
   foreignKey: 'user_id',
+  targetKey: 'id',
+});
+
+
+// 1:N (하나의 사용자 - 여러개의 랭크 [ 솔랭 / 자유랭 ])
+// NoobsUserInfo id값 -> Game_Ranking game_id f키로 연결
+NoobsUserInfo.hasMany(GameRank, {
+  foreignKey : 'game_id',
+  sourceKey: 'id',
+  onDelete: 'CASCADE', 
+});
+// 1:N (하나의 사용자 - 여러개의 랭크 [ 솔랭 / 자유랭 ])
+// NoobsUserInfo id값 -> Game_Ranking game_id f키로 연결
+GameRank.belongsTo(NoobsUserInfo, {
+  foreignKey: 'game_id',
   targetKey: 'id',
 });
 
