@@ -306,6 +306,8 @@ const friendUserBrUpdate = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
+  console.log(userid, tagLine);
+
   const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
 
   if (!userid || !tagLine) {
@@ -331,6 +333,7 @@ const userAdd = async (req, res) => {
         tagLine: tagLine,
       },
     });
+    console.log("userSearchData", userSearchData);
 
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
