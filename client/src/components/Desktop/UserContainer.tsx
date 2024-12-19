@@ -17,7 +17,6 @@ const UserContainer: React.FC<UserContainerProps> = ({
   const [state, setState] = useState(true);
   useEffect(() => {
     setState((prev) => !prev);
-    console.log("실행됨?", allUsers);
   }, [allUsers]);
 
   return (

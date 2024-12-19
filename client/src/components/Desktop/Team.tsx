@@ -20,12 +20,12 @@ const Team: React.FC<TeamProps> = ({
 }) => {
   const redTeamWithDefaults = Array.from(
     { length: 5 },
-    (_, idx) => redTeam[idx] || null
+    (_, idx) => redTeam?.[idx] || null
   );
 
   const blueTeamWithDefault = Array.from(
     { length: 5 },
-    (_, idx) => blueTeam[idx] || null
+    (_, idx) => blueTeam?.[idx] || null
   );
 
   return (

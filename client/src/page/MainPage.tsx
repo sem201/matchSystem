@@ -61,7 +61,6 @@ const MainPage = () => {
       return prev; // 이미 존재하면 그대로 반환
     });
   };
-  console.log("추가된 유저", addedUsers);
   // 팀에서 사용자 제거 로직
   const handleRemoveUser = (user: User) => {
     // RedTeam에서 유저
@@ -81,10 +80,35 @@ const MainPage = () => {
       return [...prev, user];
     });
   };
+
+  // 응답을 기반으로 팀 재배열
+  const updateTeams = (
+    addUsers: User[],
+    redTeam: User[],
+    blueTeam: User[],
+    response: any
+  ) => {
+    const redTeamIds = response.redTeam.players.map((player: any) => player.id);
+    const blueTeamIds = response.blueTeam.players.map(
+      (player: any) => player.id
+    );
+
+    const sortTeam = (team: User[], sorterIds: number[]) => {
+      return sorterIds
+        .map((id) => team.find((user) => user.id === id))
+        .filter(Boolean) as User[];
+    };
+    const newRedTeam = sortTeam(addUsers, redTeamIds);
+    console.log(newRedTeam);
+    const newBlueTeam = sortTeam(addUsers, blueTeamIds);
+
+    return { newRedTeam, newBlueTeam };
+  };
   useEffect(() => {
-    console.log("모든 유저 업데이트됨:", allUsers);
-  }, [allUsers]);
-  const handleTeamButtonClick = () => {
+    console.log("redTeam 업데이트됨:", redTeam);
+    console.log("blueTeam 업데이트됨:", blueTeam);
+  }, [redTeam]);
+  const handleTeamButtonClick = async () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
       alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
       return;
@@ -99,11 +123,33 @@ const MainPage = () => {
       return allUsers;
     };
 
-    if (selectedMode === "모드선택") {
-      alert("Mode를 선택해 주세요");
-    }
+    if (selectedMode === "BALANCE") {
+      const data = {
+        players: addedUsers.map((user) => ({
+          id: user.id,
+          gameName: user.gameName,
+          RankScore: user.tierScore.RankScore,
+          position: user.Position,
+        })),
+        mode: "balance",
+      };
+      console.log("데이터 타입: ", typeof data.players);
+      try {
+        const response = await apiCall("noobs/TeamMach", "post", data);
+        console.log(response.data);
+        const { newRedTeam, newBlueTeam } = updateTeams(
+          addedUsers,
+          redTeam,
+          blueTeam,
+          response.data
+        );
 
-    if (selectedMode === "RANDOM") {
+        setRedTeam(newRedTeam);
+        setBlueTeam(newBlueTeam);
+      } catch (err) {
+        console.log(err);
+      }
+    } else if (selectedMode === "RANDOM") {
       // 랜덤모드일때 팀을 섞어 새로운 팀으로 설정
       const shuffledUsers = shuffleTeams(redTeam, blueTeam);
       const newRedTeam = shuffledUsers.slice(0, 5);
@@ -111,9 +157,10 @@ const MainPage = () => {
 
       setRedTeam(newRedTeam);
       setBlueTeam(newBlueTeam);
-    }
-    if (selectedMode === "DRAFT") {
+    } else if (selectedMode === "DRAFT") {
       setIsDraftModalOpen(true);
+    } else {
+      alert("Mode를 선택해 주세요요");
     }
   };
   // 모달 열기
