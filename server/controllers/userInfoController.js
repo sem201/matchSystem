@@ -302,6 +302,7 @@ const userAdd = async (req, res) => {
         user_id: req.session.user.id,
       },
     });
+    
 
     if (userFriendCount >= FRIEND_MAX) {
       return res.status(400).json({ message: "더이상 추가 할 수 없습니다." });
@@ -315,6 +316,8 @@ const userAdd = async (req, res) => {
         tagLine: tagLine,
       },
     });
+
+    console.log(userSearchData);
 
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
@@ -420,7 +423,7 @@ const friendUserBr = async (req, res) => {
       // 포지션 빈값 추가
       const userPosition = '';
       
-      friend.dataValues.Position = userPosition;
+      friend.dataValues.position = userPosition;
       friend.dataValues.updateId = updateId;
       friend.dataValues.tierImg = userRankImg;
       friend.dataValues.tierScore = userRankScore;
