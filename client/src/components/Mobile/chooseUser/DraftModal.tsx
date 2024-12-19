@@ -97,7 +97,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
                   <button
                     key={member.id}
                     onClick={() => handleLeaderSelect(member.gameName)}
-                    className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 ${
+                    className={`py-1 px-1 rounded-lg border-[#C89B3C] border-2 ${
                       isRedLeader
                         ? "bg-[#8A2922] text-white cursor-not-allowed"
                         : isBlueLeader
@@ -114,7 +114,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
           </div>
         )}
 
-        <div className="text-center text-lg my-4">
+        <div className="text-center text-xs my-4">
           {redTeamLeader && (
             <p className="font-bold text-[#8A2922]">
               {redTeamLeader}님이 RED TEAM 팀장입니다.
