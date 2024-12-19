@@ -55,7 +55,9 @@ const UserInfo: React.FC<AddedUserInfoProps> = ({
       </p>
       <button
         className="w-[10px] bg-inherit text-white"
-        onClick={() => onRemoveUser(user)}
+        onClick={() => {
+          onRemoveUser(user), setLineSrc(none);
+        }}
       >
         X
       </button>
