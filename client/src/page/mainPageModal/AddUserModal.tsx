@@ -38,8 +38,7 @@ export default function AddUserModal({
     // 검색 로직 실행
     const data = { userid: nickname, tagLine: tag };
     try {
-      const response = await apiCall("/noobs/lolUser", "get", data);
-      console.log(response);
+      await apiCall("/noobs/lolUser", "get", data);
       setErrorLog("");
       setUserAdded(true);
     } catch (error: any) {

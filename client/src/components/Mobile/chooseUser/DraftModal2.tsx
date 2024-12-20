@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+import { User } from "../../../commonTypes";
 // import { User } from "../../../commonTypes";
 
 interface DraftModal2Props {
   closeModal: () => void;
-  teamMembers: string[]; // ( 원래는 User[]였음 참고하기 )
-  redTeamLeader: string | null; // 부모 컴포넌트에서 받은 redTeamLeader
-  blueTeamLeader: string | null; // 부모 컴포넌트에서 받은 blueTeamLeader
-  onFinishDraft: (RedTeam: string[], BlueTeam: string[]) => void;
+  teamMembers: User[]; // ( 원래는 User[]였음 참고하기 )
+  redTeamLeader: User | null; // 부모 컴포넌트에서 받은 redTeamLeader
+  blueTeamLeader: User | null; // 부모 컴포넌트에서 받은 blueTeamLeader
+  handleFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void;
 }
 
 const DraftModal2 = ({
@@ -14,11 +15,12 @@ const DraftModal2 = ({
   teamMembers,
   redTeamLeader,
   blueTeamLeader,
-  onFinishDraft,
+  handleFinishDraft,
 }: DraftModal2Props) => {
-  const [draftedMembers, setDraftedMembers] = useState<string[]>([]); // 이미 선택된 멤버
-  const [currentTeamMembers, setCurrentTeamMembers] = useState<string[]>([]); // 랜덤으로 선택된 두 팀원
-  const [currentLeader, setCurrentLeader] = useState<string | null>(
+  console.log("모달2 실행");
+  const [draftedMembers, setDraftedMembers] = useState<User[]>([]); // 이미 선택된 멤버
+  const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 랜덤으로 선택된 두 팀원
+  const [currentLeader, setCurrentLeader] = useState<User | null>(
     redTeamLeader
   ); // 레드팀 팀장만 계속 표시
 
@@ -47,13 +49,13 @@ const DraftModal2 = ({
   };
 
   // 멤버 선택 시 호출되는 함수
-  const handleSelectMember = (selectedMember: string) => {
+  const handleSelectMember = (selectedMember: User) => {
     // 레드팀에 선택된 멤버를 추가
     setDraftedMembers((prevDrafted) => [...prevDrafted, selectedMember]);
 
     // 선택되지 않은 멤버는 블루팀에 배정
     const remainingMember = currentTeamMembers.find(
-      (member) => member !== selectedMember
+      (member) => member.gameName !== selectedMember.gameName
     );
     if (remainingMember) {
       setDraftedMembers((prevDrafted) => [...prevDrafted, remainingMember]);
@@ -74,7 +76,7 @@ const DraftModal2 = ({
         ...draftedMembers.filter((_, idx) => idx % 2 === 1),
       ];
 
-      onFinishDraft(RedTeam, BlueTeam);
+      handleFinishDraft(RedTeam, BlueTeam);
     }
   };
 
@@ -94,7 +96,7 @@ const DraftModal2 = ({
       {/* "ooo님 선택" 부분 */}
       {draftedMembers.length < availableMembersCount && (
         <h1 className="whitespace-nowrap absolute top-20 left-1/2 transform -translate-x-1/2 text-xl mb-4">
-          {currentLeader}님 선택
+          {currentLeader?.gameName}님 선택
         </h1>
       )}
 
@@ -106,13 +108,13 @@ const DraftModal2 = ({
               onClick={() => handleSelectMember(currentTeamMembers[0])}
               className="py-2 px-4 bg-[#F0E6D2] text-[#0F2041] hover:bg-[#C89B3C] hover:text-white rounded-lg"
             >
-              {currentTeamMembers[0]}
+              {currentTeamMembers[0].gameName}
             </button>
             <button
               onClick={() => handleSelectMember(currentTeamMembers[1])}
               className="py-2 px-4 bg-[#F0E6D2] text-[#0F2041] hover:bg-[#C89B3C] hover:text-white rounded-lg"
             >
-              {currentTeamMembers[1]}
+              {currentTeamMembers[1].gameName}
             </button>
           </div>
         )}

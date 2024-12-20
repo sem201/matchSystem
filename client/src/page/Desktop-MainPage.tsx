@@ -24,6 +24,7 @@ interface DesktopMainPageProps {
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   openModal: (type: string) => void;
   closeModal: () => void;
+  handleDeleteUser: (userId: number) => void;
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
@@ -45,6 +46,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   setIsUserAdded,
   openModal,
   closeModal,
+  handleDeleteUser,
 }) => {
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
@@ -71,6 +73,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           openModal={openModal}
           closeModal={closeModal}
           setIsUserAdded={setIsUserAdded}
+          handleDeleteUser={handleDeleteUser}
         />
       </div>
       <ComposeButton

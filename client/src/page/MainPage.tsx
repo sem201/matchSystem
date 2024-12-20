@@ -99,9 +99,6 @@ const MainPage = () => {
 
     return { newRedTeam, newBlueTeam };
   };
-  useEffect(() => {
-    console.log("add:", addedUsers);
-  }, [addedUsers]);
   const handleTeamButtonClick = async () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
       alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
@@ -130,7 +127,6 @@ const MainPage = () => {
 
       try {
         const response = await apiCall("noobs/TeamMach", "post", data);
-        console.log(response.data);
         const { newRedTeam, newBlueTeam } = updateTeams(
           addedUsers,
           response.data
@@ -152,8 +148,13 @@ const MainPage = () => {
     } else if (selectedMode === "DRAFT") {
       setIsDraftModalOpen(true);
     } else {
-      alert("Mode를 선택해 주세요요");
+      alert("Mode를 선택해 주세요");
     }
+  };
+  // 사용자 삭제 로직
+  const handleDeleteUser = (userId: number) => {
+    const updatedUsers = allUsers.filter((user) => user.id !== userId);
+    setAllUsers(updatedUsers);
   };
   // 모달 열기
   const openModal = (type: string) => {
@@ -201,6 +202,7 @@ const MainPage = () => {
     openModal,
     closeModal,
     setIsUserAdded,
+    handleDeleteUser,
   };
 
   const [sessionValid, setSessionValid] = useState<boolean | null>(null);

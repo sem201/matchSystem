@@ -27,6 +27,7 @@ interface Props {
   addedUsers: User[];
   redTeam: User[];
   blueTeam: User[];
+  handleDeleteUser: (userId: number) => void;
 }
 
 const MobileMainpage = ({
@@ -39,16 +40,18 @@ const MobileMainpage = ({
   isDraftModalOpen,
   setHeaderText,
   redTeam,
-  setRedTeam,
   blueTeam,
-  setBlueTeam,
   addedUsers,
   handleAddUser,
   handleRemoveUser,
   handleTeamButtonClick,
   setIsUserAdded,
+  handleDeleteUser,
+  setRedTeam,
+  setBlueTeam,
 }: Props) => {
   const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
+    console.log("실행");
     // 상태 업데이트: 최종 팀을 메인 페이지에 반영
     setRedTeam(RedTeam);
     setBlueTeam(BlueTeam);
@@ -110,6 +113,7 @@ const MobileMainpage = ({
         )}
         onAddUser={handleAddUser}
         setIsUserAdded={setIsUserAdded}
+        handleDeleteUser={handleDeleteUser}
       />
 
       {/* 모달들 */}
@@ -140,7 +144,7 @@ const MobileMainpage = ({
         <DraftModal
           closeModal={() => setIsDraftModalOpen(false)}
           teamMembers={addedUsers}
-          onFinishDraft={handleFinishDraft} // 부모 컴포넌트에서 팀 결과 처리 함수 전달
+          handleFinishDraft={handleFinishDraft} // 부모 컴포넌트에서 팀 결과 처리 함수 전달
         />
       )}
     </div>

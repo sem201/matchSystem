@@ -18,6 +18,7 @@ interface MenuProps {
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   openModal: (type: string) => void;
   closeModal: () => void;
+  handleDeleteUser: (userId: number) => void;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -34,6 +35,7 @@ const Menu: React.FC<MenuProps> = ({
   setIsUserAdded,
   openModal,
   closeModal,
+  handleDeleteUser,
 }) => {
   return (
     <div className="relative">
@@ -56,6 +58,7 @@ const Menu: React.FC<MenuProps> = ({
           handleAddUser={handleAddUser}
           setAddedUsers={setAddedUsers}
           setIsUserAdded={setIsUserAdded}
+          handleDeleteUser={handleDeleteUser}
         />
       </div>
     </div>
