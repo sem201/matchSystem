@@ -1,6 +1,7 @@
 import Team from "../components/Desktop/Team";
 import Header from "../components/Desktop/Header";
 import Menu from "../components/Desktop/Menu";
+import HeaderMenu from "../components/Profile/menu";
 
 import { User } from "../commonTypes";
 import ComposeButton from "../components/Desktop/ComposeButton";
@@ -49,6 +50,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   handleDeleteUser,
 }) => {
   return (
+    
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />
       <div className="lg:grid lg:grid-rows-3 lg:grid-cols-3 gap-6 lg:w-[100%] lg:h-[70%] px-[50px]">
