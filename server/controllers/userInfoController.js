@@ -395,6 +395,8 @@ const friendUserBrUpdate = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   const { userid, tagLine } = req.body;
+  console.log(req.session.id);
+
   const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
 
   if (!userid || !tagLine) {
@@ -613,87 +615,87 @@ const UserDetilsInfo = async (req, res) => {
       where: {
         game_id: gameid,
       },
-      order: [['queueType', 'ASC']],
+      order: [["queueType", "ASC"]],
     });
 
-    
     if (rankInfo.length === 0) {
-      rankInfo.push({ RankData: 'null' });
-    } else if (rankInfo.length === 1) {  // 객체가 1개일 경우
+      rankInfo.push({ RankData: "null" });
+    } else if (rankInfo.length === 1) {
+      // 객체가 1개일 경우
       const rank = rankInfo[0];
-      if (rank.queueType === '개인/2인랭') {
-          const RankImg = await RankInfo.findOne({
-            where : {
-              rank : rank.tier,
-            },
-          });
+      if (rank.queueType === "개인/2인랭") {
+        const RankImg = await RankInfo.findOne({
+          where: {
+            rank: rank.tier,
+          },
+        });
 
         rank.dataValues.RankImg = RankImg;
-      } else if (rank.queueType === '자유랭') {
+      } else if (rank.queueType === "자유랭") {
         const rank = rankInfo[0];
         const RankImg = await RankInfo.findOne({
-          where : {
-            rank : rank.tier,
+          where: {
+            rank: rank.tier,
           },
         });
         rank.dataValues.RankImg = RankImg;
       }
     } else if (rankInfo.length === 2) {
-       const tiers = rankInfo.map(rank => rank.tier);
+      const tiers = rankInfo.map((rank) => rank.tier);
 
-       const rankImages = await RankInfo.findAll({
-        where : {
-          rank : tiers,
+      const rankImages = await RankInfo.findAll({
+        where: {
+          rank: tiers,
         },
-       });
+      });
 
-       rankInfo.forEach((rank) => {
-        const matchImg = rankImages.find(img => img.rank === rank.tier);
+      rankInfo.forEach((rank) => {
+        const matchImg = rankImages.find((img) => img.rank === rank.tier);
         rank.dataValues.RankImg = {
-            id: matchImg.id,
-            rank: matchImg.rank,
-            rankImg: matchImg.rankImg,
-            createdAt: matchImg.createdAt,
-            updatedAt: matchImg.updatedAt,
-        }
-       });
+          id: matchImg.id,
+          rank: matchImg.rank,
+          rankImg: matchImg.rankImg,
+          createdAt: matchImg.createdAt,
+          updatedAt: matchImg.updatedAt,
+        };
+      });
     }
 
     // 유저 모스트챔피언 추출
     const MasterChamp = await NoobsMasterChamp.findAll({
       where: {
-        user_id : gameid,
+        user_id: gameid,
       },
     });
 
     if (MasterChamp.length > 0) {
       // 유저의 모스트 챔피언 배열을 순회하면서 처리
       for (let i = 0; i < MasterChamp.length; i++) {
-        const champ = MasterChamp[i];  // champ는 MasterChamp 테이블에서 하나씩 가져온 객체
-    
+        const champ = MasterChamp[i]; // champ는 MasterChamp 테이블에서 하나씩 가져온 객체
+
         // champ.championId로 Champion 테이블에서 champKey를 조회
         const champDataMost = await Champion.findOne({
           where: {
-            champKey: champ.championId,  // champKey로 조회
+            champKey: champ.championId, // champKey로 조회
           },
         });
-        console.log(champDataMost)
-    
+        console.log(champDataMost);
+
         if (champDataMost) {
           // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
           champ.dataValues.champInfo = {
             id: champDataMost.id,
             name: champDataMost.name,
             champKey: champDataMost.champKey,
-            imgUrl: champDataMost.champ_img,  // 챔피언 이미지 경로 추가
+            imgUrl: champDataMost.champ_img, // 챔피언 이미지 경로 추가
           };
         } else {
           // 챔피언 데이터가 없으면 기본값 설정
           champ.dataValues.champInfo = {
             id: null,
-            name: 'Unknown Champion',
+            name: "Unknown Champion",
             champKey: champ.championId,
-            imgUrl: 'default_image_url',  // 기본 이미지 경로
+            imgUrl: "default_image_url", // 기본 이미지 경로
           };
         }
       }
@@ -704,7 +706,7 @@ const UserDetilsInfo = async (req, res) => {
     return res.status(200).json({
       userInfo,
       rankInfo,
-      MasterChamp: MasterChamp.map(champ => champ.toJSON()),
+      MasterChamp: MasterChamp.map((champ) => champ.toJSON()),
     });
   } catch (error) {
     console.error("Error:", error);
