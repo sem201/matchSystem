@@ -16,8 +16,6 @@ const UserModal = ({
   setIsUserAdded,
   handleDeleteUser,
 }: Props) => {
-  // console.log(user);
-  // console.log(user.updateId);
   const reloadInfo = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     const data = {
