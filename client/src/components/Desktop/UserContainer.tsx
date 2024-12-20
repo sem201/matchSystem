@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { User } from "../../commonTypes";
 import LatestUserInfo from "./LatestUserInfo";
 
@@ -7,12 +7,14 @@ interface UserContainerProps {
   handleAddUser: (user: User) => void;
   setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteUser: (userId: number) => void;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
   allUsers,
   handleAddUser,
   setIsUserAdded,
+  handleDeleteUser,
 }) => {
   return (
     <div>
@@ -27,6 +29,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
               user={user}
               onAddUser={handleAddUser}
               setIsUserAdded={setIsUserAdded}
+              handleDeleteUser={handleDeleteUser}
             />
           ))}
         </div>

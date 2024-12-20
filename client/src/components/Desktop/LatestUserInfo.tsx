@@ -6,11 +6,13 @@ interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteUser: (userId: number) => void;
 }
 const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
   user,
   onAddUser,
   setIsUserAdded,
+  handleDeleteUser,
 }) => {
   const [userModal, setUserModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -43,10 +45,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         className="w-[30px] h-[30px]"
       />
       <div className="flex flex-col">
-        <div className="text-sm text-white">
-          {user.tierScore.Rank}
-          {user.tierScore.tier}
-        </div>
+        <div className="text-sm text-white">{user.tierScore.Rank}</div>
         <p className="max-w-[150px] min-w-[115px] text-lg text-ellipsis overflow-hidden text-white text-nowrap">
           {user.gameName} {user.tagLine}
         </p>
@@ -69,6 +68,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
             user={user}
             setUserModal={setUserModal}
             setIsUserAdded={setIsUserAdded}
+            handleDeleteUser={handleDeleteUser}
           />
         </div>
       )}

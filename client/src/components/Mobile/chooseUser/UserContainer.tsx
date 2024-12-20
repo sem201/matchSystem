@@ -5,6 +5,7 @@ interface UserContainerProps extends Props {
   users: User[];
   onAddUser: (user: User) => void;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteUser: (userId: number) => void;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
@@ -12,6 +13,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
   users,
   onAddUser,
   setIsUserAdded,
+  handleDeleteUser,
 }) => {
   return (
     <>
@@ -24,6 +26,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
             user={user}
             onAddUser={onAddUser}
             setIsUserAdded={setIsUserAdded}
+            handleDeleteUser={handleDeleteUser}
           />
         ))}
         {children}

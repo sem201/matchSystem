@@ -1,7 +1,6 @@
 import dotenv from "dotenv"; // dotenv 사용
 dotenv.config();
 
-
 import { fileURLToPath } from "url"; // fileURLToPath를 사용하여 현재 파일의 경로를 얻음
 
 import express from "express"; // express 사용
@@ -23,7 +22,7 @@ app.use(
     saveUninitialized: true,
     rolling: false,
     cookie: {
-      sameSite : 'lax',
+      sameSite: "lax",
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 10 * 60 * 1000, // 세션 만료 10분
     },
@@ -65,12 +64,10 @@ app.get("/check-session", (req, res) => {
   }
 });
 
-
 // 홈 페이지 처리
 app.get("/", (req, res) => {
   res.render("서버 실행중");
 });
-
 
 // 404 페이지 처리
 app.get("*", (req, res) => {
