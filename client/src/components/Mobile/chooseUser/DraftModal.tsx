@@ -5,6 +5,7 @@ import { User } from "../../../commonTypes";
 interface DraftModalProps {
   closeModal: () => void;
   teamMembers: User[]; // teamMembers의 타입을 User[]로 받아옵니다.
+  onFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void; // 결과 전달 콜백
 }
 
 const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
@@ -41,6 +42,11 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
         teamMembers={teamMembers.map((member) => member.gameName)}
         redTeamLeader={redTeamLeader}
         blueTeamLeader={blueTeamLeader}
+        onFinishDraft={(RedTeam, BlueTeam) => {
+          // 최종 결과를 부모 컴포넌트로 전달
+          console.log("Final Teams:", { RedTeam, BlueTeam });
+          closeModal(); // 모달 닫기
+        }}
       />
     );
   }

@@ -6,6 +6,7 @@ interface DraftModal2Props {
   teamMembers: string[]; // ( 원래는 User[]였음 참고하기 )
   redTeamLeader: string | null; // 부모 컴포넌트에서 받은 redTeamLeader
   blueTeamLeader: string | null; // 부모 컴포넌트에서 받은 blueTeamLeader
+  onFinishDraft: (RedTeam: string[], BlueTeam: string[]) => void;
 }
 
 const DraftModal2 = ({
@@ -13,6 +14,7 @@ const DraftModal2 = ({
   teamMembers,
   redTeamLeader,
   blueTeamLeader,
+  onFinishDraft,
 }: DraftModal2Props) => {
   const [draftedMembers, setDraftedMembers] = useState<string[]>([]); // 이미 선택된 멤버
   const [currentTeamMembers, setCurrentTeamMembers] = useState<string[]>([]); // 랜덤으로 선택된 두 팀원
@@ -60,6 +62,20 @@ const DraftModal2 = ({
     // 랜덤으로 두 명을 다시 선택하여 보여줌
     const nextPair = getRandomPair();
     setCurrentTeamMembers(nextPair);
+
+    // 팀원 선택이 끝났으면 결과를 부모 컴포넌트로 전달
+    if (draftedMembers.length + 2 === availableMembersCount) {
+      const RedTeam = [
+        redTeamLeader!,
+        ...draftedMembers.filter((_, idx) => idx % 2 === 0),
+      ];
+      const BlueTeam = [
+        blueTeamLeader!,
+        ...draftedMembers.filter((_, idx) => idx % 2 === 1),
+      ];
+
+      onFinishDraft(RedTeam, BlueTeam);
+    }
   };
 
   useEffect(() => {
@@ -77,7 +93,7 @@ const DraftModal2 = ({
     >
       {/* "ooo님 선택" 부분 */}
       {draftedMembers.length < availableMembersCount && (
-        <h1 className="absolute top-20 left-1/2 transform -translate-x-1/2 text-xl mb-4">
+        <h1 className="whitespace-nowrap absolute top-20 left-1/2 transform -translate-x-1/2 text-xl mb-4">
           {currentLeader}님 선택
         </h1>
       )}
