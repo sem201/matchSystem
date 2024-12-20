@@ -394,10 +394,13 @@ const friendUserBrUpdate = async (req, res) => {
 
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
-  const { userid, tagLine } = req.body;
-  console.log(req.session.id);
+  let { userid, tagLine } = req.body;
 
   const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
+
+  // 앞 뒤 공백제거
+  userid = userid.trim();
+  tagLine = tagLine.trim();
 
   if (!userid || !tagLine) {
     return res.status(400).json({ message: "소환사 명을 입력하세요" });

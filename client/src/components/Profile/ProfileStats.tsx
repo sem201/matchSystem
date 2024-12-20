@@ -31,14 +31,14 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ soloWinRate, freeWinRate })
     <div className="profile-stats bg-gray-800 text-white p-6 rounded-lg max-h-full overflow-hidden flex flex-col items-center">
       {/* 승률 그래프 영역 */}
       <div className="stats-container w-full p-4 flex flex-col items-center justify-center mb-6">
-        <h2 className="text-2xl font-bold mb-4 font-blackHanSans">
+        <h2 className="text-2xl font-bold mb-3 font-blackHanSans">
           개인/2인랭크
         </h2>
 
         {/* 승률 그래프 */}
         <div
-          className="stats-graph mb-6 flex flex-col items-center justify-center w-full"
-          style={{ height: "210px" ,overflow: "visible" }}
+          className="stats-graph mb-20 flex flex-col items-center justify-center w-full"
+          style={{ height: "220px" ,overflow: "visible" }}
         >
           <h3 className="text-xl mb-2 font-blackHanSans">
             승률: {soloWinRateText}
@@ -51,7 +51,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ soloWinRate, freeWinRate })
                 data={soloWinRateData}
                 dataKey="value"
                 nameKey="name"
-                outerRadius="80%"
+                outerRadius="70%"
                 label={({ name, value }: any) => `${name}: ${value}`} // 차트 내부에 승/패와 비율을 표시
                 labelLine={false} // 라벨과 연결선 제거
               >
@@ -89,7 +89,7 @@ const ProfileStats: React.FC<ProfileStatsProps> = ({ soloWinRate, freeWinRate })
                 data={freeWinRateData}
                 dataKey="value"
                 nameKey="name"
-                outerRadius="80%"
+                outerRadius="70%"
                 label={({ name, value }: any) => `${name}: ${value}`} // 차트 내부에 승/패와 비율을 표시
                 labelLine={false} // 라벨과 연결선 제거
               >
