@@ -9,6 +9,7 @@ import {
   friendUserBr,
   friendUserBrUpdate,
   friendUserBrDel,
+  UserDetilsInfo
 } from "../controllers/userInfoController.js";
 import { TeamMach, sampleData } from "../controllers/modeTeamController.js";
 import rateLimit from "express-rate-limit";
@@ -46,6 +47,9 @@ router.post("/noobs/friendUserBrUpdate", friendUserBrUpdate);
 
 // 유저 삭제 [ 초근에 같이한 플에이어 ]
 router.post("/noobs/friendUserBrDel", friendUserBrDel);
+
+// 유저 포로필정보 요청
+router.post("/noobs/UserDetilsInfo", UserDetilsInfo);
 
 router.get("/sampleData", sampleData);
 

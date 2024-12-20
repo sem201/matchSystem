@@ -47,7 +47,7 @@ const UserModal = ({
       <Link
         to="/ProfilePage"
         className="no-underline text-black"
-        state={{ user_id: user.id }}
+        state={{ user_id: user.updateId }}
       >
         프로필 확인하기
       </Link>

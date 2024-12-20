@@ -94,6 +94,8 @@ const userSearch = async (req, res) => {
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
 
+    console.log(masterData);
+
     // 6. DB에 사용자 데이터 저장
     const newUser = await NoobsUserInfo.create({
       puuid,
@@ -301,21 +303,21 @@ const friendUserBrUpdate = async (req, res) => {
           losses: rankData.losses,
           winRate: rankData.winRate,
           updatedAt: new Date(),
-        })
+        });
       } else {
         // 없으면 새로 추가
         await GameRank.create({
-          game_id : user_id,
-          queueType : rankData.queueType,
-          tier : rankData.tier,
-          rank : rankData.rank,
-          LP : rankData.leaguePoints,
-          wins : rankData.wins,
-          losses : rankData.losses,
-          winRate : rankData.winRate,
-          createdAt : new Date(),
-          updatedAt : new Date(),
-        })
+          game_id: user_id,
+          queueType: rankData.queueType,
+          tier: rankData.tier,
+          rank: rankData.rank,
+          LP: rankData.leaguePoints,
+          wins: rankData.wins,
+          losses: rankData.losses,
+          winRate: rankData.winRate,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
       }
     }
 
@@ -340,23 +342,23 @@ const friendUserBrUpdate = async (req, res) => {
 
     // 같이한 사용자 테이블 업데이트
     await NoobsRecentFriend.update(
-    {
-      gameName,
-      tagLine,
-      profileIconId,
-      tier,
-      rank,
-      wins,
-      losses,
-      winRate,
-      updatedAt : new Date(),
-    },
-    {
-      where : {
-        puuid : userPuuid,
+      {
+        gameName,
+        tagLine,
+        profileIconId,
+        tier,
+        rank,
+        wins,
+        losses,
+        winRate,
+        updatedAt: new Date(),
+      },
+      {
+        where: {
+          puuid: userPuuid,
+        },
       }
-    }
-  )
+    );
 
     if (resultUpdateUser[0] === 0) {
       return res.status(400).json({ message: "업데이트 실패" });
@@ -438,7 +440,7 @@ const userAdd = async (req, res) => {
         // DB 저장: 사용자 정보
         const user = await NoobsRecentFriend.create({
           user_id: req.session.user.id, // 세션에서 가져온 user_id 값
-          puuid : userSearchData.puuid,
+          puuid: userSearchData.puuid,
           gameName: userSearchData.gameName,
           tagLine: userSearchData.tagLine,
           profileIconId: userSearchData.profileIconId,
@@ -584,10 +586,137 @@ const friendUserBrDel = async (req, res) => {
   }
 };
 
+// 유저 프로필 정보 불러오기 [ 디테일한 정보 전체 요청 ]
+
+const UserDetilsInfo = async (req, res) => {
+  const { gameid } = req.body;
+
+  console.log(gameid);
+
+  try {
+    // 유저 정보 조회
+    const userInfo = await NoobsUserInfo.findOne({
+      where: {
+        id: gameid,
+      },
+    });
+    // 유저 프로필 이미지 조회
+    console.log(userInfo);
+    const userProfile = await Profile.findOne({
+      where: {
+        Profile_key: userInfo.profileIconId,
+      },
+    });
+
+    // 랭크정보 조회
+    const rankInfo = await GameRank.findAll({
+      where: {
+        game_id: gameid,
+      },
+      order: [['queueType', 'ASC']],
+    });
+
+    
+    if (rankInfo.length === 0) {
+      rankInfo.push({ RankData: 'null' });
+    } else if (rankInfo.length === 1) {  // 객체가 1개일 경우
+      const rank = rankInfo[0];
+      if (rank.queueType === '개인/2인랭') {
+          const RankImg = await RankInfo.findOne({
+            where : {
+              rank : rank.tier,
+            },
+          });
+
+        rank.dataValues.RankImg = RankImg;
+      } else if (rank.queueType === '자유랭') {
+        const rank = rankInfo[0];
+        const RankImg = await RankInfo.findOne({
+          where : {
+            rank : rank.tier,
+          },
+        });
+        rank.dataValues.RankImg = RankImg;
+      }
+    } else if (rankInfo.length === 2) {
+       const tiers = rankInfo.map(rank => rank.tier);
+
+       const rankImages = await RankInfo.findAll({
+        where : {
+          rank : tiers,
+        },
+       });
+
+       rankInfo.forEach((rank) => {
+        const matchImg = rankImages.find(img => img.rank === rank.tier);
+        rank.dataValues.RankImg = {
+            id: matchImg.id,
+            rank: matchImg.rank,
+            rankImg: matchImg.rankImg,
+            createdAt: matchImg.createdAt,
+            updatedAt: matchImg.updatedAt,
+        }
+       });
+    }
+
+    // 유저 모스트챔피언 추출
+    const MasterChamp = await NoobsMasterChamp.findAll({
+      where: {
+        user_id : gameid,
+      },
+    });
+
+    if (MasterChamp.length > 0) {
+      // 유저의 모스트 챔피언 배열을 순회하면서 처리
+      for (let i = 0; i < MasterChamp.length; i++) {
+        const champ = MasterChamp[i];  // champ는 MasterChamp 테이블에서 하나씩 가져온 객체
+    
+        // champ.championId로 Champion 테이블에서 champKey를 조회
+        const champDataMost = await Champion.findOne({
+          where: {
+            champKey: champ.championId,  // champKey로 조회
+          },
+        });
+        console.log(champDataMost)
+    
+        if (champDataMost) {
+          // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
+          champ.dataValues.champInfo = {
+            id: champDataMost.id,
+            name: champDataMost.name,
+            champKey: champDataMost.champKey,
+            imgUrl: champDataMost.champ_img,  // 챔피언 이미지 경로 추가
+          };
+        } else {
+          // 챔피언 데이터가 없으면 기본값 설정
+          champ.dataValues.champInfo = {
+            id: null,
+            name: 'Unknown Champion',
+            champKey: champ.championId,
+            imgUrl: 'default_image_url',  // 기본 이미지 경로
+          };
+        }
+      }
+    }
+
+    userInfo.dataValues.Profile = userProfile;
+
+    return res.status(200).json({
+      userInfo,
+      rankInfo,
+      MasterChamp: MasterChamp.map(champ => champ.toJSON()),
+    });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
+  }
+};
+
 export {
   userSearch,
   userAdd,
   friendUserBr,
   friendUserBrUpdate,
   friendUserBrDel,
+  UserDetilsInfo,
 };
