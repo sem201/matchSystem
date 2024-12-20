@@ -127,7 +127,7 @@ const MainPage = () => {
         })),
         mode: "balance",
       };
-      console.log("데이터 타입: ", typeof data.players);
+
       try {
         const response = await apiCall("noobs/TeamMach", "post", data);
         console.log(response.data);
