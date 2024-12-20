@@ -82,7 +82,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
                 </div>
               ))}
             </div>
-            <p className="text-md font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xs">
+            <p className="text-md text-blue-500 font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xl">
               {user.gameName}
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
