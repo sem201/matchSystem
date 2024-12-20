@@ -395,6 +395,7 @@ const friendUserBrUpdate = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   let { userid, tagLine } = req.body;
+
   const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
 
   // 앞 뒤 공백제거
