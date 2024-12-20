@@ -6,11 +6,13 @@ interface LatestUserInfoProps {
   user: User;
   onAddUser: (user: User) => void;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteUser: (userId: number) => void;
 }
 const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
   user,
   onAddUser,
   setIsUserAdded,
+  handleDeleteUser,
 }) => {
   const [userModal, setUserModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -69,6 +71,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
             user={user}
             setUserModal={setUserModal}
             setIsUserAdded={setIsUserAdded}
+            handleDeleteUser={handleDeleteUser}
           />
         </div>
       )}

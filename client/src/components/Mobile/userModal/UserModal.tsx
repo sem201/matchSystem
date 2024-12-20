@@ -7,25 +7,36 @@ interface Props {
   user: User;
   setUserModal: React.Dispatch<React.SetStateAction<boolean>>;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
+  handleDeleteUser: (userId: number) => void;
 }
 
-const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
-  console.log(user);
-  console.log(user.updateId);
-  const reloadInfo = () => {
+const UserModal = ({
+  user,
+  setUserModal,
+  setIsUserAdded,
+  handleDeleteUser,
+}: Props) => {
+  // console.log(user);
+  // console.log(user.updateId);
+  const reloadInfo = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const data = {
       user_id: user.updateId,
     };
     apiCall("/noobs/friendUserBrUpdate", "post", data);
-    console.log("클릭됨");
+    alert("갱신되었습니다.");
     setUserModal(false);
   };
-  const deleteFr = () => {
+  const deleteFr = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     const data = {
       user_id: user.id,
     };
-    apiCall("/noobs/friendUserBrDel", "post", data);
-    console.log("클릭됨");
+    try {
+      apiCall("/noobs/friendUserBrDel", "post", data);
+      alert("삭제되었습니다.");
+      handleDeleteUser(user.id);
+    } catch (err) {}
     setUserModal(false);
     setIsUserAdded((prev) => !prev);
   };
@@ -42,11 +53,17 @@ const UserModal = ({ user, setUserModal, setIsUserAdded }: Props) => {
       >
         프로필 확인하기
       </Link>
-      <div className="flex flex-row items-center gap-2" onClick={reloadInfo}>
+      <div
+        className="flex flex-row items-center gap-2 cursor-pointer"
+        onClick={reloadInfo}
+      >
         <img src={reload} alt="reloadImg" className="w-[16px] h-[16px]" />
         <p className="text-red">전적 갱신하기</p>
       </div>
-      <div className="flex flex-row items-center gap-2" onClick={deleteFr}>
+      <div
+        className="flex flex-row items-center gap-2 cursor-pointer"
+        onClick={deleteFr}
+      >
         <img src={trash} alt="trashImg" className="w-[16px] h-[16px]" />
         <p className="text-red">목록에서 삭제하기</p>
       </div>

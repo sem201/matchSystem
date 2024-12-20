@@ -27,6 +27,7 @@ interface Props {
   addedUsers: User[];
   redTeam: User[];
   blueTeam: User[];
+  handleDeleteUser: (userId: number) => void;
 }
 
 const MobileMainpage = ({
@@ -39,14 +40,13 @@ const MobileMainpage = ({
   isDraftModalOpen,
   setHeaderText,
   redTeam,
-  setRedTeam,
   blueTeam,
-  setBlueTeam,
   addedUsers,
   handleAddUser,
   handleRemoveUser,
   handleTeamButtonClick,
   setIsUserAdded,
+  handleDeleteUser,
 }: Props) => {
   const openModal = (type: string) => {
     setModalType(type);
@@ -104,6 +104,7 @@ const MobileMainpage = ({
         )}
         onAddUser={handleAddUser}
         setIsUserAdded={setIsUserAdded}
+        handleDeleteUser={handleDeleteUser}
       />
 
       {/* 모달들 */}
