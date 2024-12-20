@@ -45,10 +45,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         className="w-[30px] h-[30px]"
       />
       <div className="flex flex-col">
-        <div className="text-sm text-white">
-          {user.tierScore.Rank}
-          {user.tierScore.tier}
-        </div>
+        <div className="text-sm text-white">{user.tierScore.Rank}</div>
         <p className="max-w-[150px] min-w-[115px] text-lg text-ellipsis overflow-hidden text-white text-nowrap">
           {user.gameName} {user.tagLine}
         </p>
