@@ -51,18 +51,6 @@ const DraftModal = ({
           ...(isLeader && { leader: true }),
         };
       });
-      // const players = [
-      //   { id: 1, gameName: "test1", RankScore: 10, leader: true },
-      //   { id: 2, gameName: "test2", RankScore: 15, leader: true },
-      //   { id: 3, gameName: "test3", RankScore: 20 },
-      //   { id: 4, gameName: "test4", RankScore: 18 },
-      //   { id: 5, gameName: "test5", RankScore: 12 },
-      //   { id: 6, gameName: "test6", RankScore: 22 },
-      //   { id: 7, gameName: "test7", RankScore: 14 },
-      //   { id: 8, gameName: "test8", RankScore: 17 },
-      //   { id: 9, gameName: "test9", RankScore: 13 },
-      //   { id: 10, gameName: "test10", RankScore: 19 },
-      // ];
 
       const data = {
         players: players,

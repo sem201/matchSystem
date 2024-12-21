@@ -108,10 +108,7 @@ export default function AddUserModal({
           if (e.target === e.currentTarget) closeModal();
         }}
       >
-        <div
-          className="bg-white p-3 rounded-lg w-[350px] shadow-lg border-4"
-          style={{ borderColor: "#C89B3C" }}
-        >
+        <div className="bg-white p-8 rounded-lg w-[350px] shadow-lg relative border-4 border-[3px] border-[#C89B3C]">
           <p
             className="text-center mb-7 font-bold text-sm whitespace-nowrap font-blackHanSans text-wrap"
             style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
@@ -125,7 +122,7 @@ export default function AddUserModal({
               type="text"
               value={nicknameTag}
               onChange={(e) => setNicknameTag(e.target.value)}
-              placeholder="예: 닉네임#KR1234"
+              placeholder="예: 닉네임 #KR1"
               className="flex-1 px-3 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
             />
             <button

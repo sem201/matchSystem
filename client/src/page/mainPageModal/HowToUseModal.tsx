@@ -17,9 +17,9 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
   ];
 
   const descriptions = [
-    "인원 추가 버튼을 눌러 닉네임과 태그를 입력하고 \n검색버튼을 클릭하여 유저 정보가 존재하는지 확인합니다.",
-    "유저 정보가 확인되면 추가 버튼을 클릭하여\n 참여할 인원을 추가합니다.",
-    "최근에 함께한 유저의 경우 검색을 하지 않고\n +버튼을 클릭하여 추가할 수 있습니다",
+    "인원 추가 버튼을 눌러 닉네임과 태그를 입력하고, \n검색버튼을 클릭하여 유저 정보가 존재하는지 확인합니다.",
+    "유저 정보가 확인되면 추가 버튼을 클릭하여 \n참여할 인원을 추가합니다.",
+    "최근에 함께한 유저의 경우 검색을 하지 않고, \n+ 버튼을 클릭하여 추가할 수 있습니다",
     "총 10명의 인원을 추가해야합니다. \n겹치는 라인이 없도록 추가해주세요",
     <div className="space-y-4">
       <p>
@@ -34,7 +34,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
       </p>
       <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
     </div>,
-    "팀짜기 버튼을 클릭하면 팀이 구성됩니다.\n 재밌게 즐겨주세요!",
+    "팀짜기 버튼을 클릭하면 팀이 구성됩니다. \n재밌게 즐겨주세요!",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -56,7 +56,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         if (e.target === e.currentTarget) closeModal();
       }}
     >
-      <div className="bg-white p-8 rounded-lg w-[450px] shadow-lg relative border-[3px] border-[#C89B3C]">
+      <div className="bg-white p-8 rounded-lg w-[350px] shadow-lg relative border-4 border-[3px] border-[#C89B3C]">
         <h2 className="text-lg font-bold mb-4">사용법</h2>
 
         {/* 이미지 슬라이더 */}

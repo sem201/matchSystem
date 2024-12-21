@@ -203,7 +203,9 @@ const draftTeams = (players) => {
 
 const TeamMach = async (req, res) => {
   const { mode, players } = req.body;
+  console.log("Request Body:", req.body);
   console.log("Received mode:", mode);
+  console.log("Received players:", players);
 
   const missingPositions = players.filter((player) => player.position === "");
 
@@ -233,12 +235,8 @@ const TeamMach = async (req, res) => {
       return res
         .status(200)
         .json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
-    } else if (mode == "balance") {
-      const { redTeam, blueTeam } = balanceTeams(players);
-      return res
-        .status(200)
-        .json({ message: "밸런스 팀 생성 완료", redTeam, blueTeam });
     } else if (mode == "draft") {
+      // const players = await getTestDraftData();
       const { draftTeam } = draftTeams(players);
 
       return res

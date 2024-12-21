@@ -52,12 +52,12 @@ export default function SelectModeModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center font-blackHanSans z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center font-blackHanSans z-50"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
     >
-      <div className="bg-white border-[3px] border-[#C89B3C] p-8 rounded-lg w-full max-w-[450px] shadow-lg relative overflow-hidden">
+      <div className="bg-white p-8 rounded-lg w-[350px] shadow-lg relative border-4 border-[3px] border-[#C89B3C]">
         <div className="flex justify-center items-center space-x-4 mb-6">
           {["RANDOM", "DRAFT", "BALANCE"].map((mode) => (
             <button
