@@ -13,7 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 interface PositionProps {
   title: string;
-  labels: string[]; // 포지션 이름을 동적으로 받을 수 있도록 변경
+  labels: string[]; 
   totalGame: number[];
 }
 
