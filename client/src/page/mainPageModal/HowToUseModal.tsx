@@ -34,7 +34,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
       </p>
       <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
     </div>,
-    "팀짜기 버튼을 클릭하면 팀이 구성됩니다.\n 재밌게 즐겨주세요!",
+    "팀짜기 버튼을 클릭하면 팀이 구성됩니다. \n재밌게 즐겨주세요!",
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);

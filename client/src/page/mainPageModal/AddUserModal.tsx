@@ -109,7 +109,7 @@ export default function AddUserModal({
         }}
       >
         <div
-          className="bg-white p-3 rounded-lg w-[350px] shadow-lg border-4"
+          className="bg-{#ffffff} p-3 rounded-lg w-[350px] shadow-lg border-4"
           style={{ borderColor: "#C89B3C" }}
         >
           <p

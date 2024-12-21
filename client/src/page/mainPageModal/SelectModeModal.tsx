@@ -52,7 +52,7 @@ export default function SelectModeModal({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center font-blackHanSans z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center font-blackHanSans z-50"
       onClick={(e) => {
         if (e.target === e.currentTarget) closeModal();
       }}
