@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { Op, fn, col, literal } from "sequelize";
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
 import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
@@ -8,12 +9,24 @@ import Profile from "../models/Profile.js";
 import RankInfo from "../models/RankInfo.js";
 import TierScore from "../models/TierScore.js";
 import GameRank from "../models/Game_Ranking.js";
+import MatchDetails from "../models/MatchDetails.js";
+import RankedMatch from "../models/RankedMatch.js";
 import moment from "moment-timezone";
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
 const seoulTime = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
 dotenv.config(); // .env 파일 로드
+// 9/25 시즌3시작일로 고정
+
+const time = new Date("2024-09-25");
+const date = new Date();
+let startTime = time.getTime();
+let endTime = date.getTime();
+
+// 밀리초를 초로 변환
+const startTimeSecs = Math.floor(startTime / 1000); // 초 단위로 변환
+const endTimeSecs = Math.floor(endTime / 1000); // 초 단위로 변환
 
 const userSearch = async (req, res) => {
   let { userid, tagLine } = req.query;
@@ -94,8 +107,6 @@ const userSearch = async (req, res) => {
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
 
-    console.log(masterData);
-
     // 6. DB에 사용자 데이터 저장
     const newUser = await NoobsUserInfo.create({
       puuid,
@@ -173,6 +184,110 @@ const userSearch = async (req, res) => {
         });
       }
     }
+
+    // 개인랭크 매치데이터 API 요청
+    let start = 0;
+    let count = 30;
+    let matchs = [];
+    while (true) {
+      const matchUrl = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${puuid}/ids?startTime=${startTimeSecs}&endTime=${endTimeSecs}&queue=420&type=ranked&start=${start}&count=${count}`;
+
+      try {
+        const response = await axios.get(matchUrl, { headers });
+        if (response.data.length === 0) break;
+        response.data.forEach((matchId) =>
+          matchs.push({ gameid: newUser.id, matchid: matchId })
+        );
+        start += count;
+        if (start > 80) {
+          break;
+        }
+      } catch (error) {
+        console.error("Error fetching matches:", error);
+        break;
+      }
+    }
+    console.log(matchs.length);
+
+    await RankedMatch.bulkCreate(matchs, { ignoreDuplicates: true });
+
+    const fetchWithRetry = async (url, options, retries = 5) => {
+      let retryDelay = 5000;
+      let requestBatchSize = 10;
+    
+      while (retries > 0) {
+        try {
+          const response = await axios.get(url, { headers: options.headers });
+          
+          if (!response || !response.data) {
+            throw new Error(`Invalid response: ${url}`);
+          }
+    
+          return response.data;
+        } catch (error) {
+          if (error.response && error.response.status === 429) {
+            const retryAfter = error.response.headers["retry-after"] || retryDelay / 1000;
+            console.warn(`Rate limit exceeded. Retrying after ${retryAfter} seconds...`);
+            
+            await new Promise(resolve => setTimeout(resolve, Math.max(retryAfter * 1000, retryDelay)));
+            retryDelay = Math.min(retryDelay + 2000, 10000); 
+            retries--;
+          } else {
+            console.error("Error:", error.message);
+            throw error;
+          }
+        }
+      }
+    
+      throw new Error("Max retries reached");
+    };
+    
+    const matchDetailPromises = matchs.map(async ({ matchid }) => {
+      const MatchDetailUrl = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchid}`;
+      try {
+        // 'data' 필드를 통해 matchid 값을 보내기
+        const matchData = await fetchWithRetry(MatchDetailUrl, { 
+          headers, 
+          data: [matchid] // matchid 배열 전달
+        });
+        
+        console.log(matchData.metadata.matchId);
+        const playerData = matchData.info.participants.find(
+          (p) => p.puuid === puuid
+        );
+        if (!playerData) return null;
+        return {
+          matchid: matchData.metadata.matchId,
+          puuid: playerData.puuid,
+          gameName: playerData.riotIdGameName,
+          tagLine: playerData.riotIdTagline,
+          kills: playerData.kills,
+          deaths: playerData.deaths,
+          assists: playerData.assists,
+          championId: playerData.championId,
+          win: playerData.win,
+          teamPosition: playerData.teamPosition,
+          timePlayed: Math.floor(matchData.info.gameDuration / 60),
+          gameCreation: new Date(matchData.info.gameCreation).toLocaleString(
+            "ko-KR"
+          ),
+          gameStartTimestamp: new Date(
+            matchData.info.gameStartTimestamp
+          ).toLocaleString("ko-KR"),
+          gameEndTimestamp: new Date(
+            matchData.info.gameEndTimestamp
+          ).toLocaleString("ko-KR"),
+        };
+      } catch (error) {
+        console.error(`Error fetching match ${matchid}:`, error);
+        return null;
+      }
+    });
+
+    const matchDetails = (await Promise.all(matchDetailPromises)).filter(
+      Boolean
+    );
+    await MatchDetails.bulkCreate(matchDetails, { ignoreDuplicates: true });
 
     return res.status(200).json({ message: "사용자 데이터 등록 완료" });
   } catch (error) {
@@ -682,7 +797,6 @@ const UserDetilsInfo = async (req, res) => {
             champKey: champ.championId, // champKey로 조회
           },
         });
-        console.log(champDataMost);
 
         if (champDataMost) {
           // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
@@ -704,12 +818,125 @@ const UserDetilsInfo = async (req, res) => {
       }
     }
 
+    // 전적데이터 그룹화 하기
+    const userMatchChampMost = await MatchDetails.findAll({
+      attributes: [
+        "championId",
+        [fn("SUM", col("kills")), "total_kills"],
+        [fn("SUM", col("deaths")), "total_deaths"],
+        [fn("SUM", col("assists")), "total_assists"],
+        [
+          fn(
+            "ROUND",
+            literal(
+              `(
+                CASE WHEN SUM(deaths) = 0 THEN 0
+                ELSE (SUM(kills) + SUM(assists)) / SUM(deaths)
+                END
+              )`
+            ),
+            1
+          ),
+          "kda",
+        ],
+        [fn("COUNT", col("*")), "games_played"],
+      ],
+      where: {
+        puuid: userInfo.puuid,
+        timePlayed: { [Op.gte]: 15 },
+      },
+      group: ["championId"],
+      order: [[literal("games_played"), "DESC"]],
+      limit: 10,
+    });
+
+    if (userMatchChampMost.length > 0) {
+      // 유저의 모스트 챔피언 배열을 순회하면서 처리
+      for (let i = 0; i < userMatchChampMost.length; i++) {
+        const userMost = userMatchChampMost[i]; // champ는 MasterChamp 테이블에서 하나씩 가져온 객체
+
+        console.log(userMost);
+        // champ.championId로 Champion 테이블에서 champKey를 조회
+        const champUserData = await Champion.findOne({
+          where: {
+            champKey: userMost.championId, // champKey로 조회
+          },
+        });
+
+        if (champUserData) {
+          // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
+          userMost.dataValues.champInfo = {
+            id: champUserData.id,
+            name: champUserData.name,
+            champKey: champUserData.champKey,
+            imgUrl: champUserData.champ_img, // 챔피언 이미지 경로 추가
+          };
+        } else {
+          // 챔피언 데이터가 없으면 기본값 설정
+          champUserData.dataValues.champInfo = {
+            id: null,
+            name: "Unknown Champion",
+            champKey: userMost.championId, // 챔피언 ID를 userMost에서 가져옴
+            imgUrl: "default_image_url", // 기본 이미지 경로
+          };
+        }
+        userMost[i] = champUserData.toJSON();
+      }
+    }
+
+    const positionMap = {
+      TOP: "탑",
+      JUNGLE: "정글",
+      MIDDLE: "미드",
+      BOTTOM: "원딜",
+      UTILITY: "서폿",
+    };
+
+    const userPosition = await MatchDetails.findAll({
+      attributes: [
+        "teamPosition", // 포지션별로 그룹화
+        [fn("COUNT", col("id")), "totalGame"], // 게임 횟수
+      ],
+      group: ["teamPosition"], // 포지션별로 그룹화
+      where: {
+        puuid: userInfo.puuid,
+        teamPosition: {
+          [Op.in]: ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"], // 원하는 포지션만 필터링
+        },
+      },
+      order: [["totalGame", "DESC"]], // 게임 횟수 기준으로 내림차순 정렬
+    });
+
+    // 기본 포지션 설정
+    const defaultPositions = [
+      { teamPosition: "탑", totalGame: 0 },
+      { teamPosition: "정글", totalGame: 0 },
+      { teamPosition: "미드", totalGame: 0 },
+      { teamPosition: "원딜", totalGame: 0 },
+      { teamPosition: "서폿", totalGame: 0 },
+    ];
+
+    const positionData = defaultPositions
+    .map((defaultPos) => {
+      // userPosition에서 해당 포지션을 찾고, 있으면 값을 덮어씀
+      const found = userPosition.find(
+        (item) => positionMap[item.teamPosition] === defaultPos.teamPosition
+      );
+  
+      return {
+        teamPosition: defaultPos.teamPosition,
+        totalGame: found ? found.dataValues.totalGame : defaultPos.totalGame,
+      };
+    })
+    .sort((a, b) => b.totalGame - a.totalGame);
     userInfo.dataValues.Profile = userProfile;
 
     return res.status(200).json({
       userInfo,
       rankInfo,
       MasterChamp: MasterChamp.map((champ) => champ.toJSON()),
+      userMatchMost: userMatchChampMost,
+      positionData,
     });
   } catch (error) {
     console.error("Error:", error);

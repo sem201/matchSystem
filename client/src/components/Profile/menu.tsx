@@ -8,18 +8,27 @@ const Navbar: React.FC = () => {
   const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
   const hasLoggedOut = useRef(false); // 로그아웃 중복 호출 방지 플래그
 
-  // 타이머 감소
+  // 타이머 상태를 localStorage에 저장하고 불러오기
   useEffect(() => {
+    // localStorage에서 타이머 상태 불러오기
+    const storedTime = localStorage.getItem("logoutTime");
+    if (storedTime) {
+      setLogoutTime(Number(storedTime)); // 저장된 시간으로 초기화
+    }
+
     // 타이머 실행
     timerRef.current = setInterval(() => {
       setLogoutTime((prevTime) => {
         if (prevTime > 0) {
-          return prevTime - 1;
+          const newTime = prevTime - 1;
+          localStorage.setItem("logoutTime", newTime.toString()); // 새로운 시간 저장
+          return newTime;
         } else {
           if (!hasLoggedOut.current) {
             hasLoggedOut.current = true; // 로그아웃 처리 중복 방지
             logout();
           }
+          localStorage.removeItem("logoutTime"); // 로그아웃 시 타이머 값 삭제
           return 0;
         }
       });
@@ -50,63 +59,52 @@ const Navbar: React.FC = () => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-
   return (
     <nav className="bg-gray-800 bg-opacity-80 w-full py-5 fixed top-0 left-0 z-50 font-blackHanSans">
       <div className="container mx-auto flex items-center justify-between space-x-8">
         {/* 로고와 메뉴 */}
         <div className="flex items-center space-x-8">
-          
           {/* 메뉴 */}
-          <div className="hidden md:flex space-x-6">
-          <a href="/main">
-            <img
-              src={logoImg}
-              alt="Logo"
-              className="w-16 h-16 cursor-pointer"
-            />
-          </a>
-            {/* <a
-              href="#"
-              className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-            >
-              메뉴 1
-            </a>
-            <a
-              href="#"
-              className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-            >
-              메뉴 2
-            </a>
-            <a
-              href="#"
-              className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-            >
-              메뉴 3
-            </a>
-            <a
-              href="#"
-              className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-            >
-              메뉴 4
-            </a>
-            <a
-              href="#"
-              className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-            >
-              메뉴 5
-            </a> */}
+          <div className="hidden md:flex space-x-6 ml-auto">
+            <a href="/main">
+              <img
+                src={logoImg}
+                alt="Logo"
+                className="w-18 h-16 cursor-pointer"
+              />
+            </a> 
           </div>
         </div>
 
         {/* PC 버전에서 환영합니다 */}
         <div className="hidden md:flex items-center space-x-4 ml-auto">
-        <button
+          <button
             onClick={() => {
               axios
                 .get(
                   "http://127.0.0.1:8000/logout",
-                  {},
+                  {} ,
+                  { withCredentials: true }
+                )
+                .then((response) => {
+                  alert("로그아웃 되었습니다.");
+                  window.location.href = "/";
+                })
+                .catch((error) => {
+                  console.error("로그아웃 요청 중 오류 발생:", error);
+                  alert("로그아웃 요청에 오류가 발생했습니다.");
+                });
+            }}
+            className="text-yellow-700 text-lg font-semibold hover:text-red-400 transition duration-300"
+          >
+            전적갱신
+          </button>
+          <button
+            onClick={() => {
+              axios
+                .get(
+                  "http://127.0.0.1:8000/logout",
+                  {} ,
                   { withCredentials: true }
                 )
                 .then((response) => {
@@ -145,36 +143,6 @@ const Navbar: React.FC = () => {
       >
         <div className="flex flex-col items-center justify-start space-y-9 pt-36">
           <span className="text-white text-lg font-semibold">성은총님 환영합니다</span>
-          <a
-            href="#"
-            className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-          >
-            메뉴 1
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-          >
-            메뉴 2
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-          >
-            메뉴 3
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-          >
-            메뉴 4
-          </a>
-          <a
-            href="#"
-            className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
-          >
-            메뉴 5
-          </a>
           {/* 모바일 메뉴에서 로그아웃 버튼 */}
           <button
             onClick={() => {
