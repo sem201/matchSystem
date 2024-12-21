@@ -54,9 +54,11 @@ const DraftModal2 = ({
     if (remainingMember) {
       setDraftedMembers((prevDrafted) => [...prevDrafted, remainingMember]);
     }
+  };
 
-    // 두 명을 선택했으면 팀을 나누거나 다음 선택을 준비
-    if (draftedMembers.length + 2 === availableMembersCount) {
+  // draftedMembers 상태가 업데이트 된 후 처리
+  useEffect(() => {
+    if (draftedMembers.length === availableMembersCount) {
       const RedTeam = [
         redTeamLeader!,
         ...draftedMembers.filter((_, idx) => idx % 2 === 0),
@@ -66,13 +68,15 @@ const DraftModal2 = ({
         ...draftedMembers.filter((_, idx) => idx % 2 === 1),
       ];
 
-      handleFinishDraft(RedTeam, BlueTeam);
-    } else {
-      // 두 명을 더 선택할 수 있도록 새로운 팀원 보여주기
-      const nextPair = getNextPair();
-      setCurrentTeamMembers(nextPair);
+      handleFinishDraft(RedTeam, BlueTeam); // 상태가 업데이트된 후 호출
     }
-  };
+  }, [
+    draftedMembers,
+    availableMembersCount,
+    redTeamLeader,
+    blueTeamLeader,
+    handleFinishDraft,
+  ]);
 
   useEffect(() => {
     // 처음 두 명을 선택
