@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import DraftModal2 from "./DraftModal2";
 import { User } from "../../../commonTypes";
-import axios from "axios";
 import apiCall from "../../../Api/Api";
 
 interface DraftModalProps {
@@ -40,27 +39,41 @@ const DraftModal = ({
 
   const handleConfirm = async () => {
     if (redTeamLeader && blueTeamLeader) {
+      const players = teamMembers.map((member) => {
+        const isLeader =
+          (redTeamLeader && redTeamLeader.id === member.id) ||
+          (blueTeamLeader && blueTeamLeader.id === member.id);
+
+        return {
+          id: member.id,
+          gameName: member.gameName,
+          RankScore: member.tierScore,
+          ...(isLeader && { leader: true }),
+        };
+      });
+      // const players = [
+      //   { id: 1, gameName: "test1", RankScore: 10, leader: true },
+      //   { id: 2, gameName: "test2", RankScore: 15, leader: true },
+      //   { id: 3, gameName: "test3", RankScore: 20 },
+      //   { id: 4, gameName: "test4", RankScore: 18 },
+      //   { id: 5, gameName: "test5", RankScore: 12 },
+      //   { id: 6, gameName: "test6", RankScore: 22 },
+      //   { id: 7, gameName: "test7", RankScore: 14 },
+      //   { id: 8, gameName: "test8", RankScore: 17 },
+      //   { id: 9, gameName: "test9", RankScore: 13 },
+      //   { id: 10, gameName: "test10", RankScore: 19 },
+      // ];
+
       const data = {
-        players: [
-          { id: 1, gameName: "test1", RankScore: 10, leader: true },
-          { id: 2, gameName: "test2", RankScore: 15, leader: true },
-          { id: 3, gameName: "test3", RankScore: 20 },
-          { id: 4, gameName: "test4", RankScore: 18 },
-          { id: 5, gameName: "test5", RankScore: 12 },
-          { id: 6, gameName: "test6", RankScore: 22 },
-          { id: 7, gameName: "test7", RankScore: 14 },
-          { id: 8, gameName: "test8", RankScore: 17 },
-          { id: 9, gameName: "test9", RankScore: 13 },
-          { id: 10, gameName: "test10", RankScore: 19 },
-        ],
+        players: players,
         mode: "draft",
       };
-      console.log(data);
+
+      console.log("전송할 데이터:", data);
 
       try {
-        // 팀장 데이터와 함께 players 배열도 보내기
+        // API 호출
         const response = await apiCall("/noobs/TeamMach", "post", data);
-
         console.log("API Response:", response.data);
         setShowNextModal(true);
       } catch (error) {
