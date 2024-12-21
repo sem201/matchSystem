@@ -1,6 +1,7 @@
 import { useState } from "react";
 import apiCall from "../../Api/Api";
-
+import Swal from "sweetalert2";
+import LoadingModal from "../../components/Profile/Loging";
 // ModalProps 수정
 interface ModalProps {
   closeModal: () => void;
@@ -16,7 +17,7 @@ export default function AddUserModal({
   const [nicknameTag, setNicknameTag] = useState<string>(""); // 입력값
   const [userAdded, setUserAdded] = useState<boolean | null>(null); // 검색 결과
   const [errorLog, setErrorLog] = useState<string>(""); // 검색 결과 에러로그
-
+  const [isLoading, setIsLoading] = useState(false);
   // 추가 버튼 활성화 상태
   const isAddEnabled = userAdded === true;
 
@@ -35,29 +36,53 @@ export default function AddUserModal({
     // 태그를 대문자로 변환
     // const normalizedTag = tag.toUpperCase();
 
+    setIsLoading(true);
     // 검색 로직 실행
     const data = { userid: nickname, tagLine: tag };
     try {
       await apiCall("/noobs/lolUser", "get", data);
       setErrorLog("");
       setUserAdded(true);
+      Swal.fire({
+        icon: "success",
+        title: "검색 완료",
+        text: "소환사 검색을 완료하였습니다.",
+        background: "#fff",
+        color: "#000",
+        showConfirmButton: true,
+      });
     } catch (error: any) {
       if (error.status === 404) {
-        setErrorLog(
-          "등록된 소환사를 찾을 수 없습니다. \n 소환사 이름을 확인해주세요."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "검색 실패",
+          text: "등록되지 않은 소환사 입니다.",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else if (error.status === 403) {
-        setErrorLog(
-          "서버 인증이 만료되었습니다. \n 잠시 후 다시 시도해주세요."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "인증 만료",
+          text: "서버 인증 만료 관리자에게 문의해주세요.",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else {
-        setErrorLog(
-          "서버에 문제가 발생했습니다. \n 잠시 후 다시 시도해주세요."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "서버 오류",
+          text: "서버에 오류가 발생하였습니다. \n 관리자에게 문의해주세요.",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       }
       setUserAdded(false);
     }
-
+    setIsLoading(false);
     // 유저 추가 로직 (닉네임은 그대로, 태그는 대문자로 비교)
   };
 
@@ -72,20 +97,44 @@ export default function AddUserModal({
         error.status === 400 &&
         error.response.data.message === "이미 추가된 유저입니다. "
       ) {
-        alert("이미 추가된 유저입니다.");
+        Swal.fire({
+          icon: "error",
+          title: "잠시 후 다시 시도하세요",
+          text: "이미 추가된 소환사 입니다.",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else if (
         error.status === 400 &&
         error.response.data.message === "더이상 추가 할 수 없습니다."
       ) {
-        alert(
-          "더 이상 추가할 수 없습니다.\n 함께한 사용자는 최대 15명 까지 추가할 수 있습니다."
-        );
+        Swal.fire({
+          icon: "error",
+          title: "추가 제한",
+          text: "최대 인원은 20명 입니다.",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else if (error.status === 403) {
-        alert("서버 인증이 만료되었습니다. \n 잠시 후 다시 시도해주세요.");
-        alert(errorLog);
+        Swal.fire({
+          icon: "error",
+          title: "서버 오류",
+          text: "인증만료 관리자에게 문의하세요",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else {
-        alert("서버에 문제가 발생했습니다. \n 잠시 후 다시 시도해주세요.");
-        alert(errorLog);
+        Swal.fire({
+          icon: "error",
+          title: "서버 오류",
+          text: "서버 오류 발생 관리자에게 문의하세요",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       }
     }
     // 추가 버튼 클릭 시 초기화
@@ -131,7 +180,10 @@ export default function AddUserModal({
             >
               검색
             </button>
+           {/* 로딩 상태일 때 모달을 보여줌 */}
+           {isLoading && <LoadingModal message="소환사 정보를 검색중입니다..." />} 
           </div>
+     
 
           {/* 추가 완료/실패 문구 */}
           {userAdded === true && (

@@ -15,6 +15,7 @@ const RankedMatch = sequelize.define('RankedMatch', {
   matchid : {
     type: DataTypes.STRING,
     allowNull: true,
+    unique: true
   },
 }, {
   timestamps: true, // createdAt, updatedAt 자동 생성

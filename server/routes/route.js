@@ -9,10 +9,14 @@ import {
   friendUserBr,
   friendUserBrUpdate,
   friendUserBrDel,
-  UserDetilsInfo
+  UserDetilsInfo,
+  nobsinfo
 } from "../controllers/userInfoController.js";
 import { TeamMach, sampleData } from "../controllers/modeTeamController.js";
 import rateLimit from "express-rate-limit";
+import { kakaoLogin, logout } from '../controllers/authController.js';
+
+
 
 const limiter = rateLimit({
   windowMs: 300 * 1000,
@@ -21,6 +25,16 @@ const limiter = rateLimit({
 });
 
 const router = express.Router();
+
+// 카카오 로그인 처리
+router.get('/user/kakao/login', kakaoLogin);
+
+// 로그아웃
+router.get('/logout', logout);
+
+// Noobs 사용자
+router.get('/noobs/nobsinfo', nobsinfo);
+
 
 // 챔피언 업데이트
 router.post("/noobs/championUpadate", ChampionUpdate);
@@ -40,9 +54,6 @@ router.get("/noobs/friendUserBr", friendUserBr);
 router.post("/noobs/TeamMach", TeamMach);
 
 // 사용자 정보 업데이트
-// router.post('/noobs/lolUserUpdate', limiter, lolUserUpdate);
-
-// 사용자 정보 업데이트
 router.post("/noobs/friendUserBrUpdate", friendUserBrUpdate);
 
 // 유저 삭제 [ 초근에 같이한 플에이어 ]
@@ -52,5 +63,7 @@ router.post("/noobs/friendUserBrDel", friendUserBrDel);
 router.post("/noobs/UserDetilsInfo", UserDetilsInfo);
 
 router.get("/sampleData", sampleData);
+
+
 
 export default router; // ESM 방식으로 export

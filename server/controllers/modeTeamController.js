@@ -214,10 +214,6 @@ const TeamMach = async (req, res) => {
   }
   try {
     if (mode === "rand") {
-      // 비동기적으로 테스트 데이터를 가져오는 함수 호출
-      //const players = await getTestData(); // 테스트용 데이터
-      console.log("Generated players:", players);
-
       const { readTeam, blueTeam } = generateRandTeam(players);
       // 응답으로 생성된 플레이어 목록 반환
 
@@ -225,7 +221,6 @@ const TeamMach = async (req, res) => {
         .status(200)
         .json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
     } else if (mode == "balance") {
-      console.log(players);
       const { redTeam, blueTeam } = balanceTeams(players);
       return res
         .status(200)
@@ -284,9 +279,6 @@ const sampleData = async () => {
           // MASTER 이상은 Division이 없으므로 한 번만 요청
           if (division !== "I") continue;
         }
-
-        console.log(`Fetching data for Tier: ${tier}, Division: ${division}`);
-
         // 1차 요청: Summoner ID 가져오기
         const userDataUrl = `https://kr.api.riotgames.com/lol/league-exp/v4/entries/RANKED_SOLO_5x5/${tier}/${division}?page=1`;
         const userDataResponse = await axios.get(userDataUrl, { headers });
@@ -336,7 +328,7 @@ const sampleData = async () => {
     // 엑셀 파일 저장
     const filename = "Summoner_Data_with_FullGameName.xlsx";
     XLSX.writeFile(workbook, filename);
-    console.log(`Data successfully saved to ${filename}`);
+    console.log(`데이터 저장완료 ${filename}`);
   } catch (error) {
     console.error("Error fetching data:", error.message);
   }

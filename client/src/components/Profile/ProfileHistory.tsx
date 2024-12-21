@@ -20,7 +20,7 @@ interface RecentHistoryProps {
 const RecentHistory: React.FC<RecentHistoryProps> = ({ champions = [] }) => {
   return (
     <div className="recent-history p-6 bg-gray-800 text-white rounded-lg">
-      <h2 className="text-2xl font-bold mb-6 font-blackHanSans">숙련도 TOP5</h2>
+      <h2 className="text-2xl font-bold mb-6 font-blackHanSans">숙련도 TOP 5</h2>
 
       {champions.length === 0 ? (
         <p className="text-center text-gray-400">데이터가 없습니다.</p>
@@ -39,7 +39,7 @@ const RecentHistory: React.FC<RecentHistoryProps> = ({ champions = [] }) => {
                 />
               </div>
               <div className="champion-info text-center">
-                <h3 className="text-lg font-bold font-blackHanSans">
+                <h3 className="text-lg font-bold font-blackHanSans overflow-hidden text-ellipsis whitespace-nowrap">
                   {champion.champInfo.name}
                 </h3>
                 <p className="text-sm font-blackHanSans">
