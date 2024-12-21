@@ -89,10 +89,7 @@ const DraftModal = ({
         if (e.target === e.currentTarget) closeModal();
       }}
     >
-      <div
-        className="bg-white p-8 rounded-lg w-[100%] max-w-[400px] shadow-lg border-4"
-        style={{ borderColor: "#C89B3C" }}
-      >
+      <div className="bg-white p-8 rounded-lg w-[350px] shadow-lg relative border-4 border-[3px] border-[#C89B3C]">
         <p
           className="text-center mb-7 font-bold text-lg font-blackHanSans"
           style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
@@ -100,7 +97,7 @@ const DraftModal = ({
           팀장을 뽑아주세요.
         </p>
 
-        <div className="flex justify-between gap-4 mb-4 font-blackHanSans">
+        <div className="flex justify-between gap-4 mb-4 font-blackHanSans whitespace-nowrap">
           <button
             onClick={() => handleTeamSelect("RED TEAM")}
             className={`w-[200px] py-2 rounded-lg ${
