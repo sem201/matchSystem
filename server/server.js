@@ -47,7 +47,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views")); // views 디렉토리 경로 설정
 
 // 정적 파일 제공
-app.use("/static", express.static(path.join(__dirname, "static"))); // static 디렉토리 경로 설정
+// app.use("/static", express.static(path.join(__dirname, "static"))); // static 디렉토리 경로 설정
+app.use("/", express.static(path.join(__dirname, "../client/dist")));
+console.log(path.join(__dirname, "../client/dist"));
 
 app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
@@ -66,7 +68,7 @@ app.get("/check-session", (req, res) => {
 
 // 홈 페이지 처리
 app.get("/", (req, res) => {
-  res.render("서버 실행중");
+  res.render("index.html");
 });
 
 // 404 페이지 처리
