@@ -203,9 +203,15 @@ const draftTeams = (players) => {
 
 const TeamMach = async (req, res) => {
   const { mode, players } = req.body;
-  console.log("Received mode:", mode);
-  console.log(req.body);
+  const missingPositions = players.filter((player) => player.position === "");
 
+  // 빈 position 값이 있는 경우 처리
+  if (missingPositions.length > 0) {
+    return res.status(400).json({
+      message: "다음 플레이어들의 포지션이 비어있습니다.",
+      missingPlayers: missingPositions,
+    });
+  }
   try {
     if (mode === "rand") {
       // 비동기적으로 테스트 데이터를 가져오는 함수 호출
@@ -219,6 +225,7 @@ const TeamMach = async (req, res) => {
         .status(200)
         .json({ message: "랜덤 팀 생성 완료", readTeam, blueTeam });
     } else if (mode == "balance") {
+      console.log(players);
       const { redTeam, blueTeam } = balanceTeams(players);
       return res
         .status(200)
@@ -233,7 +240,7 @@ const TeamMach = async (req, res) => {
         });
       }
       const { draftTeam } = draftTeams(players);
-      
+
       return res
         .status(200)
         .json({ message: "드래프트 팀 생성 완료", draftTeam });

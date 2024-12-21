@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
         {/* 로고와 메뉴 */}
         <div className="flex items-center space-x-8">
           {/* 메뉴 */}
-          <div className="hidden md:flex space-x-6 ml-auto">
+          <div className="hidden md:flex space-x-6">
             <a href="/main">
               <img
                 src={logoImg}
@@ -108,6 +108,8 @@ const Navbar: React.FC = () => {
                   { withCredentials: true }
                 )
                 .then((response) => {
+                .get("http://127.0.0.1:8000/logout", {})
+                .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";
                 })
@@ -121,7 +123,9 @@ const Navbar: React.FC = () => {
             로그아웃
           </button>
           <span className="text-white">{`성은총님 환영합니다`}</span>
-          <span className="text-yellow-500">{`자동 로그아웃: ${formatTime(logoutTime)}`}</span>
+          <span className="text-yellow-500">{`자동 로그아웃: ${formatTime(
+            logoutTime
+          )}`}</span>
         </div>
 
         {/* 모바일에서 보이는 햄버거 메뉴 */}
@@ -147,12 +151,8 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => {
               axios
-                .get(
-                  "http://127.0.0.1:8000/logout",
-                  {},
-                  { withCredentials: true }
-                )
-                .then((response) => {
+                .get("http://127.0.0.1:8000/logout", {})
+                .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";
                 })

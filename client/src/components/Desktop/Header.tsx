@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "axios";
+import apiCall from "../../Api/Api";
 
 interface HeaderProps {
   text: string;
@@ -13,16 +13,13 @@ const Header: React.FC<HeaderProps> = ({ text }) => {
       </h2>
       <button
         onClick={() => {
-          axios
-            .get("http://127.0.0.1:8000/logout", {}, { withCredentials: true })
-            .then((response) => {
-              alert("로그아웃 되었습니다.");
-              window.location.href = "/";
-            })
-            .catch((error) => {
-              console.error("로그아웃 요청 중 오류 발생:", error);
-              alert("로그아웃 요청에 오류가 발생했습니다.");
-            });
+          try {
+            apiCall("http://127.0.0.1:8000/logout", "get", null);
+            alert("로그아웃 되었습니다.");
+            window.location.href = "/";
+          } catch (err) {
+            console.log(err);
+          }
         }}
         type="submit"
         className="fixed top-[2.5%] right-[2.5%] bg-transparent text-white border border-solid border-[#C89B3C]"

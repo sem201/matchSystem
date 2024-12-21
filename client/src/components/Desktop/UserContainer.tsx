@@ -19,9 +19,15 @@ const UserContainer: React.FC<UserContainerProps> = ({
   return (
     <div>
       <div className="w-[100%] h-[70vh] overflow-auto border border-solid border-[#C89B3C] rounded-2xl bg-[#F0E6D2] bg-opacity-15 p-4">
-        <div className="font-blackHanSans text-3xl text-center mb-5 mt-3 text-white">
-          최근에 같이한 친구
+        <div className="py-3  flex flex-row justify-between items-center">
+          <div className="font-blackHanSans text-3xl lg:text-2xl xl:text-3xl text-center text-white">
+            최근에 같이한 친구
+          </div>
+          <div className="font-blackHanSans text-xl text-center text-white">
+            {allUsers.length}명
+          </div>
         </div>
+
         <div>
           {allUsers.map((user) => (
             <LatestUserInfo
