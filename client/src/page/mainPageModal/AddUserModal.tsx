@@ -152,8 +152,8 @@ export default function AddUserModal({
               onClick={handleAddButtonClick} // 추가 버튼 클릭 시 초기화
               className={`px-7 py-2 ${
                 isAddEnabled
-                  ? "bg-[#C89B3C] text-white border-[#F0E6D2] font-bold cursor-not-allowed"
-                  : "bg-[#F0E6D2] text-[#0F2041] font-bold hover:bg-[#A87F2D]"
+                  ? "bg-[#C89B3C] text-white border-[#F0E6D2] font-bold"
+                  : "bg-[#F0E6D2] text-[#0F2041] font-bold hover:bg-[#A87F2D] cursor-not-allowed"
               } border-2 border-[#C89B3C] rounded-full`}
             >
               추가

@@ -56,6 +56,9 @@ const Navbar: React.FC = () => {
       <div className="container mx-auto flex items-center justify-between space-x-8">
         {/* 로고와 메뉴 */}
         <div className="flex items-center space-x-8">
+          
+          {/* 메뉴 */}
+          <div className="hidden md:flex space-x-6">
           <a href="/main">
             <img
               src={logoImg}
@@ -63,9 +66,7 @@ const Navbar: React.FC = () => {
               className="w-16 h-16 cursor-pointer"
             />
           </a>
-          {/* 메뉴 */}
-          <div className="hidden md:flex space-x-6">
-            <a
+            {/* <a
               href="#"
               className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
             >
@@ -94,7 +95,7 @@ const Navbar: React.FC = () => {
               className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
             >
               메뉴 5
-            </a>
+            </a> */}
           </div>
         </div>
 
