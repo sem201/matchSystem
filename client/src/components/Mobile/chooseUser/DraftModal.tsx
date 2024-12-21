@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import DraftModal2 from "./DraftModal2";
 import { User } from "../../../commonTypes";
+import axios from "axios";
+import apiCall from "../../../Api/Api";
 
 interface DraftModalProps {
   closeModal: () => void;
@@ -36,9 +38,34 @@ const DraftModal = ({
     setIsDropdownOpen(false);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     if (redTeamLeader && blueTeamLeader) {
-      setShowNextModal(true);
+      const data = {
+        players: [
+          { id: 1, gameName: "test1", RankScore: 10, leader: true },
+          { id: 2, gameName: "test2", RankScore: 15, leader: true },
+          { id: 3, gameName: "test3", RankScore: 20 },
+          { id: 4, gameName: "test4", RankScore: 18 },
+          { id: 5, gameName: "test5", RankScore: 12 },
+          { id: 6, gameName: "test6", RankScore: 22 },
+          { id: 7, gameName: "test7", RankScore: 14 },
+          { id: 8, gameName: "test8", RankScore: 17 },
+          { id: 9, gameName: "test9", RankScore: 13 },
+          { id: 10, gameName: "test10", RankScore: 19 },
+        ],
+        mode: "draft",
+      };
+      console.log(data);
+
+      try {
+        // 팀장 데이터와 함께 players 배열도 보내기
+        const response = await apiCall("/noobs/TeamMach", "post", data);
+
+        console.log("API Response:", response.data);
+        setShowNextModal(true);
+      } catch (error) {
+        console.error("API 에러:", error);
+      }
     }
   };
 

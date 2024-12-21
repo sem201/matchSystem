@@ -83,7 +83,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
                 </div>
               ))}
             </div>
-            <p className="text-md font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xs">
+            <p className="text-md text-red-500 font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xl white-space: whitespace-nowrap overflow-hidden text-ellipsis">
               {user.gameName}
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
