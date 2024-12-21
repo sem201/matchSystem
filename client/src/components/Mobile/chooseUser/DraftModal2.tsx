@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { User } from "../../../commonTypes";
-// import { User } from "../../../commonTypes";
 
 interface DraftModal2Props {
   closeModal: () => void;
-  teamMembers: User[]; // ( 원래는 User[]였음 참고하기 )
-  redTeamLeader: User | null; // 부모 컴포넌트에서 받은 redTeamLeader
-  blueTeamLeader: User | null; // 부모 컴포넌트에서 받은 blueTeamLeader
+  teamMembers: User[];
+  redTeamLeader: User | null;
+  blueTeamLeader: User | null;
   handleFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void;
 }
 
@@ -19,7 +18,7 @@ const DraftModal2 = ({
 }: DraftModal2Props) => {
   console.log("모달2 실행");
   const [draftedMembers, setDraftedMembers] = useState<User[]>([]); // 이미 선택된 멤버
-  const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 랜덤으로 선택된 두 팀원
+  const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 현재 두 팀원
   const [currentLeader, setCurrentLeader] = useState<User | null>(
     redTeamLeader
   ); // 레드팀 팀장만 계속 표시
@@ -28,32 +27,27 @@ const DraftModal2 = ({
     (member) => member !== redTeamLeader && member !== blueTeamLeader
   ).length;
 
-  // 랜덤으로 두 명의 팀원을 선택하는 함수
-  const getRandomPair = () => {
+  // 순차적으로 두 명의 팀원을 선택하는 함수
+  const getNextPair = () => {
+    // 팀장이 제외된 나머지 멤버들
     const remainingMembers = teamMembers.filter(
       (member) =>
-        !draftedMembers.includes(member) &&
         member !== redTeamLeader &&
-        member !== blueTeamLeader
+        member !== blueTeamLeader &&
+        !draftedMembers.includes(member)
     );
 
-    // 두 명 랜덤으로 선택
-    const randomPair = [];
-    for (let i = 0; i < 2; i++) {
-      const randomIndex = Math.floor(Math.random() * remainingMembers.length);
-      randomPair.push(remainingMembers[randomIndex]);
-      remainingMembers.splice(randomIndex, 1); // 이미 선택된 멤버는 제외
-    }
-
-    return randomPair;
+    // 순차적으로 두 명을 선택
+    const nextPair = remainingMembers.slice(0, 2);
+    return nextPair;
   };
 
   // 멤버 선택 시 호출되는 함수
   const handleSelectMember = (selectedMember: User) => {
-    // 레드팀에 선택된 멤버를 추가
+    // 선택된 멤버를 draftedMembers에 추가
     setDraftedMembers((prevDrafted) => [...prevDrafted, selectedMember]);
 
-    // 선택되지 않은 멤버는 블루팀에 배정
+    // 선택되지 않은 멤버는 반대 팀에 배정
     const remainingMember = currentTeamMembers.find(
       (member) => member.gameName !== selectedMember.gameName
     );
@@ -61,11 +55,7 @@ const DraftModal2 = ({
       setDraftedMembers((prevDrafted) => [...prevDrafted, remainingMember]);
     }
 
-    // 랜덤으로 두 명을 다시 선택하여 보여줌
-    const nextPair = getRandomPair();
-    setCurrentTeamMembers(nextPair);
-
-    // 팀원 선택이 끝났으면 결과를 부모 컴포넌트로 전달
+    // 두 명을 선택했으면 팀을 나누거나 다음 선택을 준비
     if (draftedMembers.length + 2 === availableMembersCount) {
       const RedTeam = [
         redTeamLeader!,
@@ -77,12 +67,16 @@ const DraftModal2 = ({
       ];
 
       handleFinishDraft(RedTeam, BlueTeam);
+    } else {
+      // 두 명을 더 선택할 수 있도록 새로운 팀원 보여주기
+      const nextPair = getNextPair();
+      setCurrentTeamMembers(nextPair);
     }
   };
 
   useEffect(() => {
-    // 처음 랜덤으로 두 명의 팀원을 선택
-    const initialPair = getRandomPair();
+    // 처음 두 명을 선택
+    const initialPair = getNextPair();
     setCurrentTeamMembers(initialPair);
   }, [teamMembers, draftedMembers]);
 
@@ -100,7 +94,7 @@ const DraftModal2 = ({
         </h1>
       )}
 
-      {/* 팀원 두 명을 랜덤으로 보여주고, 선택하는 버튼 */}
+      {/* 팀원 두 명을 순차적으로 보여주고, 선택하는 버튼 */}
       {currentTeamMembers.length === 2 &&
         draftedMembers.length < availableMembersCount && (
           <div className="flex flex-col gap-4 mt-20">
