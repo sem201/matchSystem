@@ -99,6 +99,7 @@ const Navbar: React.FC = () => {
           >
             전적갱신
           </button>
+
           <button
             onClick={() => {
               axios
@@ -108,8 +109,6 @@ const Navbar: React.FC = () => {
                   { withCredentials: true }
                 )
                 .then((response) => {
-                .get("http://127.0.0.1:8000/logout", {})
-                .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";
                 })
@@ -122,6 +121,7 @@ const Navbar: React.FC = () => {
           >
             로그아웃
           </button>
+  
           <span className="text-white">{`성은총님 환영합니다`}</span>
           <span className="text-yellow-500">{`자동 로그아웃: ${formatTime(
             logoutTime
