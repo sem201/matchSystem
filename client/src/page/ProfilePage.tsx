@@ -19,7 +19,8 @@ const ProfilePage: React.FC = () => {
   const [rankInfo, setRankInfoData] = useState<any>([]);
   const [userInfo, setUserInfoData] = useState<any>({});
   const [masterChamp, setMasterData] = useState<any>([]);
-  //@ts-ignore
+  const [MostChamp, setMostChamp] = useState<any>([]);
+  const [userPostion, setuserPostion] = useState<any>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -36,6 +37,8 @@ const ProfilePage: React.FC = () => {
           setRankInfoData(response.data.rankInfo);
           setUserInfoData(response.data.userInfo);
           setMasterData(response.data.MasterChamp);
+          setMostChamp(response.data.userMatchMost);
+          setuserPostion(response.data.positionData);
         } catch (error) {
           setError("데이터 로드에 실패했습니다.");
           console.error("Error fetching data:", error);
@@ -45,14 +48,11 @@ const ProfilePage: React.FC = () => {
     }
   }, [user_id]);
 
+  console.log(userPostion);
+
   // rankInfo가 비어있을 경우를 안전하게 처리
   const leftRank = rankInfo[0] || {};
   const rightRank = rankInfo[1] || {};
-
-  console.log(profileData);
-  console.log(userInfo);
-  console.log(rankInfo);
-  console.log(masterChamp);
 
   return (
     <div
@@ -97,7 +97,11 @@ const ProfilePage: React.FC = () => {
           </div>
 
           {/* 오른쪽 영역 */}
-          <Position title="소환사의 선호 포지션" data={[10, 5, 4, 2, 1]} />
+          <Position 
+              title="소환사의 선호 포지션"
+              labels={userPostion.map(item => item.teamPosition)} // teamPosition을 labels로
+              totalGame={userPostion.map(item => item.totalGame)} // totalGame을 totalGame으로
+             />
         </div>
 
         {/* 중간 영역 */}
@@ -119,7 +123,7 @@ const ProfilePage: React.FC = () => {
           {/* 오른쪽 카드들 위아래로 */}
           <div className="flex flex-col sm:w-2/3 gap-4">
             <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between min-h-[300px] border-4 border-[rgb(200, 155, 60)]">
-              <ProfileCharts />
+              <ProfileCharts champions={MostChamp}/>
             </div>
             <div className="bg-gray-800 p-6 rounded-lg flex flex-col justify-between min-h[350px] border-4 border-[rgb(200, 155, 60)]">
               <ProfileHistory champions={masterChamp} />
