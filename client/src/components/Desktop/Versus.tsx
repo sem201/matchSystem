@@ -1,5 +1,3 @@
-import React from "react";
-
 const Versus = () => {
   return (
     <div className="text-[2.5vw] font-bold text-center flex gap-[5%] justify-center">
