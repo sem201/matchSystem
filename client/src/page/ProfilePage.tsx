@@ -9,7 +9,7 @@ import RankCard from "../components/Profile/RankCard"; // RankCard 컴포넌트 
 import Position from "../components/Profile/Position";
 import BackImg from "../assets/bg_img.jpg";
 import axios from "axios";
-import defaultImg from "../assets/default.png"
+import defaultImg from "../assets/default.png";
 
 const ProfilePage: React.FC = () => {
   const location = useLocation();
@@ -19,6 +19,7 @@ const ProfilePage: React.FC = () => {
   const [rankInfo, setRankInfoData] = useState<any>([]);
   const [userInfo, setUserInfoData] = useState<any>({});
   const [masterChamp, setMasterData] = useState<any>([]);
+  //@ts-ignore
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -69,15 +70,15 @@ const ProfilePage: React.FC = () => {
           {/* 왼쪽 카드 */}
           <RankCard
             left={{
-              title: `${leftRank?.queueType || '개인2인랭'}`,
+              title: `${leftRank?.queueType || "개인2인랭"}`,
               rank: `${leftRank?.tier || "Unranked"} ${leftRank?.rank || ""}`,
-              score: ` ${leftRank?.LP || ''}`,
+              score: ` ${leftRank?.LP || ""}`,
               imgSrc: leftRank.RankImg?.rankImg || defaultImg, // 이미지 경로를 안전하게 처리
             }}
             right={{
-              title: `${rightRank?.queueType || '자유랭'}`,
+              title: `${rightRank?.queueType || "자유랭"}`,
               rank: `${rightRank?.tier || "Unranked"} ${rightRank?.rank || ""}`,
-              score: ` ${rightRank?.LP || ''}`,
+              score: ` ${rightRank?.LP || ""}`,
               imgSrc: rightRank.RankImg?.rankImg || defaultImg, // 이미지 경로를 안전하게 처리
             }}
           />

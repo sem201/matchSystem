@@ -34,7 +34,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
   }, [userModal]);
   return (
     <div
-      className="font-blackHanSans border-2 border-white/50 rounded-lg flex flex-row items-center h-[55px] w-[100%] mx-2 my-1 relative justify-around hover:border-yellow-500 hover:shadow-lg hover:transform hover:translate-y-[-5px] hover:cursor-pointer " 
+      className="font-blackHanSans border-2 border-white/50 rounded-lg flex flex-row items-center h-[55px] w-[100%] mx-2 my-1 relative justify-around hover:border-yellow-500 hover:shadow-lg hover:transform hover:translate-y-[-5px] hover:cursor-pointer hover:z-30"
       onClick={() => {
         setUserModal(true);
       }}
@@ -85,7 +85,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         </p>
       </div>
       <p className="min-w-[66px] text-base text-nowrap text-white">
-      승률 {user.winRate.toFixed(1)}%
+        승률 {user.winRate.toFixed(1)}%
       </p>
       <button
         onClick={(e) => {
@@ -97,7 +97,7 @@ const LatestUserInfo: React.FC<LatestUserInfoProps> = ({
         +
       </button>
       {userModal && (
-        <div ref={modalRef} className="absolute top-0 left-0 z-10">
+        <div ref={modalRef} className="absolute top-0 left-0">
           <UserModal
             user={user}
             setUserModal={setUserModal}

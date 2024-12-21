@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 interface DraftModal2Props {
   closeModal: () => void;
@@ -15,7 +15,7 @@ const DraftModal2 = ({
 }: DraftModal2Props) => {
   const [draftedMembers, setDraftedMembers] = useState<string[]>([]); // 이미 선택된 멤버
   const [currentTeamMembers, setCurrentTeamMembers] = useState<string[]>([]); // 랜덤으로 선택된 두 팀원
-  const [currentLeader, setCurrentLeader] = useState<string | null>(
+  const [currentLeader, _setCurrentLeader] = useState<string | null>(
     redTeamLeader
   ); // 레드팀 팀장만 계속 표시
 

@@ -17,7 +17,7 @@ const UserInfo: React.FC<AddedUserInfoProps> = ({
   handleAddUser,
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
-  const [line, setLine] = useState(none);
+  const [_line, setLine] = useState(none);
   const [lineSrc, setLineSrc] = useState(none);
 
   const handleLineSelection = (newLine: string) => {

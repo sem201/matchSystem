@@ -22,7 +22,13 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
     datasets: [
       {
         data: data,
-        backgroundColor: ["#ff8a00", "#ff3c00", "#00ccff", "#00ff00", "#ff00ff"],
+        backgroundColor: [
+          "#ff8a00",
+          "#ff3c00",
+          "#00ccff",
+          "#00ff00",
+          "#ff00ff",
+        ],
         borderWidth: 1,
       },
     ],
@@ -32,6 +38,7 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
     responsive: true,
     maintainAspectRatio: false,
     animation: {
+      //@ts-ignore
       animateRotate: true, // 회전 애니메이션
       animateScale: true, // 스케일 애니메이션
       duration: 1500, // 애니메이션 시간 설정
@@ -69,6 +76,7 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
 
       <div className="relative w-full h-full" style={{ maxHeight: "250px" }}>
         {/* 도넛 차트 */}
+        {/* @ts-ignore */}
         <Doughnut data={positionData} options={options} />
       </div>
     </div>
