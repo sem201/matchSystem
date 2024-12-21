@@ -11,6 +11,7 @@ const MatchDetails = sequelize.define('MatchDetails', {
   matchid: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true
   },
   puuid: {
     type: DataTypes.STRING,

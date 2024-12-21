@@ -24,7 +24,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
             최근에 같이한 친구
           </div>
           <div className="font-blackHanSans text-xl text-center text-white">
-            {allUsers.length}명
+            {allUsers.length}명/20
           </div>
         </div>
 

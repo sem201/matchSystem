@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Menu from "../components/Profile/menu";
+import Swal from 'sweetalert2';
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileStats from "../components/Profile/ProfileStats";
 import ProfileCharts from "../components/Profile/ProfileCharts";
@@ -14,7 +15,7 @@ import defaultImg from "../assets/default.png";
 const ProfilePage: React.FC = () => {
   const location = useLocation();
   const user_id = location.state.user_id;
-
+  const [isLoading, setIsLoading] = useState(false);
   const [profileData, setProfileData] = useState<any>(null);
   const [rankInfo, setRankInfoData] = useState<any>([]);
   const [userInfo, setUserInfoData] = useState<any>({});
@@ -22,6 +23,61 @@ const ProfilePage: React.FC = () => {
   const [MostChamp, setMostChamp] = useState<any>([]);
   const [userPostion, setuserPostion] = useState<any>([]);
   const [error, setError] = useState<string | null>(null);
+
+  // 전적 갱신 함수
+  const updateUserStats = (id: number) => {
+    setIsLoading(true);
+    axios
+      .post("http://127.0.0.1:8000/noobs/friendUserBrUpdate", { user_id: id })
+      .then(() => {
+        Swal.fire({
+          icon: 'success',
+          text: '전적 정보 업데이트 완료되었습니다.',
+          showConfirmButton: false,
+          timer: 3000,
+          background: '#fff',
+          color: '#000',
+        });
+        return axios.post("http://127.0.0.1:8000/noobs/UserDetilsInfo", {
+          gameid: id,
+        });
+      })
+      .then((response) => {
+        setProfileData(response.data); // 상태 업데이트
+        setRankInfoData(response.data.rankInfo);
+        setUserInfoData(response.data.userInfo);
+        setMasterData(response.data.MasterChamp);
+        setMostChamp(response.data.userMatchMost);
+        setuserPostion(response.data.positionData);
+      })
+      .catch((error) => {
+        if (error.response && error.response.data) {
+          const errorMessage = error.response.data.message; 
+          Swal.fire({
+            icon: 'error',
+            text: errorMessage,
+            background: '#fff',
+            color: '#f44336',
+            showConfirmButton: true,
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: '오류 발생',
+            text: '서버에 오류가 발생하였습니다.',
+            background: '#fff',
+            color: '#f44336',
+            showConfirmButton: true,
+          });
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  };
+
+
+
 
   useEffect(() => {
     if (user_id) {
@@ -41,14 +97,11 @@ const ProfilePage: React.FC = () => {
           setuserPostion(response.data.positionData);
         } catch (error) {
           setError("데이터 로드에 실패했습니다.");
-          console.error("Error fetching data:", error);
         }
       };
       userDetailsRequest();
     }
   }, [user_id]);
-
-  console.log(userPostion);
 
   // rankInfo가 비어있을 경우를 안전하게 처리
   const leftRank = rankInfo[0] || {};
@@ -62,7 +115,7 @@ const ProfilePage: React.FC = () => {
       <div className="w-full max-w-6xl relative">
         {/* 메뉴 영역 */}
         <div className="fixed top-0 left-0 w-full bg-gray-800 bg-opacity-90 z-50 py-4">
-          <Menu />
+            <Menu onUpdateStats={updateUserStats} id={userInfo.id} isLoading={isLoading} />
         </div>
 
         {/* 헤더 영역 */}

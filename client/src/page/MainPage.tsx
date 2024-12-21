@@ -1,23 +1,29 @@
 import { useEffect, useState } from "react";
 import MobileMainpage from "./Mobile-Mainpage";
 import DesktopMainPage from "./Desktop-MainPage";
-
+import { AxiosError } from "axios";
 import { User } from "../commonTypes";
 import apiCall from "../Api/Api";
+import Swal from "sweetalert2";
 
 const MainPage = () => {
   const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
   // 유저 데이터 저장
   const [allUsers, setAllUsers] = useState<User[]>([]);
+  const [NoobsUser, setNoobsUser] = useState<User[]>([]);
   // 최근 함께한 유저 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await apiCall("/noobs/friendUserBr", "get", null);
+        const [response, NoobResponse] = await Promise.all([
+          apiCall("/noobs/friendUserBr", "get", null),
+          apiCall("/noobs/nobsinfo", "get", null),
+        ]);
         setAllUsers(response.data.data);
+        setNoobsUser(NoobResponse.data);
       } catch (error) {
         console.log(error);
-      }
+      }  
     };
     fetchData();
   }, [isUserAdded]);
@@ -28,6 +34,7 @@ const MainPage = () => {
 
   // 추가 된 유저
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
+ 
 
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
@@ -39,7 +46,14 @@ const MainPage = () => {
       setAddedUsers((prev) => prev.map((u) => (u.id === user.id ? user : u)));
     } else {
       if (addedUsers.length > 9) {
-        alert("사용자는 10명 이상 추가할 수 없습니다!");
+        Swal.fire({
+          icon: 'warning', // 경고 느낌의 아이콘
+          title: '인원 초과 ⚠️',
+          text: '함께한 친구 목록이 가득 찼습니다!',
+          confirmButtonText: '확인',
+          background: '#fff',
+          color: '#000',
+        });
         return;
       }
       // Redteam -> BlueTeam 순서로 추가
@@ -101,7 +115,14 @@ const MainPage = () => {
   };
   const handleTeamButtonClick = async () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
-      alert("각 팀에 5명이 모두 배치되어야 팀을 짤 수 있습니다.");
+      Swal.fire({
+        icon: 'info', // 'info'는 안내 아이콘
+        title: '팀 나누기 불가 😢',
+        text: '각 팀별로 5명씩 등록되어야 합니다.',
+        background: '#fff',
+        color: '#000', // 좀 더 부드러운 색상
+        showConfirmButton: true, // 확인 버튼 표시
+      });
       return;
     }
 
@@ -134,8 +155,28 @@ const MainPage = () => {
 
         setRedTeam(newRedTeam);
         setBlueTeam(newBlueTeam);
-      } catch (err) {
-        console.log(err);
+      } catch (error: unknown) {
+        if (error instanceof AxiosError) {
+          const missingPlayers = error.response?.data.missingPlayers;
+
+          if (missingPlayers && Array.isArray(missingPlayers)) {
+            // missingPlayers 배열에서 gameName 값만 추출하여 콘솔에 출력
+            const gameNames = missingPlayers.map(player => player.gameName);
+            const gameNamesString = gameNames.join(', ');  // 배열을 쉼표로 구분된 문자열로 변환
+              Swal.fire({
+                    icon: 'error',
+                    title: '포지션 미선택 소환사',
+                    text: gameNamesString,
+                    background: '#fff',
+                    color: '#f44336',
+                    showConfirmButton: true,
+                  });
+          } else {
+            console.log("missingPlayers가 올바른 배열이 아닙니다.");
+          }
+        }else {
+          console.log("알 수 없는 오류 발생");
+        }
       }
     } else if (selectedMode === "RANDOM") {
       // 랜덤모드일때 팀을 섞어 새로운 팀으로 설정
@@ -161,11 +202,18 @@ const MainPage = () => {
         ],
         mode: "draft",
       };
+
       const response = await apiCall("/noobs/TeamMach", "post", data);
-      console.log(response);
-      setIsDraftModalOpen(true);
+
     } else {
-      alert("Mode를 선택해 주세요");
+      Swal.fire({
+        icon: 'info',
+        title: '모드 선택 안내',
+        text: '랜덤/드래프트/밸런스 중 한개를 선택하세요!',
+        background: '#fff',
+        color: '#000',
+        showConfirmButton: true,
+      });
     }
   };
   // 사용자 삭제 로직
@@ -198,6 +246,7 @@ const MainPage = () => {
   });
 
   const sharedProps = {
+    NoobsUser,
     allUsers,
     addedUsers,
     setAddedUsers,
