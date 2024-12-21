@@ -21,7 +21,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
   handleAddUser,
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
-  const [line, setLine] = useState(none);
+  const [_line, setLine] = useState(none);
   const [lineSrc, setLineSrc] = useState(none);
 
   // 유저가 없을 경우 배경을 다르게 설정

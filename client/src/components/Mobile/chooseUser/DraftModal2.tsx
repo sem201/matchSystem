@@ -19,7 +19,7 @@ const DraftModal2 = ({
   console.log("모달2 실행");
   const [draftedMembers, setDraftedMembers] = useState<User[]>([]); // 이미 선택된 멤버
   const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 현재 두 팀원
-  const [currentLeader, setCurrentLeader] = useState<User | null>(
+  const [currentLeader, _setCurrentLeader] = useState<User | null>(
     redTeamLeader
   ); // 레드팀 팀장만 계속 표시
 

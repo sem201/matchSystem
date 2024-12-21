@@ -1,11 +1,16 @@
 import React from "react";
 
+interface champInfo {
+  imgUrl: string;
+  name: string;
+}
 // Champion 인터페이스
 interface Champion {
   imgUrl: string;
   name: string;
   championPoints: number; // 숫자
   championLevel: number; // 숫자
+  champInfo: champInfo;
 }
 
 interface RecentHistoryProps {

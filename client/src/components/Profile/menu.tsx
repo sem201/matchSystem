@@ -50,22 +50,20 @@ const Navbar: React.FC = () => {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
-
   return (
     <nav className="bg-gray-800 bg-opacity-80 w-full py-5 fixed top-0 left-0 z-50 font-blackHanSans">
       <div className="container mx-auto flex items-center justify-between space-x-8">
         {/* 로고와 메뉴 */}
         <div className="flex items-center space-x-8">
-          
           {/* 메뉴 */}
           <div className="hidden md:flex space-x-6">
-          <a href="/main">
-            <img
-              src={logoImg}
-              alt="Logo"
-              className="w-16 h-16 cursor-pointer"
-            />
-          </a>
+            <a href="/main">
+              <img
+                src={logoImg}
+                alt="Logo"
+                className="w-16 h-16 cursor-pointer"
+              />
+            </a>
             {/* <a
               href="#"
               className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
@@ -101,15 +99,11 @@ const Navbar: React.FC = () => {
 
         {/* PC 버전에서 환영합니다 */}
         <div className="hidden md:flex items-center space-x-4 ml-auto">
-        <button
+          <button
             onClick={() => {
               axios
-                .get(
-                  "http://127.0.0.1:8000/logout",
-                  {},
-                  { withCredentials: true }
-                )
-                .then((response) => {
+                .get("http://127.0.0.1:8000/logout", {})
+                .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";
                 })
@@ -123,7 +117,9 @@ const Navbar: React.FC = () => {
             로그아웃
           </button>
           <span className="text-white">{`성은총님 환영합니다`}</span>
-          <span className="text-yellow-500">{`자동 로그아웃: ${formatTime(logoutTime)}`}</span>
+          <span className="text-yellow-500">{`자동 로그아웃: ${formatTime(
+            logoutTime
+          )}`}</span>
         </div>
 
         {/* 모바일에서 보이는 햄버거 메뉴 */}
@@ -144,7 +140,9 @@ const Navbar: React.FC = () => {
         } z-40`}
       >
         <div className="flex flex-col items-center justify-start space-y-9 pt-36">
-          <span className="text-white text-lg font-semibold">성은총님 환영합니다</span>
+          <span className="text-white text-lg font-semibold">
+            성은총님 환영합니다
+          </span>
           <a
             href="#"
             className="text-white text-lg font-semibold hover:text-yellow-400 transition duration-300"
@@ -179,12 +177,8 @@ const Navbar: React.FC = () => {
           <button
             onClick={() => {
               axios
-                .get(
-                  "http://127.0.0.1:8000/logout",
-                  {},
-                  { withCredentials: true }
-                )
-                .then((response) => {
+                .get("http://127.0.0.1:8000/logout", {})
+                .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";
                 })
