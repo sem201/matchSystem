@@ -1,7 +1,7 @@
 import Team from "../components/Desktop/Team";
 import Header from "../components/Desktop/Header";
 import Menu from "../components/Desktop/Menu";
-import { NoobsUser, User } from "../commonTypes";
+import { User } from "../commonTypes";
 import ComposeButton from "../components/Desktop/ComposeButton";
 
 interface DesktopMainPageProps {
@@ -47,7 +47,6 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   closeModal,
   handleDeleteUser,
 }) => {
-  
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />

@@ -48,7 +48,6 @@ const kakaoLogin = async (req, res) => {
       },
     });
 
-    
     // 세션에 사용자 정보 저장
     req.session.user = {
       id: user.id,
@@ -64,7 +63,7 @@ const kakaoLogin = async (req, res) => {
 
 
     // 로그인 후, 세션을 저장하고 리다이렉트
-    res.redirect("http://127.0.0.1:5173/main");
+    res.redirect(`${process.env.FRONT_URL}/main`);
   } catch (error) {
     console.error(error);
     res.status(500).send("카카오 로그인 실패");
@@ -92,5 +91,4 @@ const logout = async (req, res) => {
   }
 };
 
-
-export { kakaoLogin, logout};
+export { kakaoLogin, logout };
