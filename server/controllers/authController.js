@@ -1,7 +1,7 @@
-import axios from 'axios';
-import User from '../models/User.js';
-import qs from 'qs';
-import dotenv from 'dotenv'
+import axios from "axios";
+import User from "../models/User.js";
+import qs from "qs";
+import dotenv from "dotenv";
 import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 
@@ -49,7 +49,6 @@ const kakaoLogin = async (req, res) => {
       },
     });
 
-    
     // 세션에 사용자 정보 저장
     req.session.user = {
       id: user.id,
@@ -58,7 +57,7 @@ const kakaoLogin = async (req, res) => {
     };
 
     // 로그인 후, 세션을 저장하고 리다이렉트
-    res.redirect("http://127.0.0.1:5173/main");
+    res.redirect(`${process.env.FRONT_URL}/main`);
   } catch (error) {
     console.error(error);
     res.status(500).send("카카오 로그인 실패");
@@ -72,9 +71,8 @@ const logout = (req, res) => {
       return res.status(500).send("로그아웃 처리 중 오류가 발생했습니다.");
     }
     res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
-    res.redirect("http://127.0.0.1:5173");
+    res.redirect(`${process.env.FRONT_URL}/`);
   });
 };
 
-
-export { kakaoLogin, logout};
+export { kakaoLogin, logout };
