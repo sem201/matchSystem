@@ -11,24 +11,25 @@ import ChartDataLabels from "chartjs-plugin-datalabels";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-interface RankCardProps {
+interface PositionProps {
   title: string;
-  data: number[];
+  labels: string[];
+  totalGame: number[];
 }
 
-const Position: React.FC<RankCardProps> = ({ title, data }) => {
+const Position: React.FC<PositionProps> = ({ title, labels, totalGame }) => {
   const positionData = {
-    labels: ["탑", "정글", "미드", "원딜", "서폿"],
+    labels: labels, // 동적으로 포지션 이름을 받습니다.
     datasets: [
       {
-        data: data,
+        data: totalGame,
         backgroundColor: [
           "#ff8a00",
           "#ff3c00",
           "#00ccff",
           "#00ff00",
           "#ff00ff",
-        ],
+        ], // 색상 배열도 동적으로 처리 가능
         borderWidth: 1,
       },
     ],
@@ -39,8 +40,8 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
     maintainAspectRatio: false,
     animation: {
       //@ts-ignore
-      animateRotate: true, // 회전 애니메이션
-      animateScale: true, // 스케일 애니메이션
+      animateRotate: true,
+      animateScale: true,
       duration: 1500, // 애니메이션 시간 설정
     },
     plugins: {
@@ -49,7 +50,7 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
         labels: {
           font: {
             size: 14,
-            family: "font-blackHanSans",
+            family: "font-blackHanSans", // 폰트 설정, 제대로 적용되는지 확인 필요
           },
           padding: 10,
           boxWidth: 13,
@@ -75,8 +76,7 @@ const Position: React.FC<RankCardProps> = ({ title, data }) => {
       </div>
 
       <div className="relative w-full h-full" style={{ maxHeight: "250px" }}>
-        {/* 도넛 차트 */}
-        {/* @ts-ignore */}
+        {/*@ts-ignore */}
         <Doughnut data={positionData} options={options} />
       </div>
     </div>

@@ -33,8 +33,6 @@ const ChampionUpdate = async (req, res) => {
       "https://ddragon.leagueoflegends.com/api/versions.json"
     );
     const latestVersion = versions[0];
-    console.log(latestVersion);
-
     // 챔피언 정보 가져오기
     const { data: championsData } = await axios.get(
       `https://ddragon.leagueoflegends.com/cdn/${latestVersion}/data/ko_KR/champion.json`
@@ -131,8 +129,6 @@ const profileUpdate = async (req, res) => {
       `https://ddragon.leagueoflegends.com/cdn/${lastVersion}/data/ko_KR/profileicon.json`
     );
     const profiles = Object.values(profileData.data);
-
-    console.log(profiles.length); // 2가 출력됩니다.
 
     // file url 추출
     const __dirname = path.dirname(fileURLToPath(import.meta.url));

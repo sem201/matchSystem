@@ -1,4 +1,8 @@
 import { useState, useRef } from "react";
+import backGroungImg from "../../assets/login_Img/login.webm";
+import Logo from "../../assets/login_Img/legendLogo.png";
+import start from "../../assets/login_Img/pause.png";
+import stop from "../../assets/login_Img/play.png";
 
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
@@ -32,7 +36,7 @@ const Login = () => {
         loop
         muted
       >
-        <source src="/src/assets/login_Img/login.webm" type="video/webm" />
+        <source src={backGroungImg} type="video/webm" />
       </video>
 
       {/* 배경 음악 */}
@@ -48,11 +52,7 @@ const Login = () => {
       {/* 로그인 화면 콘텐츠 */}
       <div className="absolute inset-0 w-[30vw] h-[100vh] flex flex-col gap-[50px] justify-center bg-white px-[30px] py-[100px] text-center z-10">
         <div className="text-black mb-6">
-          <img
-            src="/src/assets/login_Img/legendLogo.png"
-            alt="League of Legends Logo"
-            className="mx-auto"
-          />
+          <img src={Logo} alt="League of Legends Logo" className="mx-auto" />
         </div>
 
         <p className="md:text-[17px] lg:text-[23px] text-[#0F2041] leading-tight">
@@ -80,8 +80,8 @@ const Login = () => {
         <img
           src={
             isPlaying
-              ? "/src/assets/login_Img/pause.png" // 재생 상태 이미지
-              : "/src/assets/login_Img/play.png" // 정지 상태 이미지
+              ? start // 재생 상태 이미지
+              : stop // 정지 상태 이미지
           }
           alt="Toggle Music"
           className="w-[50px] h-[50px] cursor-pointer"

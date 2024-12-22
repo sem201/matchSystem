@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 interface ModalProps {
   closeModal: () => void;
   selectedMode: string;
@@ -40,14 +41,21 @@ export default function SelectModeModal({
   };
 
   const handleConfirmClick = () => {
-    alert(`${selectedModeState} 모드가 선택되었습니다.`);
-    {
-      setHeaderText &&
+    Swal.fire({
+      icon: 'success',
+      title: '모드 선택 완료',
+      text: `${selectedModeState} 모드가 선택되었습니다.`,
+      confirmButtonText: '확인',
+      background: '#fff',
+      color: '#000',
+    }).then(() => {
+      // Swal이 닫힌 후 실행할 코드
+      if (setHeaderText) {
         setHeaderText(`${selectedModeState} 모드가 선택되었습니다.`);
-    }
-    setSelectedMode(selectedModeState);
-
-    closeModal();
+      }
+      setSelectedMode(selectedModeState);
+      closeModal();
+    });
   };
 
   return (
