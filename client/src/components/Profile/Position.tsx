@@ -13,7 +13,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
 interface PositionProps {
   title: string;
-  labels: string[]; 
+  labels: string[];
   totalGame: number[];
 }
 
@@ -23,7 +23,13 @@ const Position: React.FC<PositionProps> = ({ title, labels, totalGame }) => {
     datasets: [
       {
         data: totalGame,
-        backgroundColor: ["#ff8a00", "#ff3c00", "#00ccff", "#00ff00", "#ff00ff"], // 색상 배열도 동적으로 처리 가능
+        backgroundColor: [
+          "#ff8a00",
+          "#ff3c00",
+          "#00ccff",
+          "#00ff00",
+          "#ff00ff",
+        ], // 색상 배열도 동적으로 처리 가능
         borderWidth: 1,
       },
     ],
@@ -33,6 +39,7 @@ const Position: React.FC<PositionProps> = ({ title, labels, totalGame }) => {
     responsive: true,
     maintainAspectRatio: false,
     animation: {
+      //@ts-ignore
       animateRotate: true,
       animateScale: true,
       duration: 1500, // 애니메이션 시간 설정
@@ -69,6 +76,7 @@ const Position: React.FC<PositionProps> = ({ title, labels, totalGame }) => {
       </div>
 
       <div className="relative w-full h-full" style={{ maxHeight: "250px" }}>
+        {/*@ts-ignore */}
         <Doughnut data={positionData} options={options} />
       </div>
     </div>

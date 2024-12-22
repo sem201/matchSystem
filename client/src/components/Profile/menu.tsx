@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import logoImg from "../../assets/modeGif/Noobs.png";
 import LoadingModal from "./Loging";
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 interface User {
   onUpdateStats: (id: number) => void;
@@ -34,7 +34,7 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
         } else {
           if (!hasLoggedOut.current) {
             hasLoggedOut.current = true; // 로그아웃 처리 중복 방지
-            logout();
+            logout("세션이 만료되었습니다.");
           }
           localStorage.removeItem("logoutTime"); // 로그아웃 시 타이머 값 삭제
           return 0;
@@ -49,21 +49,20 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
   }, []);
 
   // 로그아웃 요청 함수
-  const logout = async () => {
+  const logout = async (text: string) => {
     try {
       await axios.get("http://127.0.0.1:8000/logout");
-      console.log('세션이 만료되었습니다.');
+      Swal.fire({
+        icon: "error",
+        title: "로그아웃",
+        text: text,
+        background: "#fff",
+        color: "#f44336",
+        showConfirmButton: true,
+      });
       window.location.href = "/";
     } catch (error) {
       console.error("로그아웃 오류:", error);
-      Swal.fire({
-        icon: 'error',
-        title: '로그아웃',
-        text: '서버에 오류가 발생하였습니다.',
-        background: '#fff',
-        color: '#f44336',
-        showConfirmButton: true,
-      });
     }
   };
 
@@ -96,25 +95,12 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
             전적갱신
           </button>
 
-           {/* 로딩 상태일 때 모달을 보여줌 */}
-           {isLoading && <LoadingModal message="정보를 업데이트 중입니다..." />} 
+          {/* 로딩 상태일 때 모달을 보여줌 */}
+          {isLoading && <LoadingModal message="정보를 업데이트 중입니다..." />}
 
           <button
             onClick={() => {
-              axios
-                .get(
-                  "http://127.0.0.1:8000/logout",
-                  {},
-                  { withCredentials: true }
-                )
-                .then((response) => {
-                  alert("로그아웃 되었습니다.");
-                  window.location.href = "/";
-                })
-                .catch((error) => {
-                  console.error("로그아웃 요청 중 오류 발생:", error);
-                  alert("서버 오류 발생");
-                });
+              logout("로그아웃 되었습니다.");
             }}
             className="bg-white text-yellow-700 text-lg font-semibold px-4 py-2 rounded hover:text-red-400 transition duration-300"
           >
