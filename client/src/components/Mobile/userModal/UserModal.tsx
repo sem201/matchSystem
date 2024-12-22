@@ -34,9 +34,9 @@ const UserModal = ({
       apiCall("/noobs/friendUserBrDel", "post", data);
       alert("삭제되었습니다.");
       handleDeleteUser(user.id);
+      setIsUserAdded((prev) => !prev);
     } catch (err) {}
     setUserModal(false);
-    setIsUserAdded((prev) => !prev);
   };
   return (
     <div className="flex gap-[5px] flex-col w-[180px] bg-[#F0E6D2] border-2 border-[#C8AA6E] rounded-lg absolute top-0 p-1 z-50">

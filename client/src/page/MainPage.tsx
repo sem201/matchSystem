@@ -15,6 +15,7 @@ const MainPage = () => {
       try {
         const response = await apiCall("/noobs/friendUserBr", "get", null);
         setAllUsers(response.data.data);
+        console.log("api 실행");
       } catch (error) {
         console.log(error);
       }
