@@ -202,7 +202,7 @@ const MainPage = () => {
         mode: "draft",
       };
 
-      const response = await apiCall("/noobs/TeamMach", "post", data);
+      await apiCall("/noobs/TeamMach", "post", data);
     } else {
       Swal.fire({
         icon: "info",

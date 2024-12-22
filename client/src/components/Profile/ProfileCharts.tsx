@@ -1,9 +1,14 @@
 import React from "react";
+interface champInfo {
+  imgUrl: string;
+  name: string;
+}
 interface Champion {
   imgUrl: string;
   name: string;
   kda: number; // 숫자
   games_played: number; // 숫자
+  champInfo: champInfo;
 }
 
 interface RecentfileChartsyProps {
@@ -42,7 +47,6 @@ const RecentHistory: React.FC<RecentfileChartsyProps> = ({
             }}
           >
             {duplicatedChampions.map((champion, index) => (
-              
               <div
                 key={index}
                 className="champion-item w-48 h-64 flex-shrink-0 text-center mx-2 bg-gray-700 rounded-lg p-4"
