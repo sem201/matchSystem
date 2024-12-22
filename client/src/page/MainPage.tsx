@@ -23,7 +23,7 @@ const MainPage = () => {
         setNoobsUser(NoobResponse.data);
       } catch (error) {
         console.log(error);
-      }  
+      }
     };
     fetchData();
   }, [isUserAdded]);
@@ -34,7 +34,6 @@ const MainPage = () => {
 
   // 추가 된 유저
   const [addedUsers, setAddedUsers] = useState<User[]>([]);
- 
 
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
@@ -47,12 +46,12 @@ const MainPage = () => {
     } else {
       if (addedUsers.length > 9) {
         Swal.fire({
-          icon: 'warning', // 경고 느낌의 아이콘
-          title: '인원 초과 ⚠️',
-          text: '함께한 친구 목록이 가득 찼습니다!',
-          confirmButtonText: '확인',
-          background: '#fff',
-          color: '#000',
+          icon: "warning", // 경고 느낌의 아이콘
+          title: "인원 초과 ⚠️",
+          text: "함께한 친구 목록이 가득 찼습니다!",
+          confirmButtonText: "확인",
+          background: "#fff",
+          color: "#000",
         });
         return;
       }
@@ -116,11 +115,11 @@ const MainPage = () => {
   const handleTeamButtonClick = async () => {
     if (redTeam.length < 5 || blueTeam.length < 5) {
       Swal.fire({
-        icon: 'info', // 'info'는 안내 아이콘
-        title: '팀 나누기 불가 😢',
-        text: '각 팀별로 5명씩 등록되어야 합니다.',
-        background: '#fff',
-        color: '#000', // 좀 더 부드러운 색상
+        icon: "info", // 'info'는 안내 아이콘
+        title: "팀 나누기 불가 😢",
+        text: "각 팀별로 5명씩 등록되어야 합니다.",
+        background: "#fff",
+        color: "#000", // 좀 더 부드러운 색상
         showConfirmButton: true, // 확인 버튼 표시
       });
       return;
@@ -161,20 +160,20 @@ const MainPage = () => {
 
           if (missingPlayers && Array.isArray(missingPlayers)) {
             // missingPlayers 배열에서 gameName 값만 추출하여 콘솔에 출력
-            const gameNames = missingPlayers.map(player => player.gameName);
-            const gameNamesString = gameNames.join(', ');  // 배열을 쉼표로 구분된 문자열로 변환
-              Swal.fire({
-                    icon: 'error',
-                    title: '포지션 미선택 소환사',
-                    text: gameNamesString,
-                    background: '#fff',
-                    color: '#f44336',
-                    showConfirmButton: true,
-                  });
+            const gameNames = missingPlayers.map((player) => player.gameName);
+            const gameNamesString = gameNames.join(", "); // 배열을 쉼표로 구분된 문자열로 변환
+            Swal.fire({
+              icon: "error",
+              title: "포지션 미선택 소환사",
+              text: gameNamesString,
+              background: "#fff",
+              color: "#f44336",
+              showConfirmButton: true,
+            });
           } else {
             console.log("missingPlayers가 올바른 배열이 아닙니다.");
           }
-        }else {
+        } else {
           console.log("알 수 없는 오류 발생");
         }
       }
@@ -204,14 +203,13 @@ const MainPage = () => {
       };
 
       const response = await apiCall("/noobs/TeamMach", "post", data);
-
     } else {
       Swal.fire({
-        icon: 'info',
-        title: '모드 선택 안내',
-        text: '랜덤/드래프트/밸런스 중 한개를 선택하세요!',
-        background: '#fff',
-        color: '#000',
+        icon: "info",
+        title: "모드 선택 안내",
+        text: "랜덤/드래프트/밸런스 중 한개를 선택하세요!",
+        background: "#fff",
+        color: "#000",
         showConfirmButton: true,
       });
     }
