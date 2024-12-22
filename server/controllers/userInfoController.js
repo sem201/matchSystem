@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { Op, fn, col, literal } from "sequelize";
 import NoobsUserInfo from "../models/Noobs_user_info.js";
 import NoobsMasterChamp from "../models/Noobs_master_champ.js";
 import NoobsRecentFriend from "../models/Noobs_Recent_Friend.js";
@@ -8,12 +9,25 @@ import Profile from "../models/Profile.js";
 import RankInfo from "../models/RankInfo.js";
 import TierScore from "../models/TierScore.js";
 import GameRank from "../models/Game_Ranking.js";
+import MatchDetails from "../models/MatchDetails.js";
+import RankedMatch from "../models/RankedMatch.js";
+import User from "../models/User.js";
 import moment from "moment-timezone";
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
 const seoulTime = moment().tz("Asia/Seoul").format("YYYY-MM-DD HH:mm:ss");
 
 dotenv.config(); // .env 파일 로드
+// 9/25 시즌3시작일로 고정
+
+const time = new Date("2024-09-25");
+const date = new Date();
+let startTime = time.getTime();
+let endTime = date.getTime();
+
+// 밀리초를 초로 변환
+const startTimeSecs = Math.floor(startTime / 1000); // 초 단위로 변환
+const endTimeSecs = Math.floor(endTime / 1000); // 초 단위로 변환
 
 const userSearch = async (req, res) => {
   let { userid, tagLine } = req.query;
@@ -47,7 +61,6 @@ const userSearch = async (req, res) => {
     });
 
     if (user) {
-      console.log("사용자 데이터가 DB에 존재합니다.");
       return res.status(200).json({ message: "사용자 db 요청 완료" });
     }
 
@@ -70,8 +83,6 @@ const userSearch = async (req, res) => {
     // 4. 랭크 정보 API 요청
     const leagueUrl = `https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/${secretId}`;
     const leagueResponse = await axios.get(leagueUrl, { headers });
-    console.log(leagueResponse.data);
-
     const rankedSoloData =
       leagueResponse.data.find(
         (entry) => entry.queueType === "RANKED_SOLO_5x5"
@@ -93,8 +104,6 @@ const userSearch = async (req, res) => {
     const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`;
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
-
-    console.log(masterData);
 
     // 6. DB에 사용자 데이터 저장
     const newUser = await NoobsUserInfo.create({
@@ -212,6 +221,18 @@ const friendUserBrUpdate = async (req, res) => {
 
     if (!userInfo) {
       return res.status(404).json({ message: "사용자가 존재하지 않습니다." });
+    }
+
+    // 갱신 시간 막아주기
+    const currentTimeKST = moment().tz("Asia/Seoul");
+    const lastUpdatedAt = moment(userInfo.updatedAt);
+    const diffInMinutes = currentTimeKST.diff(lastUpdatedAt, "minutes");
+
+    if (diffInMinutes < 5) {
+      // 5분 이내라면, 업데이트 차단하고 응답
+      return res.status(400).json({
+        message: `${5 - diffInMinutes}분 후 다시 요청해주세요.`,
+      });
     }
 
     const userPuuid = userInfo.puuid;
@@ -338,8 +359,6 @@ const friendUserBrUpdate = async (req, res) => {
       { where: { id: user_id } }
     );
 
-    console.log(resultUpdateUser);
-
     // 같이한 사용자 테이블 업데이트
     await NoobsRecentFriend.update(
       {
@@ -385,6 +404,144 @@ const friendUserBrUpdate = async (req, res) => {
 
     await Promise.all(updatePromises);
 
+    // 랭크 매치 데이터 업데이트
+    // 개인랭크 매치데이터 API 요청
+    let start = 0;
+    let count = 20;
+    let matchs = [];
+    while (true) {
+      const matchUrl = `https://asia.api.riotgames.com/lol/match/v5/matches/by-puuid/${userPuuid}/ids?startTime=${startTimeSecs}&endTime=${endTimeSecs}&queue=420&type=ranked&start=${start}&count=${count}`;
+
+      try {
+        const response = await axios.get(matchUrl, { headers });
+        if (response.data.length === 0) break;
+        response.data.forEach((matchId) =>
+          matchs.push({ gameid: userInfo.id, matchid: matchId })
+        );
+        start += count;
+        // if (start > 80) {
+        //   break;
+        // }
+      } catch (error) {
+        console.error("Error fetching matches:", error);
+        break;
+      }
+    }
+    // matchs 매치기록이 저장됨 해당 기록을 현재 DB에 matchid 가 존재하는지 검사
+    const existingMatches = await RankedMatch.findAll({
+      where: {
+        matchid: matchs.map((m) => m.matchid), // 가져온 모든 matchid를 조회
+      },
+      attributes: ["matchid"], // 필요한 필드만 가져옴
+    });
+
+    const existingMatchIds = existingMatches.map((m) => m.matchid); // 이미 존재하는 matchid 배열
+
+    // 중복되지 않은 matchid 필터링
+    const newMatches = matchs.filter(
+      (m) => !existingMatchIds.includes(m.matchid)
+    );
+
+    if (newMatches.length > 0) {
+      // 중복되지 않은 데이터만 삽입
+      await RankedMatch.bulkCreate(newMatches, { ignoreDuplicates: true });
+    }
+
+    const fetchWithRetry = async (url, options, retries = 10) => {
+      let retryDelay = 6000;
+
+      while (retries > 0) {
+        try {
+          const response = await axios.get(url, { headers: options.headers });
+
+          if (!response || !response.data) {
+            throw new Error(`Invalid response: ${url}`);
+          }
+
+          return response.data;
+        } catch (error) {
+          if (error.response && error.response.status === 429) {
+            const retryAfter =
+              error.response.headers["retry-after"] || retryDelay / 1000;
+            console.warn(
+              `Rate limit exceeded. Retrying after ${retryAfter} seconds...`
+            );
+
+            await new Promise((resolve) =>
+              setTimeout(resolve, Math.max(retryAfter * 1000, retryDelay))
+            );
+            retryDelay = Math.min(retryDelay + 2000, 10000);
+            retries--;
+          } else {
+            console.error("Error:", error.message);
+            throw error;
+          }
+        }
+      }
+
+      throw new Error("Max retries reached");
+    };
+
+    const batchSize = 5;
+    const batches = [];
+
+    for (let i = 0; i < newMatches.length; i += batchSize) {
+      const batch = newMatches.slice(i, i + batchSize);
+      batches.push(batch);
+    }
+
+    const matchDetails = [];
+    for (const batch of batches) {
+      const batchResults = (
+        await Promise.all(
+          batch.map(async ({ matchid }) => {
+            const MatchDetailUrl = `https://asia.api.riotgames.com/lol/match/v5/matches/${matchid}`;
+            try {
+              const matchData = await fetchWithRetry(MatchDetailUrl, {
+                headers,
+              });
+
+              const playerData = matchData.info.participants.find(
+                (p) => p.puuid === userPuuid
+              );
+              if (!playerData) return null;
+
+              return {
+                matchid: matchData.metadata.matchId,
+                puuid: playerData.puuid,
+                gameName: playerData.riotIdGameName,
+                tagLine: playerData.riotIdTagline,
+                kills: playerData.kills,
+                deaths: playerData.deaths,
+                assists: playerData.assists,
+                championId: playerData.championId,
+                win: playerData.win,
+                teamPosition: playerData.teamPosition,
+                timePlayed: Math.floor(matchData.info.gameDuration / 60),
+                gameCreation: new Date(
+                  matchData.info.gameCreation
+                ).toLocaleString("ko-KR"),
+                gameStartTimestamp: new Date(
+                  matchData.info.gameStartTimestamp
+                ).toLocaleString("ko-KR"),
+                gameEndTimestamp: new Date(
+                  matchData.info.gameEndTimestamp
+                ).toLocaleString("ko-KR"),
+              };
+            } catch (error) {
+              console.error(`Error fetching match ${matchid}:`, error);
+              return null;
+            }
+          })
+        )
+      ).filter(Boolean);
+
+      matchDetails.push(...batchResults);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 배치 간 대기 시간
+    }
+
+    await MatchDetails.bulkCreate(matchDetails, { ignoreDuplicates: true });
+
     return res.status(200).json({ message: "소환사 업데이트 완료" });
   } catch (error) {
     console.error("Error:", error);
@@ -396,7 +553,12 @@ const friendUserBrUpdate = async (req, res) => {
 const userAdd = async (req, res) => {
   let { userid, tagLine } = req.body;
 
-  const FRIEND_MAX = 15; // 값 수정해서 최대 추가 유저 조정가능
+  if(req.session.user.id === undefined) {
+    console.log('세션 만료');
+    return res.status(404).json({ data : 'error' });
+  }
+
+  const FRIEND_MAX = 20; // 값 수정해서 최대 추가 유저 조정가능
 
   // 앞 뒤 공백제거
   userid = userid.trim();
@@ -425,8 +587,6 @@ const userAdd = async (req, res) => {
         tagLine: tagLine,
       },
     });
-
-    console.log(userSearchData);
 
     if (!userSearchData) {
       res.status(404).json({ message: "해당 사용자를 찾을 수 없습니다. " });
@@ -468,8 +628,7 @@ const userAdd = async (req, res) => {
 
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
-  console.log("서버쪽입니다.", req.session);
-  console.log("서버쪽입니다.", req.session.id);
+
 
   try {
     // 사용자 목록 조회
@@ -568,8 +727,6 @@ const friendUserBr = async (req, res) => {
 // 같이한 사용자 삭제하기
 const friendUserBrDel = async (req, res) => {
   const { user_id } = req.body;
-  console.log(user_id);
-
   try {
     const delUser = await NoobsRecentFriend.destroy({
       where: {
@@ -578,7 +735,6 @@ const friendUserBrDel = async (req, res) => {
       },
     });
 
-    console.log(delUser);
 
     if (delUser == 0) {
       return res.status(404).json({ message: "사용자가 존재하지 않습니다." });
@@ -592,12 +748,9 @@ const friendUserBrDel = async (req, res) => {
 };
 
 // 유저 프로필 정보 불러오기 [ 디테일한 정보 전체 요청 ]
-
 const UserDetilsInfo = async (req, res) => {
   const { gameid } = req.body;
-
-  console.log(gameid);
-
+ 
   try {
     // 유저 정보 조회
     const userInfo = await NoobsUserInfo.findOne({
@@ -605,8 +758,8 @@ const UserDetilsInfo = async (req, res) => {
         id: gameid,
       },
     });
+
     // 유저 프로필 이미지 조회
-    console.log(userInfo);
     const userProfile = await Profile.findOne({
       where: {
         Profile_key: userInfo.profileIconId,
@@ -682,7 +835,6 @@ const UserDetilsInfo = async (req, res) => {
             champKey: champ.championId, // champKey로 조회
           },
         });
-        console.log(champDataMost);
 
         if (champDataMost) {
           // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
@@ -704,18 +856,145 @@ const UserDetilsInfo = async (req, res) => {
       }
     }
 
+    // 전적데이터 그룹화 하기
+    const userMatchChampMost = await MatchDetails.findAll({
+      attributes: [
+        "championId",
+        [fn("SUM", col("kills")), "total_kills"],
+        [fn("SUM", col("deaths")), "total_deaths"],
+        [fn("SUM", col("assists")), "total_assists"],
+        [
+          fn(
+            "ROUND",
+            literal(
+              `(
+                CASE WHEN SUM(deaths) = 0 THEN 0
+                ELSE (SUM(kills) + SUM(assists)) / SUM(deaths)
+                END
+              )`
+            ),
+            1
+          ),
+          "kda",
+        ],
+        [fn("COUNT", col("*")), "games_played"],
+      ],
+      where: {
+        puuid: userInfo.puuid,
+        timePlayed: { [Op.gte]: 15 },
+      },
+      group: ["championId"],
+      order: [[literal("games_played"), "DESC"]],
+      limit: 10,
+    });
+
+    if (userMatchChampMost.length > 0) {
+      // 유저의 모스트 챔피언 배열을 순회하면서 처리
+      for (let i = 0; i < userMatchChampMost.length; i++) {
+        const userMost = userMatchChampMost[i]; // champ는 MasterChamp 테이블에서 하나씩 가져온 객체
+
+        // champ.championId로 Champion 테이블에서 champKey를 조회
+        const champUserData = await Champion.findOne({
+          where: {
+            champKey: userMost.championId, // champKey로 조회
+          },
+        });
+
+        if (champUserData) {
+          // 챔피언 데이터가 존재하면 champInfo에 데이터 추가
+          userMost.dataValues.champInfo = {
+            id: champUserData.id,
+            name: champUserData.name,
+            champKey: champUserData.champKey,
+            imgUrl: champUserData.champ_img, // 챔피언 이미지 경로 추가
+          };
+        } else {
+          // 챔피언 데이터가 없으면 기본값 설정
+          champUserData.dataValues.champInfo = {
+            id: null,
+            name: "Unknown Champion",
+            champKey: userMost.championId, // 챔피언 ID를 userMost에서 가져옴
+            imgUrl: "default_image_url", // 기본 이미지 경로
+          };
+        }
+        userMost[i] = champUserData.toJSON();
+      }
+    }
+
+    const positionMap = {
+      TOP: "탑",
+      JUNGLE: "정글",
+      MIDDLE: "미드",
+      BOTTOM: "원딜",
+      UTILITY: "서폿",
+    };
+
+    const userPosition = await MatchDetails.findAll({
+      attributes: [
+        "teamPosition", // 포지션별로 그룹화
+        [fn("COUNT", col("id")), "totalGame"], // 게임 횟수
+      ],
+      group: ["teamPosition"], // 포지션별로 그룹화
+      where: {
+        puuid: userInfo.puuid,
+        teamPosition: {
+          [Op.in]: ["TOP", "JUNGLE", "MIDDLE", "BOTTOM", "UTILITY"], // 원하는 포지션만 필터링
+        },
+      },
+      order: [["totalGame", "DESC"]], // 게임 횟수 기준으로 내림차순 정렬
+    });
+
+    // 기본 포지션 설정
+    const defaultPositions = [
+      { teamPosition: "탑", totalGame: 0 },
+      { teamPosition: "정글", totalGame: 0 },
+      { teamPosition: "미드", totalGame: 0 },
+      { teamPosition: "원딜", totalGame: 0 },
+      { teamPosition: "서폿", totalGame: 0 },
+    ];
+
+    const positionData = defaultPositions
+      .map((defaultPos) => {
+        // userPosition에서 해당 포지션을 찾고, 있으면 값을 덮어씀
+        const found = userPosition.find(
+          (item) => positionMap[item.teamPosition] === defaultPos.teamPosition
+        );
+
+        return {
+          teamPosition: defaultPos.teamPosition,
+          totalGame: found ? found.dataValues.totalGame : defaultPos.totalGame,
+        };
+      })
+      .sort((a, b) => b.totalGame - a.totalGame);
     userInfo.dataValues.Profile = userProfile;
 
     return res.status(200).json({
       userInfo,
       rankInfo,
       MasterChamp: MasterChamp.map((champ) => champ.toJSON()),
+      userMatchMost: userMatchChampMost,
+      positionData,
     });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
   }
 };
+
+
+const nobsinfo = async (req,res) => {
+  try {
+    const NobsUser = await User.findOne({
+      where : {
+        id : req.session.user.id,
+      }
+    });
+    return res.status(200).json({ data : NobsUser });
+  } catch (error) {
+    console.error("Error:", error);
+    return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
+  }
+}
 
 export {
   userSearch,
@@ -724,4 +1003,5 @@ export {
   friendUserBrUpdate,
   friendUserBrDel,
   UserDetilsInfo,
+  nobsinfo,
 };

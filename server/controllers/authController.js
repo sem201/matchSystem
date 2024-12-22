@@ -57,9 +57,6 @@ const kakaoLogin = async (req, res) => {
       profileImage: user.profileImage,
     };
 
-    console.log("세션 저장:", req.session.user);
-    console.log("세션ID", req.session.id);
-
     // 로그인 후, 세션을 저장하고 리다이렉트
     res.redirect("http://127.0.0.1:5173/main");
   } catch (error) {

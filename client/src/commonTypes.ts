@@ -44,3 +44,8 @@ export interface User {
   updateId: number;
   position?: string;
 }
+
+export interface NoobsUser {
+  id: number; // noobs 페이지 가입 유저 고유 식별자
+  name : string;
+}

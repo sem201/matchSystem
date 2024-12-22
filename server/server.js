@@ -5,7 +5,6 @@ import { fileURLToPath } from "url"; // fileURLToPath를 사용하여 현재 파
 
 import express from "express"; // express 사용
 import session from "express-session"; // express-session 사용
-import authRoutes from "./routes/authRoutes.js"; // authRoutes 모듈 가져오기
 import apiRoute from "./routes/route.js"; // apiRoute 모듈 가져오기
 import path from "path"; // path 모듈 가져오기
 import sequelize from "./config/db.js"; // sequelize 설정 가져오기
@@ -19,10 +18,11 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET, // 세션 암호화 키
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     rolling: false,
     cookie: {
-      sameSite: "lax",
+      httpOnly: true,
+      sameSite: "Lax",
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 30 * 60 * 1000, // 세션 만료 10분
     },
@@ -38,6 +38,10 @@ app.use(
     methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
   })
 );
+
+app.use((req, res, next) => {
+  next();
+});
 
 // 현재 파일의 경로를 __dirname처럼 사용하기
 const __filename = fileURLToPath(import.meta.url);
@@ -55,7 +59,6 @@ app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
 
 // 라우터 연결
-app.use("/", authRoutes);
 app.use("/", apiRoute);
 
 app.get("/check-session", (req, res) => {
@@ -68,7 +71,7 @@ app.get("/check-session", (req, res) => {
 
 // 홈 페이지 처리
 app.get("/", (req, res) => {
-  res.render("index.html");
+  res.render("index");
 });
 
 // 404 페이지 처리
@@ -80,7 +83,7 @@ app.get("*", (req, res) => {
 sequelize
   .authenticate()
   .then(() => {
-    console.log("DB 연결 성공");
+    console.log("DB 접속 완료");
     return sequelize.sync({ force: false }); // 테이블 자동 생성, force: false는 기존 테이블을 유지하면서 동기화
   })
   .then(() => {
