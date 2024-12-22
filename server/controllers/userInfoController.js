@@ -12,6 +12,7 @@ import GameRank from "../models/Game_Ranking.js";
 import MatchDetails from "../models/MatchDetails.js";
 import RankedMatch from "../models/RankedMatch.js";
 import User from "../models/User.js";
+import redis from "../redisClient.js"; // redisClient.js에서 가져오기
 import moment from "moment-timezone";
 
 // 'Asia/Seoul' 시간대로 현재 시간을 가져옴
@@ -553,10 +554,19 @@ const friendUserBrUpdate = async (req, res) => {
 const userAdd = async (req, res) => {
   let { userid, tagLine } = req.body;
 
-  if(req.session.user.id === undefined) {
-    console.log('세션 만료');
-    return res.status(404).json({ data : 'error' });
+  // 세션 ID로 Redis에서 사용자 정보 가져오기
+  console.log(req);
+  const sessionId = req.sessionID; // 세션 ID
+  const sessionData = await redis.get(`user:${sessionId}`);
+
+  if (!sessionData) {
+    return res
+      .status(401)
+      .json({ message: "세션 정보가 없습니다. 다시 로그인 해주세요." });
   }
+
+  const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
+  console.log(noobs);
 
   const FRIEND_MAX = 20; // 값 수정해서 최대 추가 유저 조정가능
 
@@ -571,7 +581,7 @@ const userAdd = async (req, res) => {
   try {
     const userFriendCount = await NoobsRecentFriend.count({
       where: {
-        user_id: req.session.user.id,
+        user_id: noobs.id,
       },
     });
 
@@ -595,7 +605,7 @@ const userAdd = async (req, res) => {
       // DB에서 사용자 검색
       const userFriendData = await NoobsRecentFriend.findOne({
         where: {
-          user_id: req.session.user.id,
+          user_id: noobs.id,
           gameName: userid,
           tagLine: tagLine,
         },
@@ -615,6 +625,7 @@ const userAdd = async (req, res) => {
           losses: userSearchData.losses,
           winRate: userSearchData.winRate,
         });
+
         return res.status(200).json({ message: "사용자 추가 완료!" });
       } else {
         return res.status(400).json({ message: "이미 추가된 유저입니다. " });
@@ -628,13 +639,24 @@ const userAdd = async (req, res) => {
 
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
+  // 세션 ID로 Redis에서 사용자 정보 가져오기
+  console.log(req);
+  const sessionId = req.sessionID; // 세션 ID
+  const sessionData = await redis.get(`user:${sessionId}`);
+
+  if (!sessionData) {
+    return res
+      .status(401)
+      .json({ message: "세션 정보가 없습니다. 다시 로그인 해주세요." });
+  }
+
+  const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
 
 
   try {
-    // 사용자 목록 조회
     const friendUser = await NoobsRecentFriend.findAll({
       where: {
-        user_id: req.session.user.id,
+        user_id: noobs.id,
       },
     });
 
@@ -645,77 +667,71 @@ const friendUserBr = async (req, res) => {
         .json({ message: "같이한 사용자 목록이 없습니다." });
     }
 
-    // 각 친구에 대해 추가 정보 조회
-    for (const friend of friendUser) {
-      // 챔피언 데이터 조회
-      const champData = await NoobsMasterChamp.findAll({
-        where: {
-          gameName: friend.gameName,
-        },
-        limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
-      });
+    // 친구 정보를 비동기적으로 처리
+    const updatedFriends = await Promise.all(
+      friendUser.map(async (friend) => {
+        const champData = await NoobsMasterChamp.findAll({
+          where: {
+            gameName: friend.gameName,
+          },
+          limit: 3, // 최대 3개의 챔피언 데이터만 가져옴
+        });
 
-      // 소환사 업데이트용 id 가져오기
-      const updateUser = await NoobsUserInfo.findOne({
-        where: {
-          gameName: friend.gameName,
-        },
-      });
+        const updateUser = await NoobsUserInfo.findOne({
+          where: {
+            gameName: friend.gameName,
+          },
+        });
 
-      const updateId = updateUser.dataValues.id;
+        const updateId = updateUser.dataValues.id;
 
-      // 소환사 프로필 정보 조회
-      const profileData = await Profile.findOne({
-        where: {
-          Profile_key: friend.profileIconId,
-        },
-      });
+        const profileData = await Profile.findOne({
+          where: {
+            Profile_key: friend.profileIconId,
+          },
+        });
 
-      // 소환사 티어이미지 조회
-      const userRankImg = await RankInfo.findOne({
-        where: {
-          rank: friend.tier,
-        },
-      });
+        const userRankImg = await RankInfo.findOne({
+          where: {
+            rank: friend.tier,
+          },
+        });
 
-      // 티어별 점수 조회
-      const userRankScore = await TierScore.findOne({
-        where: {
-          rank: friend.tier,
-          tier: friend.rank,
-        },
-      });
+        const userRankScore = await TierScore.findOne({
+          where: {
+            rank: friend.tier,
+            tier: friend.rank,
+          },
+        });
 
-      // 포지션 빈값 추가
-      const userPosition = "";
+        const userPosition = ""; // 포지션 빈값 추가
 
-      friend.dataValues.position = userPosition;
-      friend.dataValues.updateId = updateId;
-      friend.dataValues.tierImg = userRankImg;
-      friend.dataValues.tierScore = userRankScore;
-      friend.dataValues.profileInfo = profileData;
-      friend.dataValues.MostChamp = champData;
-      // 친구 객체에 추가된 데이터 삽입
+        friend.dataValues.position = userPosition;
+        friend.dataValues.updateId = updateId;
+        friend.dataValues.tierImg = userRankImg;
+        friend.dataValues.tierScore = userRankScore;
+        friend.dataValues.profileInfo = profileData;
+        friend.dataValues.MostChamp = champData;
 
-      if (champData.length > 0) {
-        for (let i = 0; i < friend.dataValues.MostChamp.length; i++) {
-          const champ = friend.dataValues.MostChamp[i];
-          // 가장 많이 사용한 챔피언 데이터 조회
-          const champDataMost = await Champion.findOne({
-            where: {
-              champKey: champ.dataValues.championId,
-            },
-          });
-          champ.dataValues.champInfo = champDataMost;
+        // 챔피언 데이터 처리
+        if (champData.length > 0) {
+          await Promise.all(
+            champData.map(async (champ) => {
+              const champDataMost = await Champion.findOne({
+                where: {
+                  champKey: champ.dataValues.championId,
+                },
+              });
+              champ.dataValues.champInfo = champDataMost;
+            })
+          );
         }
-      }
-    }
 
-    // 최종 JSON 응답 보내기
-    return res.status(200).json({
-      message: "data success",
-      data: friendUser, // 친구 데이터
-    });
+        return friend;
+      })
+    );
+
+    return res.status(200).json({ data: updatedFriends });
   } catch (error) {
     console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
     return res.status(500).json({
@@ -727,20 +743,32 @@ const friendUserBr = async (req, res) => {
 // 같이한 사용자 삭제하기
 const friendUserBrDel = async (req, res) => {
   const { user_id } = req.body;
+
+  // 세션 ID로 Redis에서 사용자 정보 가져오기
+  console.log(req);
+  const sessionId = req.sessionID; // 세션 ID
+  const sessionData = await redis.get(`user:${sessionId}`);
+
+  if (!sessionData) {
+    return res
+      .status(401)
+      .json({ message: "세션 정보가 없습니다. 다시 로그인 해주세요." });
+  }
+  const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
+  
   try {
     const delUser = await NoobsRecentFriend.destroy({
       where: {
-        user_id: req.session.user.id,
+        user_id: noobs.id,
         id: user_id,
       },
     });
 
-
     if (delUser == 0) {
       return res.status(404).json({ message: "사용자가 존재하지 않습니다." });
-    } else {
-      return res.status(200).json({ message: "삭제 완료" });
     }
+
+    return res.status(200).json({ message: "삭제 완료" });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
@@ -750,7 +778,7 @@ const friendUserBrDel = async (req, res) => {
 // 유저 프로필 정보 불러오기 [ 디테일한 정보 전체 요청 ]
 const UserDetilsInfo = async (req, res) => {
   const { gameid } = req.body;
- 
+
   try {
     // 유저 정보 조회
     const userInfo = await NoobsUserInfo.findOne({
@@ -981,20 +1009,19 @@ const UserDetilsInfo = async (req, res) => {
   }
 };
 
-
-const nobsinfo = async (req,res) => {
+const nobsinfo = async (req, res) => {
   try {
     const NobsUser = await User.findOne({
-      where : {
-        id : req.session.user.id,
-      }
+      where: {
+        id: req.session.user.id,
+      },
     });
-    return res.status(200).json({ data : NobsUser });
+    return res.status(200).json({ data: NobsUser });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ message: "서버 내부 오류가 발생했습니다." });
   }
-}
+};
 
 export {
   userSearch,
