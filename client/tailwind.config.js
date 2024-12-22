@@ -16,8 +16,8 @@ export default {
         change: "700px",
       },
       backgroundImage: {
-        mobileScreen: "url('/assets/login_img/mobile_Login.jpg')",
-        mobileContainer: "url('/assets/login_img/mobile_Container.jpg')",
+        mobileScreen: "url('/mobile_Login.jpg')",
+        mobileContainer: "url('/mobile_Container.jpg')",
       },
       animation: {
         fadeIn: "fadeIn 1s ease-out forwards",
