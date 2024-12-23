@@ -24,11 +24,9 @@ interface DesktopMainPageProps {
   openModal: (type: string) => void;
   closeModal: () => void;
   handleDeleteUser: (userId: number) => void;
-  // NoobsUser : NoobsUser[];
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
-  // NoobsUser,
   allUsers,
   redTeam,
   blueTeam,

@@ -70,6 +70,15 @@ export default function AddUserModal({
           color: "#f44336",
           showConfirmButton: true,
         });
+      } else if (error.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "세션 만료",
+          text: "세션이 만료되었습니다. 다시 로그인해주세요",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
       } else {
         Swal.fire({
           icon: "error",
@@ -122,6 +131,15 @@ export default function AddUserModal({
           icon: "error",
           title: "서버 오류",
           text: "인증만료 관리자에게 문의하세요",
+          background: "#fff",
+          color: "#f44336",
+          showConfirmButton: true,
+        });
+      } else if (error.status === 401) {
+        Swal.fire({
+          icon: "error",
+          title: "세션 만료",
+          text: "세션이 만료되었습니다. 다시 로그인해주세요.",
           background: "#fff",
           color: "#f44336",
           showConfirmButton: true,

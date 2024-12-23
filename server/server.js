@@ -1,8 +1,6 @@
 import dotenv from "dotenv"; // dotenv 사용
 dotenv.config();
-
 import { fileURLToPath } from "url"; // fileURLToPath를 사용하여 현재 파일의 경로를 얻음
-
 import express from "express"; // express 사용
 import session from "express-session"; // express-session 사용
 import apiRoute from "./routes/route.js"; // apiRoute 모듈 가져오기
@@ -11,7 +9,7 @@ import sequelize from "./config/db.js"; // sequelize 설정 가져오기
 import cors from "cors"; // cors 설정 추가 했습니다.
 
 const app = express();
-const PORT = process.env.PORT || 8000;
+const PORT = 8000;
 
 // 세션 설정
 app.use(
@@ -42,6 +40,9 @@ app.use(
 app.use((req, res, next) => {
   next();
 });
+
+
+
 
 // 현재 파일의 경로를 __dirname처럼 사용하기
 const __filename = fileURLToPath(import.meta.url);
