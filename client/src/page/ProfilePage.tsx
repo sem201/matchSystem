@@ -28,7 +28,9 @@ const ProfilePage: React.FC = () => {
   const updateUserStats = (id: number) => {
     setIsLoading(true);
     axios
-      .post("http://127.0.0.1:8000/noobs/friendUserBrUpdate", { user_id: id })
+      .post(`${import.meta.env.VITE_BACK_API_URL}/noobs/friendUserBrUpdate`, {
+        user_id: id,
+      })
       .then(() => {
         Swal.fire({
           icon: "success",
@@ -38,9 +40,12 @@ const ProfilePage: React.FC = () => {
           background: "#fff",
           color: "#000",
         });
-        return axios.post("http://127.0.0.1:8000/noobs/UserDetilsInfo", {
-          gameid: id,
-        });
+        return axios.post(
+          `${import.meta.env.VITE_BACK_API_URL}/noobs/UserDetilsInfo`,
+          {
+            gameid: id,
+          }
+        );
       })
       .then((response) => {
         setProfileData(response.data); // 상태 업데이트
@@ -81,7 +86,7 @@ const ProfilePage: React.FC = () => {
       const userDetailsRequest = async () => {
         try {
           const response = await axios.post(
-            "http://127.0.0.1:8000/noobs/UserDetilsInfo",
+            `${import.meta.env.VITE_BACK_API_URL}/noobs/UserDetilsInfo`,
             {
               gameid: user_id,
             }
