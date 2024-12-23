@@ -14,9 +14,7 @@ const DraftModal = ({
   teamMembers,
   handleFinishDraft,
 }: DraftModalProps) => {
-  useEffect(() => {
-    console.log("모달 1실행");
-  });
+  useEffect(() => {});
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [redTeamLeader, setRedTeamLeader] = useState<User | null>(null);
   const [blueTeamLeader, setBlueTeamLeader] = useState<User | null>(null);
@@ -57,12 +55,9 @@ const DraftModal = ({
         mode: "draft",
       };
 
-      console.log("전송할 데이터:", data);
-
       try {
         // API 호출
         const response = await apiCall("/noobs/TeamMach", "post", data);
-        console.log("API Response:", response.data);
         setShowNextModal(true);
       } catch (error) {
         console.error("API 에러:", error);
