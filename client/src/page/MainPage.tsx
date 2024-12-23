@@ -240,6 +240,7 @@ const MainPage = () => {
       };
 
       await apiCall("/noobs/TeamMach", "post", data);
+      setIsDraftModalOpen(true);
     } else {
       Swal.fire({
         icon: "info",
