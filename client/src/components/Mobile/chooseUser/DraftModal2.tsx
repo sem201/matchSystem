@@ -16,7 +16,6 @@ const DraftModal2 = ({
   blueTeamLeader,
   handleFinishDraft,
 }: DraftModal2Props) => {
-  console.log("모달2 실행");
   const [draftedMembers, setDraftedMembers] = useState<User[]>([]); // 이미 선택된 멤버
   const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 현재 두 팀원
   const [currentLeader, _setCurrentLeader] = useState<User | null>(

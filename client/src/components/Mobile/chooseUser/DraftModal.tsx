@@ -14,9 +14,7 @@ const DraftModal = ({
   teamMembers,
   handleFinishDraft,
 }: DraftModalProps) => {
-  useEffect(() => {
-    console.log("모달 1실행");
-  });
+  useEffect(() => {});
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [redTeamLeader, setRedTeamLeader] = useState<User | null>(null);
   const [blueTeamLeader, setBlueTeamLeader] = useState<User | null>(null);
@@ -57,12 +55,9 @@ const DraftModal = ({
         mode: "draft",
       };
 
-      console.log("전송할 데이터:", data);
-
       try {
         // API 호출
         const response = await apiCall("/noobs/TeamMach", "post", data);
-        console.log("API Response:", response.data);
         setShowNextModal(true);
       } catch (error) {
         console.error("API 에러:", error);
@@ -89,10 +84,7 @@ const DraftModal = ({
         if (e.target === e.currentTarget) closeModal();
       }}
     >
-      <div
-        className="bg-white p-8 rounded-lg w-[100%] max-w-[400px] shadow-lg border-4"
-        style={{ borderColor: "#C89B3C" }}
-      >
+      <div className="bg-white p-8 rounded-lg w-[350px] shadow-lg relative border-4 border-[3px] border-[#C89B3C]">
         <p
           className="text-center mb-7 font-bold text-lg font-blackHanSans"
           style={{ fontFamily: "Arial, sans-serif", color: "#0F2041" }}
@@ -100,7 +92,7 @@ const DraftModal = ({
           팀장을 뽑아주세요.
         </p>
 
-        <div className="flex justify-between gap-4 mb-4 font-blackHanSans">
+        <div className="flex justify-between gap-4 mb-4 font-blackHanSans whitespace-nowrap">
           <button
             onClick={() => handleTeamSelect("RED TEAM")}
             className={`w-[200px] py-2 rounded-lg ${

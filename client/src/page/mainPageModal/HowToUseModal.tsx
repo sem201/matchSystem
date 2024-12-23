@@ -21,7 +21,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
     "유저 정보가 확인되면 추가 버튼을 클릭하여 \n참여할 인원을 추가합니다.",
     "최근에 함께한 유저의 경우 검색을 하지 않고, \n+ 버튼을 클릭하여 추가할 수 있습니다",
     "총 10명의 인원을 추가해야합니다. \n겹치는 라인이 없도록 추가해주세요",
-    <div className="space-y-4">
+    <div className="space-y-2">
       <p>
         <strong className="font-bold">RANDOM :</strong> 팀을 무작위로 섞습니다.
       </p>
@@ -30,7 +30,8 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         2명씩 보여주고 팀장이 팀원을 선택합니다.
       </p>
       <p>
-        <strong className="font-bold">BALANCE :</strong> 알고리즘을 통해 팀 선정
+        <strong className="font-bold">BALANCE :</strong> 알고리즘을 통해 팀
+        선정해줍니다.
       </p>
       <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
     </div>,
