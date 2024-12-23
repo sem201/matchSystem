@@ -51,7 +51,6 @@ const MobileMainpage = ({
   setBlueTeam,
 }: Props) => {
   const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
-    console.log("팀 선택 완료");
     // 상태 업데이트: 최종 팀을 메인 페이지에 반영
     setRedTeam(RedTeam);
     setBlueTeam(BlueTeam);

@@ -21,8 +21,6 @@ const RecentHistory: React.FC<RecentfileChartsyProps> = ({
   // 데이터를 두 번 반복해 무한 슬라이드 효과를 줍니다.
   const duplicatedChampions = [...champions, ...champions];
 
-  console.log(duplicatedChampions.length);
-
   return (
     <div className="recent-history bg-gray-800 text-white p-6 rounded-lg">
       <h2 className="text-2xl font-bold mb-4 font-blackHanSans inline">

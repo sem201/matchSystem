@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MobileMainpage from "./Mobile-Mainpage";
 import DesktopMainPage from "./Desktop-MainPage";
-import axios, { AxiosError } from "axios";  // axios를 import
+import axios, { AxiosError } from "axios"; // axios를 import
 import { User } from "../commonTypes";
 import apiCall from "../Api/Api";
 import Swal from "sweetalert2";
@@ -20,22 +20,30 @@ const MainPage = () => {
         setAllUsers(response.data.data);
       } catch (error) {
         console.log(error);
-      
+
         // error가 AxiosError인 경우 처리
         if (axios.isAxiosError(error)) {
-          const axiosError = error;  // error를 AxiosError로 타입 단언
-      
+          const axiosError = error; // error를 AxiosError로 타입 단언
+
           if (axiosError.response) {
             // 401 오류 처리
             if (axiosError.response.status === 401) {
               Swal.fire("세션이 만료되었습니다.", "", "warning");
             } else {
               // 다른 오류 처리 (예: 500, 404 등)
-              Swal.fire("서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.", "", "error");
+              Swal.fire(
+                "서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+                "",
+                "error"
+              );
             }
           } else if (axiosError.request) {
             // 요청이 이루어졌으나 응답이 없을 경우
-            Swal.fire("서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.", "", "error");
+            Swal.fire(
+              "서버와의 연결이 원활하지 않습니다. 다시 시도해 주세요.",
+              "",
+              "error"
+            );
           } else {
             // 오류 발생 원인 자체
             Swal.fire(`오류 발생: ${axiosError.message}`, "", "error");
@@ -46,7 +54,11 @@ const MainPage = () => {
             Swal.fire(`오류 발생: ${error.message}`, "", "error");
           } else {
             // 알 수 없는 오류 처리
-            Swal.fire("알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.", "", "error");
+            Swal.fire(
+              "알 수 없는 오류가 발생했습니다. 다시 시도해 주세요.",
+              "",
+              "error"
+            );
           }
         }
       }
@@ -197,8 +209,6 @@ const MainPage = () => {
               color: "#f44336",
               showConfirmButton: true,
             });
-          } else {
-            console.log("missingPlayers가 올바른 배열이 아닙니다.");
           }
         } else {
           console.log("알 수 없는 오류 발생");
