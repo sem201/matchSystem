@@ -51,7 +51,7 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
   // 로그아웃 요청 함수
   const logout = async (text: string) => {
     try {
-      await axios.get("http://127.0.0.1:8000/logout");
+      await axios.get(`${import.meta.env.VITE_BACK_API_URL}/logout`);
       Swal.fire({
         icon: "error",
         title: "로그아웃",
@@ -136,7 +136,7 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
           <button
             onClick={() => {
               axios
-                .get("http://127.0.0.1:8000/logout", {})
+                .get(`${import.meta.env.VITE_BACK_API_URL}/logout`, {})
                 .then(() => {
                   alert("로그아웃 되었습니다.");
                   window.location.href = "/";

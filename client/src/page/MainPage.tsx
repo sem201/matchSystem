@@ -209,8 +209,6 @@ const MainPage = () => {
               color: "#f44336",
               showConfirmButton: true,
             });
-          } else {
-            console.log("missingPlayers가 올바른 배열이 아닙니다.");
           }
         } else {
           console.log("알 수 없는 오류 발생");

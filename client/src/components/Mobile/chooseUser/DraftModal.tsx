@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DraftModal2 from "./DraftModal2";
 import { User } from "../../../commonTypes";
 import apiCall from "../../../Api/Api";
@@ -14,7 +14,6 @@ const DraftModal = ({
   teamMembers,
   handleFinishDraft,
 }: DraftModalProps) => {
-  useEffect(() => {});
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [redTeamLeader, setRedTeamLeader] = useState<User | null>(null);
   const [blueTeamLeader, setBlueTeamLeader] = useState<User | null>(null);
@@ -58,6 +57,7 @@ const DraftModal = ({
       try {
         // API 호출
         const response = await apiCall("/noobs/TeamMach", "post", data);
+        console.log("API Response:", response.data);
         setShowNextModal(true);
       } catch (error) {
         console.error("API 에러:", error);
