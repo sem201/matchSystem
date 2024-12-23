@@ -69,13 +69,7 @@ const DraftModal2 = ({
 
       handleFinishDraft(RedTeam, BlueTeam); // 상태가 업데이트된 후 호출
     }
-  }, [
-    draftedMembers,
-    availableMembersCount,
-    redTeamLeader,
-    blueTeamLeader,
-    handleFinishDraft,
-  ]);
+  }, [draftedMembers, availableMembersCount, redTeamLeader, blueTeamLeader]);
 
   useEffect(() => {
     // 처음 두 명을 선택

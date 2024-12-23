@@ -14,6 +14,7 @@ const DraftModal = ({
   teamMembers,
   handleFinishDraft,
 }: DraftModalProps) => {
+  // useEffect(() => {});
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
   const [redTeamLeader, setRedTeamLeader] = useState<User | null>(null);
   const [blueTeamLeader, setBlueTeamLeader] = useState<User | null>(null);
