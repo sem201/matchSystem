@@ -103,7 +103,7 @@ const MobileMainpage = ({
         className="font-blackHanSans w-[40vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
         onClick={handleTeamButtonClick}
       >
-        팀짜기
+        팀 구성
       </button>
       {/* 최근 함께한 유저 목록 */}
       <UserContainer
