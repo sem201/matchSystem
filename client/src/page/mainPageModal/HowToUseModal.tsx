@@ -1,5 +1,9 @@
 import { useState } from "react";
-
+import Howto1 from "../../assets/modeGif/userselect.png";
+import Howto3 from "../../assets/modeGif/userAdd.png";
+import Howto4 from "../../assets/modeGif/teamChoose.png";
+import Howto5 from "../../assets/modeGif/modeselect.png";
+import Howto6 from "../../assets/modeGif/good.jpeg";
 // ModalProps 수정
 interface ModalProps {
   closeModal: () => void;
@@ -7,14 +11,7 @@ interface ModalProps {
 }
 
 export default function HowToUseModal({ closeModal }: ModalProps) {
-  const images = [
-    "/src/assets/modeGif/userselect.png", // 예시 이미지 경로
-    "/src/assets/modeGif/userselect.png",
-    "/src/assets/modeGif/userAdd.png",
-    "src/assets/modeGif/teamChoose.png",
-    "src/assets/modeGif/modeselect.png",
-    "src/assets/modeGif/good.jpeg",
-  ];
+  const images = [Howto1, Howto1, Howto3, Howto4, Howto5, Howto6];
 
   const descriptions = [
     "인원 추가 버튼을 눌러 닉네임과 태그를 입력하고, \n검색버튼을 클릭하여 유저 정보가 존재하는지 확인합니다.",

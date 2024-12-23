@@ -60,7 +60,7 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
         color: "#f44336",
         showConfirmButton: true,
       });
-      window.location.href = "/";
+      window.location.href = "http://15.165.204.99:5173/";
     } catch (error) {
       console.error("로그아웃 오류:", error);
     }
