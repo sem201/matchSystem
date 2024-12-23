@@ -44,9 +44,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
-
-
 // 현재 파일의 경로를 __dirname처럼 사용하기
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -92,7 +89,7 @@ sequelize
   })
   .then(() => {
     // 서버 실행
-    app.listen(PORT, "0.0.0.0", () => {
+    app.listen(PORT, () => {
       console.log(`서버가 http://localhost:${PORT}에서 실행 중입니다.`);
     });
   })
