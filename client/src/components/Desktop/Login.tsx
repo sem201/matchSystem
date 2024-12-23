@@ -3,6 +3,7 @@ import backGroungImg from "../../assets/login_Img/login.webm";
 import Logo from "../../assets/login_Img/legendLogo.png";
 import start from "../../assets/login_Img/pause.png";
 import stop from "../../assets/login_Img/play.png";
+import sound from "../../assets/Music/2019-MSI-.mp3";
 
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
@@ -46,7 +47,7 @@ const Login = () => {
         autoPlay
         loop
       >
-        <source src="/src/assets/Music/2019-MSI-.mp3" type="audio/mp3" />
+        <source src={sound} type="audio/mp3" />
       </audio>
 
       {/* 로그인 화면 콘텐츠 */}
