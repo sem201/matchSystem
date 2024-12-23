@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DraftModal2 from "./DraftModal2";
 import { User } from "../../../commonTypes";
 import apiCall from "../../../Api/Api";
