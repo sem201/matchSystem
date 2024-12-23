@@ -39,6 +39,9 @@ app.use(
   })
 );
 
+// Preflight 요청에 대한 처리
+app.options("*", cors());
+
 app.use((req, res, next) => {
   next();
 });
