@@ -56,8 +56,7 @@ const DraftModal = ({
 
       try {
         // API 호출
-        const response = await apiCall("/noobs/TeamMach", "post", data);
-        console.log("API Response:", response.data);
+        await apiCall("/noobs/TeamMach", "post", data);
         setShowNextModal(true);
       } catch (error) {
         console.error("API 에러:", error);
