@@ -27,9 +27,9 @@ export default function SelectModeModal({
   };
 
   const modeImages: Record<string, string> = {
-    RANDOM: "/src/assets/modeGif/random.gif",
+    RANDOM: "/src/assets/modeGif/RANDOM.gif",
     DRAFT: "/src/assets/modeGif/draft.gif",
-    BALANCE: "/src/assets/modeGif/justice.gif",
+    BALANCE: "/src/assets/modeGif/BALANCE.gif",
   };
 
   const handleModeClick = (mode: string) => {
@@ -42,12 +42,12 @@ export default function SelectModeModal({
 
   const handleConfirmClick = () => {
     Swal.fire({
-      icon: 'success',
-      title: '모드 선택 완료',
+      icon: "success",
+      title: "모드 선택 완료",
       text: `${selectedModeState} 모드가 선택되었습니다.`,
-      confirmButtonText: '확인',
-      background: '#fff',
-      color: '#000',
+      confirmButtonText: "확인",
+      background: "#fff",
+      color: "#000",
     }).then(() => {
       // Swal이 닫힌 후 실행할 코드
       if (setHeaderText) {

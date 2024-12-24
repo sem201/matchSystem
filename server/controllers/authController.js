@@ -6,6 +6,34 @@ import redis from "../redisClient.js"; // redisClient.js에서 가져오기
 
 dotenv.config();
 
+const passlogin = async (req, res) => {
+  const userid = 10;
+  try {
+    // Correct the syntax of the findOne query
+    const user = await User.findOne({
+      where: {
+        id: userid,
+      }
+    });
+
+    req.session.user = {
+      id: user.id,
+      nickname: user.nickname,
+      profileImage: user.profileImage,
+    };
+
+    // Optionally handle what happens if no user is found
+    if (!sample) {
+      console.log('User not found');
+    }
+
+  } catch (error) {
+    console.log('Database error:', error);
+  }
+
+  res.redirect(`${process.env.FRONT_URL}/main`);
+}
+
 const kakaoLogin = async (req, res) => {
   const { code } = req.query;
 
@@ -84,7 +112,9 @@ const logout = async (req, res) => {
 
     req.session.destroy((err) => {
       if (err) {
+        console.log(err);
         return res.status(500).send("로그아웃 처리 중 오류가 발생했습니다.");
+      
       }
       res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
       res.redirect("http://15.165.204.99:5173/");
@@ -95,4 +125,4 @@ const logout = async (req, res) => {
   }
 };
 
-export { kakaoLogin, logout };
+export { kakaoLogin, logout, passlogin };

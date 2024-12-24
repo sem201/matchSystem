@@ -13,6 +13,7 @@ interface BlueTeamProps {
   handleRemoveUser: (user: User) => void;
   handleAddUser: (user: User) => void;
 }
+
 const BlueTeam: React.FC<BlueTeamProps> = ({
   user,
   selectedMode,
@@ -69,10 +70,13 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
                   key={index}
                   className="flex w-[100%] change:justify-around xl:justify-between"
                 >
-                  <img
-                    src={champ.champInfo.champ_img}
-                    className="change:w-6 xl:w-8 h-auto max-w-[50px]"
-                  />
+                  <div className="change:w-6 xl:w-8 flex-shrink-0 overflow-hidden max-w-[50px]">
+                    <img
+                      src={champ.champInfo.champ_img}
+                      className="w-full h-full object-cover"
+                      alt={champ.champInfo.name}
+                    />
+                  </div>
                   <p className="text-xs font-bold self-center font-blackHanSans change:hidden xl:block">
                     {champ.champInfo.name}
                   </p>
@@ -82,7 +86,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
                 </div>
               ))}
             </div>
-            <p className="text-md text-blue-500 font-bold font-blackHanSans break-all text-center change:text-[0.5rem] xl:text-xl">
+            <p className="text-md text-blue-500 font-bold font-blackHanSans break-all text-center change:text-[1rem] xl:text-sm overflow-hidden text-ellipsis">
               {user.gameName}
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
