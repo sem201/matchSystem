@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import kakao from "../assets/login_Img/kakao_login_medium_narrow.png";
 
 const MobileLoginPage = () => {
@@ -9,7 +10,7 @@ const MobileLoginPage = () => {
   };
   return (
     <div className="flex flex-col items-center w-[100vw] h-[100vh] bg-mobileScreen bg-cover bg-top ">
-      <div className="border-2 w-[250px] h-[270px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover mt-[40vh] p-5">
+      <div className="border-2 w-[250px] h-[300px] bg-white border-[#C8AA6E] rounded-[15px] bg-mobileContainer bg-cover mt-[40vh] p-5">
         <p
           className="text-[#FFFFFF] text-center text-lg font-black"
           style={{ WebkitTextStroke: "0.7px #C8AA6E" }}
@@ -35,6 +36,9 @@ const MobileLoginPage = () => {
             className="w-[150px] mt-2"
           />
         </div>
+        <Link to="/main" className="float-right underline text-white mt-5">
+          로그인 없이 이용하기
+        </Link>
       </div>
       <p className="text-white text-xs absolute right-6 bottom-8">
         Leagueof Legendsand Riot Games are trademark <br />

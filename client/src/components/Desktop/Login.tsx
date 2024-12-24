@@ -4,6 +4,7 @@ import Logo from "../../assets/login_Img/legendLogo.png";
 import start from "../../assets/login_Img/pause.png";
 import stop from "../../assets/login_Img/play.png";
 import sound from "../../assets/Music/2019-MSI-.mp3";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
@@ -73,6 +74,9 @@ const Login = () => {
         >
           카카오톡으로 로그인
         </button>
+        <Link to="/main" className="float-right underline text-black mt-5">
+          로그인 없이 이용하기
+        </Link>
       </div>
 
       {/* 오른쪽 상단 토글 버튼 */}
