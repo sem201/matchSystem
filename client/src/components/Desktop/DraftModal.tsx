@@ -5,12 +5,17 @@ import { User } from "../../commonTypes";
 interface DraftModalProps {
   closeModal: () => void;
   teamMembers: User[]; // teamMembers의 타입을 User[]로 받아옵니다.
+  handleFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void; // 결과 전달 콜백
 }
 
-const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
+const DraftModal = ({
+  closeModal,
+  teamMembers,
+  handleFinishDraft,
+}: DraftModalProps) => {
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
-  const [redTeamLeader, setRedTeamLeader] = useState<string | null>(null);
-  const [blueTeamLeader, setBlueTeamLeader] = useState<string | null>(null);
+  const [redTeamLeader, setRedTeamLeader] = useState<User | null>(null);
+  const [blueTeamLeader, setBlueTeamLeader] = useState<User | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [showNextModal, setShowNextModal] = useState(false);
 
@@ -19,7 +24,7 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
     setIsDropdownOpen(true);
   };
 
-  const handleLeaderSelect = (leader: string) => {
+  const handleLeaderSelect = (leader: User) => {
     if (selectedTeam === "RED TEAM") {
       setRedTeamLeader(leader);
     } else if (selectedTeam === "BLUE TEAM") {
@@ -38,7 +43,8 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
     return (
       <DraftModal2
         closeModal={closeModal}
-        teamMembers={teamMembers.map((member) => member.gameName)}
+        handleFinishDraft={handleFinishDraft}
+        teamMembers={teamMembers}
         redTeamLeader={redTeamLeader}
         blueTeamLeader={blueTeamLeader}
       />
@@ -90,13 +96,13 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
           <div className="mt-4 border-2 border-[#C89B3C] rounded-lg p-4 bg-[#F9F5EB]">
             <div className="grid grid-cols-2 gap-4">
               {teamMembers.map((member) => {
-                const isRedLeader = redTeamLeader === member.gameName;
-                const isBlueLeader = blueTeamLeader === member.gameName;
+                const isRedLeader = redTeamLeader === member;
+                const isBlueLeader = blueTeamLeader === member;
 
                 return (
                   <button
                     key={member.id}
-                    onClick={() => handleLeaderSelect(member.gameName)}
+                    onClick={() => handleLeaderSelect(member)}
                     className={`py-2 px-4 rounded-lg border-[#C89B3C] border-2 break-all ${
                       isRedLeader
                         ? "bg-[#8A2922] text-white cursor-not-allowed"
@@ -117,12 +123,12 @@ const DraftModal = ({ closeModal, teamMembers }: DraftModalProps) => {
         <div className="text-center text-lg my-4">
           {redTeamLeader && (
             <p className="font-bold text-[#8A2922]">
-              {redTeamLeader}님이 RED TEAM 팀장입니다.
+              {redTeamLeader.gameName}님이 RED TEAM 팀장입니다.
             </p>
           )}
           {blueTeamLeader && (
             <p className="font-bold text-[#004a82]">
-              {blueTeamLeader}님이 BLUE TEAM 팀장입니다.
+              {blueTeamLeader.gameName}님이 BLUE TEAM 팀장입니다.
             </p>
           )}
         </div>

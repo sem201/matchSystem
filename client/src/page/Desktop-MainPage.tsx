@@ -7,6 +7,8 @@ import ComposeButton from "../components/Desktop/ComposeButton";
 interface DesktopMainPageProps {
   allUsers: User[];
   redTeam: User[];
+  setRedTeam: React.Dispatch<React.SetStateAction<User[]>>;
+  setBlueTeam: React.Dispatch<React.SetStateAction<User[]>>;
   blueTeam: User[];
   handleAddUser: (user: User) => void;
   handleRemoveUser: (user: User) => void;
@@ -29,7 +31,9 @@ interface DesktopMainPageProps {
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   allUsers,
   redTeam,
+  setRedTeam,
   blueTeam,
+  setBlueTeam,
   handleAddUser,
   handleRemoveUser,
   setIsDraftModalOpen,
@@ -47,6 +51,11 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   closeModal,
   handleDeleteUser,
 }) => {
+  const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
+    // 상태 업데이트: 최종 팀을 메인 페이지에 반영
+    setRedTeam(RedTeam);
+    setBlueTeam(BlueTeam);
+  };
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />
@@ -76,10 +85,13 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
         />
       </div>
       <ComposeButton
+        redTeam={redTeam}
+        blueTeam={blueTeam}
         addedUsers={addedUsers}
         handleTeamButtonClick={handleTeamButtonClick}
         isDraftModalOpen={isDraftModalOpen}
         setIsDraftModalOpen={setIsDraftModalOpen}
+        handleFinishDraft={handleFinishDraft}
       />
     </div>
   );

@@ -4,9 +4,12 @@ import { User } from "../../commonTypes";
 
 interface ComposeButtonProps {
   addedUsers: User[];
+  redTeam: User[];
+  blueTeam: User[];
   handleTeamButtonClick: () => void;
   isDraftModalOpen: boolean;
   setIsDraftModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  handleFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void; // 결과 전달 콜백
 }
 
 const ComposeButton: React.FC<ComposeButtonProps> = ({
@@ -14,6 +17,7 @@ const ComposeButton: React.FC<ComposeButtonProps> = ({
   addedUsers,
   isDraftModalOpen,
   setIsDraftModalOpen,
+  handleFinishDraft,
 }) => {
   return (
     <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full my-[20px]">
@@ -28,6 +32,7 @@ const ComposeButton: React.FC<ComposeButtonProps> = ({
         <DraftModal
           closeModal={() => setIsDraftModalOpen(false)}
           teamMembers={addedUsers}
+          handleFinishDraft={handleFinishDraft}
         />
       )}
     </div>

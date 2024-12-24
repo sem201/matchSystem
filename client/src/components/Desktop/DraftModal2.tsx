@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
+import { User } from "../../commonTypes";
 
 interface DraftModal2Props {
   closeModal: () => void;
-  teamMembers: string[];
-  redTeamLeader: string | null; // 부모 컴포넌트에서 받은 redTeamLeader
-  blueTeamLeader: string | null; // 부모 컴포넌트에서 받은 blueTeamLeader
+  teamMembers: User[];
+  redTeamLeader: User | null; // 부모 컴포넌트에서 받은 redTeamLeader
+  blueTeamLeader: User | null; // 부모 컴포넌트에서 받은 blueTeamLeader
+  handleFinishDraft: (RedTeam: User[], BlueTeam: User[]) => void;
 }
 
 const DraftModal2 = ({
   closeModal,
+  handleFinishDraft,
   teamMembers,
   redTeamLeader,
   blueTeamLeader,
 }: DraftModal2Props) => {
-  const [draftedMembers, setDraftedMembers] = useState<string[]>([]); // 이미 선택된 멤버
-  const [currentTeamMembers, setCurrentTeamMembers] = useState<string[]>([]); // 랜덤으로 선택된 두 팀원
-  const [currentLeader, _setCurrentLeader] = useState<string | null>(
+  const [draftedMembers, setDraftedMembers] = useState<User[]>([]); // 이미 선택된 멤버
+  const [currentTeamMembers, setCurrentTeamMembers] = useState<User[]>([]); // 랜덤으로 선택된 두 팀원
+  const [currentLeader, _setCurrentLeader] = useState<User | null>(
     redTeamLeader
   ); // 레드팀 팀장만 계속 표시
 
@@ -23,50 +26,54 @@ const DraftModal2 = ({
     (member) => member !== redTeamLeader && member !== blueTeamLeader
   ).length;
 
-  // 랜덤으로 두 명의 팀원을 선택하는 함수
-  const getRandomPair = () => {
+  // 순차적으로 두 명의 팀원을 선택하는 함수
+  const getNextPair = () => {
+    // 팀장이 제외된 나머지 멤버들
     const remainingMembers = teamMembers.filter(
       (member) =>
-        !draftedMembers.includes(member) &&
         member !== redTeamLeader &&
-        member !== blueTeamLeader
+        member !== blueTeamLeader &&
+        !draftedMembers.includes(member)
     );
 
-    // 두 명 랜덤으로 선택
-    const randomPair = [];
-    for (let i = 0; i < 2; i++) {
-      const randomIndex = Math.floor(Math.random() * remainingMembers.length);
-      randomPair.push(remainingMembers[randomIndex]);
-      remainingMembers.splice(randomIndex, 1); // 이미 선택된 멤버는 제외
-    }
-
-    return randomPair;
+    // 순차적으로 두 명을 선택
+    const nextPair = remainingMembers.slice(0, 2);
+    return nextPair;
   };
 
   // 멤버 선택 시 호출되는 함수
-  const handleSelectMember = (selectedMember: string) => {
+  const handleSelectMember = (selectedMember: User) => {
     // 레드팀에 선택된 멤버를 추가
     setDraftedMembers((prevDrafted) => [...prevDrafted, selectedMember]);
 
     // 선택되지 않은 멤버는 블루팀에 배정
     const remainingMember = currentTeamMembers.find(
-      (member) => member !== selectedMember
+      (member) => member.gameName !== selectedMember.gameName
     );
     if (remainingMember) {
       setDraftedMembers((prevDrafted) => [...prevDrafted, remainingMember]);
     }
-
-    // 랜덤으로 두 명을 다시 선택하여 보여줌
-    const nextPair = getRandomPair();
-    setCurrentTeamMembers(nextPair);
   };
 
   useEffect(() => {
-    // 처음 랜덤으로 두 명의 팀원을 선택
-    const initialPair = getRandomPair();
+    if (draftedMembers.length === availableMembersCount) {
+      const RedTeam = [
+        redTeamLeader!,
+        ...draftedMembers.filter((_, idx) => idx % 2 === 0),
+      ];
+      const BlueTeam = [
+        blueTeamLeader!,
+        ...draftedMembers.filter((_, idx) => idx % 2 === 1),
+      ];
+
+      handleFinishDraft(RedTeam, BlueTeam); // 상태가 업데이트된 후 호출
+    }
+  }, [draftedMembers, availableMembersCount, redTeamLeader, blueTeamLeader]);
+  useEffect(() => {
+    // 처음 두 명을 선택
+    const initialPair = getNextPair();
     setCurrentTeamMembers(initialPair);
   }, [teamMembers, draftedMembers]);
-
   return (
     <div
       className="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center flex-col"
@@ -76,7 +83,9 @@ const DraftModal2 = ({
     >
       {/* "ooo님 선택" 부분 */}
       {draftedMembers.length < availableMembersCount && (
-        <h1 className="text-center text-xl mb-4">{currentLeader}님 선택</h1>
+        <h1 className="text-center text-xl mb-4">
+          {currentLeader?.gameName}님 선택
+        </h1>
       )}
 
       {/* 팀원 두 명을 랜덤으로 보여주고, 선택하는 버튼 */}
@@ -87,13 +96,13 @@ const DraftModal2 = ({
               onClick={() => handleSelectMember(currentTeamMembers[0])}
               className="py-2 px-4 bg-[#F0E6D2] text-[#0F2041] hover:bg-[#C89B3C] hover:text-white rounded-lg"
             >
-              {currentTeamMembers[0]}
+              {currentTeamMembers[0].gameName}
             </button>
             <button
               onClick={() => handleSelectMember(currentTeamMembers[1])}
               className="py-2 px-4 bg-[#F0E6D2] text-[#0F2041] hover:bg-[#C89B3C] hover:text-white rounded-lg"
             >
-              {currentTeamMembers[1]}
+              {currentTeamMembers[1].gameName}
             </button>
           </div>
         )}
