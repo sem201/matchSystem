@@ -13,6 +13,7 @@ interface BlueTeamProps {
   handleRemoveUser: (user: User) => void;
   handleAddUser: (user: User) => void;
 }
+
 const BlueTeam: React.FC<BlueTeamProps> = ({
   user,
   selectedMode,
