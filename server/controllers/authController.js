@@ -1,7 +1,7 @@
-import axios from 'axios';
-import User from '../models/User.js';
-import qs from 'qs';
-import dotenv from 'dotenv'
+import axios from "axios";
+import User from "../models/User.js";
+import qs from "qs";
+import dotenv from "dotenv";
 import redis from "../redisClient.js"; // redisClient.js에서 가져오기
 
 dotenv.config();
@@ -58,9 +58,13 @@ const kakaoLogin = async (req, res) => {
     const sessionId = req.sessionID; // 세션 ID
     console.log(sessionId);
 
-     // 세션 정보 Redis에 저장 (1시간 TTL)
-     await redis.set(`user:${sessionId}`, JSON.stringify(req.session.user), "EX", 300); // TTL 1시간
-
+    // 세션 정보 Redis에 저장 (1시간 TTL)
+    await redis.set(
+      `user:${sessionId}`,
+      JSON.stringify(req.session.user),
+      "EX",
+      1800
+    ); // TTL 1시간
 
     // 로그인 후, 세션을 저장하고 리다이렉트
     res.redirect(`${process.env.FRONT_URL}/main`);
@@ -75,8 +79,8 @@ const logout = async (req, res) => {
   try {
     const sessionId = req.sessionID;
 
-     // 세션 정보 Redis에서 삭제
-     await redis.del(`user:${sessionId}`);
+    // 세션 정보 Redis에서 삭제
+    await redis.del(`user:${sessionId}`);
 
     req.session.destroy((err) => {
       if (err) {
@@ -85,7 +89,11 @@ const logout = async (req, res) => {
       
       }
       res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
+<<<<<<< HEAD
       res.redirect("http://15.165.204.99:8000");
+=======
+      res.redirect("http://15.165.204.99:5173/");
+>>>>>>> f1d4d26f331f3dde1e4ef492f9ac9b0f348c7674
     });
   } catch (err) {
     console.error(err);
