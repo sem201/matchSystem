@@ -80,7 +80,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
                   <p className="text-xs font-bold self-center font-blackHanSans change:hidden xl:block">
                     {champ.champInfo.name}
                   </p>
-                  <p className="text-xs font-bold self-center point font-blackHanSans">
+                  <p className="text-xs font-bold self-center font-blackHanSans">
                     {formatNumberWithCommas(champ.championPoints)}
                   </p>
                 </div>
