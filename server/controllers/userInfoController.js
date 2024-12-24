@@ -652,20 +652,12 @@ const friendUserBr = async (req, res) => {
 
   const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
 
-
   try {
     const friendUser = await NoobsRecentFriend.findAll({
       where: {
         user_id: noobs.id,
       },
     });
-
-    // 친구가 없을 경우
-    if (!friendUser || friendUser.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "같이한 사용자 목록이 없습니다." });
-    }
 
     // 친구 정보를 비동기적으로 처리
     const updatedFriends = await Promise.all(
@@ -755,7 +747,7 @@ const friendUserBrDel = async (req, res) => {
       .json({ message: "세션 정보가 없습니다. 다시 로그인 해주세요." });
   }
   const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
-  
+
   try {
     const delUser = await NoobsRecentFriend.destroy({
       where: {
