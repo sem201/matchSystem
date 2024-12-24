@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Swal from "sweetalert2";
 import random from "../../assets/modeGif/randomgif.gif";
 import balance from "../../assets/modeGif/balancegif.gif";
+import draft from "../../assets/modeGif/draftgjf.gif";
 interface ModalProps {
   closeModal: () => void;
   selectedMode: string;
@@ -30,7 +31,7 @@ export default function SelectModeModal({
 
   const modeImages: Record<string, string> = {
     RANDOM: random,
-    DRAFT: "/src/assets/modeGif/draft.gif",
+    DRAFT: draft,
     BALANCE: balance,
   };
 
