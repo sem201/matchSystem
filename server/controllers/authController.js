@@ -63,7 +63,7 @@ const kakaoLogin = async (req, res) => {
       `user:${sessionId}`,
       JSON.stringify(req.session.user),
       "EX",
-      300
+      1800
     ); // TTL 1시간
 
     // 로그인 후, 세션을 저장하고 리다이렉트
