@@ -80,10 +80,12 @@ const logout = async (req, res) => {
 
     req.session.destroy((err) => {
       if (err) {
+        console.log(err);
         return res.status(500).send("로그아웃 처리 중 오류가 발생했습니다.");
+      
       }
       res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
-      res.redirect("http://127.0.0.1:5173");
+      res.redirect("http://15.165.204.99:8000");
     });
   } catch (err) {
     console.error(err);
