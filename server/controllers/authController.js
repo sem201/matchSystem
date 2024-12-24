@@ -10,11 +10,17 @@ const passlogin = async (req, res) => {
   const userid = 10;
   try {
     // Correct the syntax of the findOne query
-    const sample = await User.findOne({
+    const user = await User.findOne({
       where: {
         id: userid,
       }
     });
+
+    req.session.user = {
+      id: user.id,
+      nickname: user.nickname,
+      profileImage: user.profileImage,
+    };
 
     // Optionally handle what happens if no user is found
     if (!sample) {
