@@ -5,6 +5,9 @@ import start from "../../assets/login_Img/pause.png";
 import stop from "../../assets/login_Img/play.png";
 import sound from "../../assets/Music/2019-MSI-.mp3";
 
+
+
+
 const Login = () => {
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
   const audioRef = useRef<HTMLAudioElement | null>(null); // audio 태그 참조 타입 명시
@@ -27,6 +30,24 @@ const Login = () => {
     // 카카오 로그인 페이지로 리디렉션 (서버에서 처리할 로그인 URL로)
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
   };
+
+     // 샘플계정 로그인
+     const sampleAccount = async () => {
+      try {
+        const response = await fetch('http://15.165.204.99:5173/passlogin', {
+          method: 'GET',
+        });
+        if (response.ok) {
+          const data = await response.json(); 
+          console.log('Response:', data);
+        } else {
+          console.log('Error with the GET request');
+        }
+      } catch (error) {
+        console.error('Request failed:', error);
+      }
+    };
+ 
 
   return (
     <div className="w-[100vw] h-[100vh] relative">
@@ -72,6 +93,13 @@ const Login = () => {
           className="md:text-[10px] lg:text-[17px] bg-[#FEE500] mt-8 py-2 px-4 rounded-lg transition-all"
         >
           카카오톡으로 로그인
+        </button>
+
+        <button
+          onClick={sampleAccount}
+          className="md:text-[10px] lg:text-[17px] bg-[#FEE500] mt-8 py-2 px-4 rounded-lg transition-all"
+        >
+          샘플계정로그인
         </button>
       </div>
 

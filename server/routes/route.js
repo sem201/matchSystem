@@ -14,7 +14,7 @@ import {
 } from "../controllers/userInfoController.js";
 import { TeamMach, sampleData } from "../controllers/modeTeamController.js";
 import rateLimit from "express-rate-limit";
-import { kakaoLogin, logout } from '../controllers/authController.js';
+import { kakaoLogin, logout, passlogin } from '../controllers/authController.js';
 
 
 
@@ -31,6 +31,8 @@ router.get('/user/kakao/login', kakaoLogin);
 
 // 로그아웃
 router.get('/logout', logout);
+// 샘플계정
+router.get('/passlogin', passlogin);
 
 // Noobs 사용자
 router.get('/noobs/nobsinfo', nobsinfo);
