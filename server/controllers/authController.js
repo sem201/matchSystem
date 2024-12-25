@@ -99,7 +99,9 @@ const kakaoLogin = async (req, res) => {
     // 로그인 후, 세션을 저장하고 리다이렉트
     console.log('로그인 완료');
     console.log(`${process.env.FRONT_URL}/main`);
-    res.redirect(`${process.env.FRONT_URL}/main`);
+    // res.redirect(`${process.env.FRONT_URL}/main`);
+     res.redirect("https://www.noobsapp.store//main");
+
   } catch (error) {
     console.error(error);
     res.status(500).send("카카오 로그인 실패");
