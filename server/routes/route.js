@@ -27,7 +27,7 @@ const limiter = rateLimit({
 const router = express.Router();
 
 // 카카오 로그인 처리
-router.get('user/kakao/login', kakaoLogin);
+router.get('/user/kakao/login', kakaoLogin);
 
 // 로그아웃
 router.get('/api/logout', logout);
