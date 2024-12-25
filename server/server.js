@@ -60,7 +60,7 @@ app.use(express.urlencoded({ extended: true })); // 폼 데이터 파싱
 app.use(express.json()); // JSON 데이터 파싱
 
 // 라우터 연결
-app.use("/", apiRoute);
+app.use("/api", apiRoute);
 
 app.get("/check-session", (req, res) => {
   if (req.session.user) {
