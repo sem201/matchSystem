@@ -93,6 +93,8 @@ const kakaoLogin = async (req, res) => {
       "EX",
       1800
     ); // TTL 1시간
+   console.log('로그인은 완료');
+    console.log(`${process.env.FRONT_URL}/main`);
 
     // 로그인 후, 세션을 저장하고 리다이렉트
     console.log('로그인 완료');
