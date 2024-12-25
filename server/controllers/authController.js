@@ -100,7 +100,7 @@ const kakaoLogin = async (req, res) => {
     console.log('로그인 완료');
     console.log(`${process.env.FRONT_URL}/main`);
     // res.redirect(`${process.env.FRONT_URL}/main`);
-     res.redirect("https://www.noobsapp.store//main");
+     res.redirect("https://www.noobsapp.store/main");
 
   } catch (error) {
     console.error(error);
