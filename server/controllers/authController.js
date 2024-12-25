@@ -36,7 +36,7 @@ const passlogin = async (req, res) => {
 
 const kakaoLogin = async (req, res) => {
   const { code } = req.query;
-
+  console.log('로그인 요청');
   if (!code) {
     return res.status(400).send("인증 코드가 필요합니다");
   }
@@ -75,7 +75,7 @@ const kakaoLogin = async (req, res) => {
         profileImage: kakaoUser.properties.profile_image,
       },
     });
-
+    console.log('정보 저장');
     // 세션에 사용자 정보 저장
     req.session.user = {
       id: user.id,
@@ -95,6 +95,8 @@ const kakaoLogin = async (req, res) => {
     ); // TTL 1시간
 
     // 로그인 후, 세션을 저장하고 리다이렉트
+    console.log('로그인 완료');
+    console.log(`${process.env.FRONT_URL}/main`);
     res.redirect(`${process.env.FRONT_URL}/main`);
   } catch (error) {
     console.error(error);
