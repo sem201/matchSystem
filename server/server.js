@@ -15,7 +15,7 @@ const PORT = 8000;
 app.use(
   session({
     secret: process.env.SESSION_SECRET, // 세션 암호화 키
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
@@ -23,6 +23,7 @@ app.use(
       secure: true, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 30 * 60 * 1000, // 세션 만료 10분
       domain: ".noobsapp.store",
+      path: "/"
     },
   })
 );

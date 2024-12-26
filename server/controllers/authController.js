@@ -107,7 +107,7 @@ const kakaoLogin = async (req, res) => {
 const logout = async (req, res) => {
   try {
     const sessionId = req.sessionID;
-
+    console.log(sessionId);
     // 세션 정보 Redis에서 삭제
     await redis.del(`user:${sessionId}`);
 
