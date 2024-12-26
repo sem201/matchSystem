@@ -14,7 +14,7 @@ const Header: React.FC<HeaderProps> = ({ text }) => {
       <button
         onClick={() => {
           try {
-            apiCall("http://127.0.0.1:8000/logout", "get", null);
+            apiCall("https://www.noobsapp.store/logout", "get", null);
             alert("로그아웃 되었습니다.");
             window.location.href = "/";
           } catch (err) {

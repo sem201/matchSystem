@@ -123,7 +123,7 @@ const logout = async (req, res) => {
       
       }
       res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
-      res.redirect("http://15.165.204.99:5173/");
+      res.redirect("https://www.noobsapp.store/");
     });
   } catch (err) {
     console.error(err);
