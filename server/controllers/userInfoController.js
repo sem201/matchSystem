@@ -640,7 +640,7 @@ const userAdd = async (req, res) => {
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
   // 세션 ID로 Redis에서 사용자 정보 가져오기
-  console.log(req);
+  console.log("사용자 불러오기",req.sessionID);
   const sessionId = req.sessionID; // 세션 ID
   const sessionData = await redis.get(`user:${sessionId}`);
 

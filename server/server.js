@@ -42,6 +42,7 @@ app.options("*", cors());
 
 
 app.use((req, res, next) => {
+  console.log("use : " , req.sessionID);
   next();
 });
 

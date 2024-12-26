@@ -84,7 +84,7 @@ const kakaoLogin = async (req, res) => {
     };
 
     const sessionId = req.sessionID; // 세션 ID
-    console.log(sessionId);
+    console.log('로그인 완료 ', sessionId);
 
     // 세션 정보 Redis에 저장 (1시간 TTL)
     await redis.set(
@@ -93,12 +93,7 @@ const kakaoLogin = async (req, res) => {
       "EX",
       1800
     ); // TTL 1시간
-   console.log('로그인은 완료');
-    console.log(`${process.env.FRONT_URL}/main`);
-
     // 로그인 후, 세션을 저장하고 리다이렉트
-    console.log('로그인 완료');
-    console.log(`${process.env.FRONT_URL}/main`);
     // res.redirect(`${process.env.FRONT_URL}/main`);
      res.redirect("https://www.noobsapp.store/main");
 
