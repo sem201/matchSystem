@@ -6,6 +6,16 @@ import redis from "../redisClient.js"; // redisClient.js에서 가져오기
 
 dotenv.config();
 
+const hostName = process.env.HOST_NAME;
+
+const redirectUrl = hostName === "127.0.0.1:8000"
+  ? "http://127.0.0.1:5173/main"
+  : "https://www.noobsapp.store/main";
+
+  const logoutUrl = hostName === "127.0.0.1:8000"
+  ? "http://127.0.0.1:5173/"
+  : "https://www.noobsapp.store/";
+
 const passlogin = async (req, res) => {
   const userid = 10;
   try {
@@ -91,11 +101,9 @@ const kakaoLogin = async (req, res) => {
       `user:${sessionId}`,
       JSON.stringify(req.session.user),
       "EX",
-      1800
+      3600
     ); // TTL 1시간
-    // 로그인 후, 세션을 저장하고 리다이렉트
-    // res.redirect(`${process.env.FRONT_URL}/main`);
-     res.redirect("https://www.noobsapp.store/main");
+    res.redirect(redirectUrl);
 
   } catch (error) {
     console.error(error);
@@ -118,7 +126,7 @@ const logout = async (req, res) => {
       
       }
       res.clearCookie("connect.sid"); // 세션 쿠키도 지우기
-      res.redirect("https://www.noobsapp.store/");
+      res.redirect(logoutUrl);
     });
   } catch (err) {
     console.error(err);
