@@ -19,8 +19,8 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      sameSite: "None",
-      secure: true, // 개발 중에는 false로 설정 (HTTPS에서만 true)
+      sameSite: "Lax",
+      secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 30 * 60 * 1000, // 세션 만료 10분
       domain: ".noobsapp.store",
       path: "/"
