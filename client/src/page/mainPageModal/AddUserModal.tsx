@@ -99,7 +99,7 @@ export default function AddUserModal({
     const [nickname, tag] = nicknameTag.split("#");
     const data = { userid: nickname, tagLine: tag };
     try {
-      await apiCall("noobs/lolUserAdd", "post", data);
+      await apiCall("/noobs/lolUserAdd", "post", data);
       setIsUserAdded((prev) => !prev);
     } catch (error: any) {
       if (

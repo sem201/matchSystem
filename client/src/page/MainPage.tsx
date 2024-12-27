@@ -15,7 +15,8 @@ const MainPage = () => {
     const fetchData = async () => {
       try {
         const [response] = await Promise.all([
-          apiCall("/api/noobs/friendUserBr", "get", null),
+          apiCall("/noobs/friendUserBr", "get", null),
+  
         ]);
         setAllUsers(response.data.data);
       } catch (error) {
@@ -185,7 +186,7 @@ const MainPage = () => {
       };
 
       try {
-        const response = await apiCall("noobs/TeamMach", "post", data);
+        const response = await apiCall("/noobs/TeamMach", "post", data);
         const { newRedTeam, newBlueTeam } = updateTeams(
           addedUsers,
           response.data

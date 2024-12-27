@@ -31,7 +31,7 @@ const Login = () => {
   // 샘플계정 로그인
   const sampleAccount = async () => {
     try {
-      const response = await fetch("http://15.165.204.99:8000/passlogin", {
+      const response = await fetch("http://127.0.0.1/passlogin", {
         method: "GET",
       });
       if (response.ok) {

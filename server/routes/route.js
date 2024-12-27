@@ -16,8 +16,6 @@ import { TeamMach, sampleData } from "../controllers/modeTeamController.js";
 import rateLimit from "express-rate-limit";
 import { kakaoLogin, logout, passlogin } from '../controllers/authController.js';
 
-
-
 const limiter = rateLimit({
   windowMs: 300 * 1000,
   max: 1,
@@ -31,12 +29,11 @@ router.get('/user/kakao/login', kakaoLogin);
 
 // 로그아웃
 router.get('/logout', logout);
-// 샘플계정
+// 샘플계정 
 router.get('/passlogin', passlogin);
 
 // Noobs 사용자
 router.get('/noobs/nobsinfo', nobsinfo);
-
 
 // 챔피언 업데이트
 router.post("/noobs/championUpadate", ChampionUpdate);

@@ -7,6 +7,14 @@ import apiRoute from "./routes/route.js"; // apiRoute 모듈 가져오기
 import path from "path"; // path 모듈 가져오기
 import sequelize from "./config/db.js"; // sequelize 설정 가져오기
 import cors from "cors"; // cors 설정 추가 했습니다.
+dotenv.config();
+
+
+const hostName = process.env.HOST_NAME;
+
+const origin = hostName === "127.0.0.1:8000"
+  ? "http://127.0.0.1:5173"
+  : "https://www.noobsapp.store/";
 
 const app = express();
 const PORT = 8000;
@@ -20,19 +28,25 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "Lax",
+<<<<<<< HEAD
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 30 * 60 * 1000, // 세션 만료 10분
       domain: ".noobsapp.store",
       path: "/"
+=======
+      // secure: true, // 개발 중에는 false로 설정 (HTTPS에서만 true)
+      secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
+      maxAge: 60 * 60 * 1000, // 세션 만료 1시간
+>>>>>>> 999b1c75c1ca88ac96fd00b9ab10365d3d2f7862
     },
   })
 );
 
+
 // CORS 설정
 app.use(
   cors({
-    // origin: "http://127.0.0.1:5173", // 요청을 허용할 클라이언트 도메인
-    origin: "https://www.noobsapp.store", // 요청을 허용할 클라이언트 도메인
+    origin: origin, // 요청을 허용할 클라이언트 도메인
     credentials: true,
     methods: ["GET", "POST", "UPDATE", "PATCH"], // 허용할 HTTP 메서드
   })
@@ -64,14 +78,6 @@ app.use(express.json()); // JSON 데이터 파싱
 
 // 라우터 연결
 app.use("/api", apiRoute);
-
-app.get("/check-session", (req, res) => {
-  if (req.session.user) {
-    res.json({ sessionValid: true });
-  } else {
-    res.json({ sessionValid: false });
-  }
-});
 
 // 홈 페이지 처리
 app.get("/", (req, res) => {
