@@ -184,17 +184,17 @@ export default function AddUserModal({
           </p>
 
           {/* Input + 검색 버튼 */}
-          <div className="flex items-center gap-2 mb-4">
+          <div className="flex items-center gap-2 mb-4 w-full">
             <input
               type="text"
               value={nicknameTag}
               onChange={(e) => setNicknameTag(e.target.value)}
               placeholder="예: 닉네임 #KR1"
-              className="flex-1 px-3 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
+              className="w-20 flex-1 px-3 py-2 text-[#0F2041] border border-[#C89B3C] rounded-lg bg-[#F0E6D2] focus:outline-none focus:ring-2 focus:ring-[#C89B3C]"
             />
             <button
               onClick={handleAddUser}
-              className="px-4 py-2 bg-[#C89B3C] text-white rounded-lg hover:bg-[#A87F2D] font-blackHanSans"
+              className="w-16 px-4 py-2 bg-[#C89B3C] text-white rounded-lg hover:bg-[#A87F2D] font-blackHanSans"
             >
               검색
             </button>

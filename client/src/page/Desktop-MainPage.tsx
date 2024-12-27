@@ -59,6 +59,15 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />
+      <ComposeButton
+        redTeam={redTeam}
+        blueTeam={blueTeam}
+        addedUsers={addedUsers}
+        handleTeamButtonClick={handleTeamButtonClick}
+        isDraftModalOpen={isDraftModalOpen}
+        setIsDraftModalOpen={setIsDraftModalOpen}
+        handleFinishDraft={handleFinishDraft}
+      />
       <div className="lg:grid lg:grid-rows-3 lg:grid-cols-3 gap-6 lg:w-[100%] lg:h-[70%] px-[50px]">
         <Team
           redTeam={redTeam}
@@ -84,15 +93,6 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           handleDeleteUser={handleDeleteUser}
         />
       </div>
-      <ComposeButton
-        redTeam={redTeam}
-        blueTeam={blueTeam}
-        addedUsers={addedUsers}
-        handleTeamButtonClick={handleTeamButtonClick}
-        isDraftModalOpen={isDraftModalOpen}
-        setIsDraftModalOpen={setIsDraftModalOpen}
-        handleFinishDraft={handleFinishDraft}
-      />
     </div>
   );
 };

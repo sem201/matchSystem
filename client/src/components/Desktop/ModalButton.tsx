@@ -26,22 +26,22 @@ const Button: React.FC<ButtonProps> = ({
   closeModal,
 }) => {
   return (
-    <div className="lg:absolute lg:top-[-65px] lg:right-[0px] flex flex-col items-center justify-start xs:mt-7 xs:mb-7 lg:mt-3 lg:mb-3 lg:mx-auto lg:left-0 lg:right-0">
+    <div className="lg:absolute lg:top-[-95px] lg:right-[0px] flex flex-col items-center justify-start xs:mt-7 xs:mb-7 lg:mt-3 lg:mb-3 lg:mx-auto lg:left-0 lg:right-0 h-full min-h-[50px]">
       <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full">
         <button
-          className="lg:w-[6vw] max-h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("addUser")}
         >
           인원추가
         </button>
         <button
-          className="lg:w-[6vw] max-h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("selectMode")}
         >
           모드선택
         </button>
         <button
-          className="lg:w-[6vw] max-h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("howToUse")}
         >
           사용법

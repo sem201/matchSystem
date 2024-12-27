@@ -20,9 +20,9 @@ const ComposeButton: React.FC<ComposeButtonProps> = ({
   handleFinishDraft,
 }) => {
   return (
-    <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full my-[20px]">
+    <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full my-[30px]">
       <button
-        className="lg:w-[10vw] h-[4.5vh] bg-[#F0E6D2] rounded-full border-2 border-[#C8AA6E] text-[15px] text-[#0F2041] flex items-center justify-center font-black"
+        className="w-[20vw] h-[6vh] bg-[#66BB6A] border-[#388E3C] text-[#FFFFFF]rounded-lg border-2 border-[#C8AA6E] text-[25px] flex items-center justify-center font-black"
         onClick={handleTeamButtonClick}
       >
         팀 구성
