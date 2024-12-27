@@ -28,16 +28,9 @@ app.use(
     cookie: {
       httpOnly: true,
       sameSite: "Lax",
-<<<<<<< HEAD
-      secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
-      maxAge: 30 * 60 * 1000, // 세션 만료 10분
-      domain: ".noobsapp.store",
-      path: "/"
-=======
       // secure: true, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       secure: false, // 개발 중에는 false로 설정 (HTTPS에서만 true)
       maxAge: 60 * 60 * 1000, // 세션 만료 1시간
->>>>>>> 999b1c75c1ca88ac96fd00b9ab10365d3d2f7862
     },
   })
 );
