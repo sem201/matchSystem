@@ -50,7 +50,6 @@ app.options("*", cors());
 
 
 app.use((req, res, next) => {
-  console.log("use : " , req.sessionID);
   next();
 });
 
@@ -92,7 +91,7 @@ sequelize
   .then(() => {
     // 서버 실행
     app.listen(PORT, () => {
-      console.log(`서버가 http://localhost:${PORT}에서 실행 중입니다.`);
+      console.log(`Server open`);
     });
   })
   .catch((err) => {

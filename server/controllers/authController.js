@@ -46,7 +46,6 @@ const passlogin = async (req, res) => {
 
 const kakaoLogin = async (req, res) => {
   const { code } = req.query;
-  console.log('로그인 요청');
   if (!code) {
     return res.status(400).send("인증 코드가 필요합니다");
   }
@@ -85,7 +84,6 @@ const kakaoLogin = async (req, res) => {
         profileImage: kakaoUser.properties.profile_image,
       },
     });
-    console.log('정보 저장');
     // 세션에 사용자 정보 저장
     req.session.user = {
       id: user.id,
@@ -94,7 +92,6 @@ const kakaoLogin = async (req, res) => {
     };
 
     const sessionId = req.sessionID; // 세션 ID
-    console.log('로그인 완료 ', sessionId);
 
     // 세션 정보 Redis에 저장 (1시간 TTL)
     await redis.set(
@@ -115,7 +112,6 @@ const kakaoLogin = async (req, res) => {
 const logout = async (req, res) => {
   try {
     const sessionId = req.sessionID;
-    console.log(sessionId);
     // 세션 정보 Redis에서 삭제
     await redis.del(`user:${sessionId}`);
 

@@ -32,6 +32,7 @@ const endTimeSecs = Math.floor(endTime / 1000); // 초 단위로 변환
 
 const userSearch = async (req, res) => {
   let { userid, tagLine } = req.query;
+  console.log(userid,'#',tagLine,": 사용자 검색 요청");
 
   // 앞 뒤 공백제거
   userid = userid.trim();
@@ -204,6 +205,7 @@ const userSearch = async (req, res) => {
 // 사용자 정보 갱신
 const friendUserBrUpdate = async (req, res) => {
   const { user_id } = req.body;
+  console.log(user_id,": 사용자 업데이트 요청");
 
   const headers = {
     "User-Agent": "Mozilla/5.0",
@@ -553,9 +555,9 @@ const friendUserBrUpdate = async (req, res) => {
 // 같이 한 사용자 추가 로직
 const userAdd = async (req, res) => {
   let { userid, tagLine } = req.body;
+  console.log(userid,'#',tagLine,": 사용자 추가 요청");
 
   // 세션 ID로 Redis에서 사용자 정보 가져오기
-  console.log(req);
   const sessionId = req.sessionID; // 세션 ID
   const sessionData = await redis.get(`user:${sessionId}`);
 
@@ -566,7 +568,6 @@ const userAdd = async (req, res) => {
   }
 
   const noobs = JSON.parse(sessionData); // Redis에서 가져온 세션 데이터 파싱
-  console.log(noobs);
 
   const FRIEND_MAX = 20; // 값 수정해서 최대 추가 유저 조정가능
 
@@ -640,9 +641,9 @@ const userAdd = async (req, res) => {
 // 같이한 사용자 불러오기
 const friendUserBr = async (req, res) => {
   // 세션 ID로 Redis에서 사용자 정보 가져오기
-  console.log("사용자 불러오기",req.sessionID);
   const sessionId = req.sessionID; // 세션 ID
   const sessionData = await redis.get(`user:${sessionId}`);
+  console.log(sessionId," : 사용자 불러오기 요청");
 
   if (!sessionData) {
     return res
@@ -735,9 +736,8 @@ const friendUserBr = async (req, res) => {
 // 같이한 사용자 삭제하기
 const friendUserBrDel = async (req, res) => {
   const { user_id } = req.body;
-
+  console.log(user_id," : 사용자 삭제 요청");
   // 세션 ID로 Redis에서 사용자 정보 가져오기
-  console.log(req);
   const sessionId = req.sessionID; // 세션 ID
   const sessionData = await redis.get(`user:${sessionId}`);
 
@@ -770,7 +770,7 @@ const friendUserBrDel = async (req, res) => {
 // 유저 프로필 정보 불러오기 [ 디테일한 정보 전체 요청 ]
 const UserDetilsInfo = async (req, res) => {
   const { gameid } = req.body;
-
+  console.log(gameid," : 프로필 정보 요청");
   try {
     // 유저 정보 조회
     const userInfo = await NoobsUserInfo.findOne({
