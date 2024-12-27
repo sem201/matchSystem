@@ -11,7 +11,7 @@ interface User {
 }
 
 const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
-  const [logoutTime, setLogoutTime] = useState(30 * 60); // 10분을 초로 설정
+  const [logoutTime, setLogoutTime] = useState(60 * 60); // 10분을 초로 설정
   const [isMenuOpen, setIsMenuOpen] = useState(false); // 메뉴 열림 상태 관리
   const timerRef = useRef<NodeJS.Timeout | null>(null); // Timer reference
   const hasLoggedOut = useRef(false); // 로그아웃 중복 호출 방지 플래그
@@ -60,7 +60,7 @@ const Navbar: React.FC<User> = ({ onUpdateStats, id, isLoading }) => {
         color: "#f44336",
         showConfirmButton: true,
       });
-      window.location.href = "http://15.165.204.99:5173/";
+      window.location.href = import.meta.env.VITE_HOME_URI;
     } catch (error) {
       console.error("로그아웃 오류:", error);
     }

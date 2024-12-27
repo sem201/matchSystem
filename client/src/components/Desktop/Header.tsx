@@ -14,9 +14,9 @@ const Header: React.FC<HeaderProps> = ({ text }) => {
       <button
         onClick={() => {
           try {
-            apiCall("https://www.noobsapp.store/logout", "get", null);
+            apiCall(`${import.meta.env.VITE_BACK_API_URL}/logout`, "get", null);
             alert("로그아웃 되었습니다.");
-            window.location.href = "/";
+            window.location.href = import.meta.env.VITE_HOME_URI;
           } catch (err) {
             console.log(err);
           }
