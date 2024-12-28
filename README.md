@@ -28,14 +28,15 @@
     
 # 🚀 기술 스택
 ## Frontend
-<p align="left"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
+<p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-plain.svg" alt="Tailwind CSS" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
 ## Backend
-<p align="left"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" alt="MySQL" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" width="60" height="60"/> </p>
-Deployment
-<p align="left"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS" width="60" height="60"/> </p>
-## 배포 플랫폼: AWS EC2, S3
+<p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" alt="MySQL" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" width="60" height="60"/> </p>
+## Deployment
+<p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS" width="60" height="60"/> </p>
+배포 플랫폼: AWS EC2, S3
 HTTPS 적용: Let's Encrypt 및 도메인 사용
 로드밸런싱 및 네트워킹: AWS Route 53
+
 
 # 🛠️ 구현 기능
 1️⃣ 카카오 로그인 API
@@ -45,7 +46,7 @@ HTTPS 적용: Let's Encrypt 및 도메인 사용
 5️⃣ 드래프트 모드/밸런스 모드 알고리즘 적용
 
 
-📖 개발 과정 및 문제 해결
+# 📖 개발 과정 및 문제 해결
 + 데이터를 효율적으로 처리하며 배열과 객체 활용법을 체득
 + 프론트와의 협업을 통해 데이터 흐름과 상태 관리를 이해
 + Redis를 적용하여 세션 관리를 최적화하며 속도 개선 경험
