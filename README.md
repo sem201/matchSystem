@@ -28,15 +28,18 @@
     
 # 🚀 기술 스택
 ## Frontend
-<p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://tailwindcss.com/_next/static/media/brand-dark.8c3bc6dc1e34a4f7b85f9f8a6a5bf9cb.svg" alt="Tailwind CSS" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
+<p align="center"> <img src="https://tailwindcss.com/_next/static/media/brand-dark.8c3bc6dc1e34a4f7b85f9f8a6a5bf9cb.svg" alt="Tailwind CSS" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
+
+
 ## Backend
 <p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" alt="MySQL" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" width="60" height="60"/> </p>
+
+
 ## Deployment
-<p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS" width="60" height="60"/> </p>
+<p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
 배포 플랫폼: AWS EC2, S3
 HTTPS 적용: Let's Encrypt 및 도메인 사용
 로드밸런싱 및 네트워킹: AWS Route 53
-
 
 # 🛠️ 구현 기능
 1️⃣ 카카오 로그인 API<br>
