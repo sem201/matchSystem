@@ -113,6 +113,7 @@ const UserModal = ({
       >
         <img src={reload} alt="reloadImg" className="w-[16px] h-[16px]" />
         <p className="text-red">전적 갱신하기</p>
+        {isLoading && <LoadingModal message="정보를 업데이트 중입니다..." />}
       </div>
   
       <div
