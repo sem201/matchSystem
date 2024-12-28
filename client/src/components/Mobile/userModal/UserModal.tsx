@@ -95,6 +95,7 @@ const UserModal = ({
   };
   return (
     <div className="flex gap-[5px] flex-col w-[180px] bg-[#F0E6D2] border-2 border-[#C8AA6E] rounded-lg absolute top-0 p-1 z-50">
+      
       <p>
         {user.gameName} {user.tagLine}
       </p>
@@ -112,8 +113,8 @@ const UserModal = ({
       >
         <img src={reload} alt="reloadImg" className="w-[16px] h-[16px]" />
         <p className="text-red">전적 갱신하기</p>
-        {isLoading && <LoadingModal message="정보를 업데이트 중입니다..." />}
       </div>
+  
       <div
         className="flex flex-row items-center gap-2 cursor-pointer"
         onClick={deleteFr}
