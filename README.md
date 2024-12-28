@@ -42,7 +42,7 @@
  
     
 # 🚀 기술 스택
-## <p align="center"><Frontend</p>
+## <p align="center">Frontend</p>
 <p align="center"> <img src="https://tailwindcss.com/_next/static/media/brand-dark.8c3bc6dc1e34a4f7b85f9f8a6a5bf9cb.svg" alt="Tailwind CSS" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
 
 
