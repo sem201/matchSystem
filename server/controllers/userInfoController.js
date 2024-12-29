@@ -614,7 +614,9 @@ const userAdd = async (req, res) => {
       const userFriendData = await NoobsRecentFriend.findOne({
         where: {
           user_id: noobs.id,
-          gameName: userid,
+          gameName: {
+            [Op.like]: `%${userid}%`, // gameName이 userid를 포함하면 검색
+          },
           tagLine: tagLine,
         },
       });
