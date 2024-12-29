@@ -31,7 +31,7 @@ const Login = () => {
   // 샘플계정 로그인
   const sampleAccount = async () => {
     try {
-      const response = await fetch("http://127.0.0.1/passlogin", {
+      const response = await fetch(`${import.meta.env.VITE_BACK_API_URL}/passlogin`, {
         method: "GET",
       });
       if (response.ok) {

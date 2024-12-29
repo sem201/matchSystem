@@ -32,8 +32,10 @@ const passlogin = async (req, res) => {
       profileImage: user.profileImage,
     };
 
+    console.log(user);
+
     // Optionally handle what happens if no user is found
-    if (!sample) {
+    if (!user) {
       console.log('User not found');
     }
 
@@ -41,7 +43,7 @@ const passlogin = async (req, res) => {
     console.log('Database error:', error);
   }
 
-  res.redirect(`${process.env.FRONT_URL}/main`);
+  res.redirect(redirectUrl);
 }
 
 const kakaoLogin = async (req, res) => {
