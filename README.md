@@ -120,3 +120,24 @@ AWS Route 53<br>
 + UI/UX 디자인 최적화
 + API 응답 속도와 데이터 구조 최적화
 
+
+# 프로젝트 결과물 시연
+
+## 검색추가
+![검색 추가](https://github.com/user-attachments/assets/63ce24d1-ab21-4b2c-bf85-898f1de38fdc)
+
+## 모드 팀 구성
+![ezgif com-video-to-gif-converter (2)](https://github.com/user-attachments/assets/8934ed15-2c25-4c9d-89a5-ac9189ee5fe0)
+![ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/5ccc683c-ef08-4ee7-94cb-9246eae55df9)
+
+## 정보 업데이트
+![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/07ad0ad6-3885-43ac-a9fc-12580390fd8a)
+
+
+
+
+
+
+
+
+
