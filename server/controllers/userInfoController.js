@@ -67,8 +67,6 @@ const userSearch = async (req, res) => {
       },
     });
 
-    console.log(user);
-
     if (user) {
       return res.status(200).json({ message: "사용자 db 요청 완료" });
     }
@@ -113,11 +111,6 @@ const userSearch = async (req, res) => {
     const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`;
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
-
-    console.log('트림전',gameName);
-    gameName.trim();
-    console.log('트림후',gameName);
-    tagLine.trim();
 
     // 6. DB에 사용자 데이터 저장
     const newUser = await NoobsUserInfo.create({
