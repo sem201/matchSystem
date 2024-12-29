@@ -70,6 +70,9 @@ https://www.noobsapp.store/
 # API개발 협업과정 문서
 https://www.notion.so/API-1573cb019cd480a4babcc527861ba2c2?pvs=4
 
+# 개발 및 문제해결
+https://jennet1.tistory.com/category/%EA%B0%9C%EB%B0%9C%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8/LOL-TEAM-MATCH
+
 
 # 🚀 기술 스택
 ## <p align="center">Frontend</p>
