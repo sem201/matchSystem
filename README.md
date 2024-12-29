@@ -66,8 +66,11 @@
 
 # 배포 주소
 https://www.noobsapp.store/
- 
-    
+
+# API개발 협업과정 문서
+https://www.notion.so/API-1573cb019cd480a4babcc527861ba2c2?pvs=4
+
+
 # 🚀 기술 스택
 ## <p align="center">Frontend</p>
 <p align="center"> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" width="60" height="60"/> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="60" height="60"/> </p>
