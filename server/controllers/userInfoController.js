@@ -32,11 +32,11 @@ const endTimeSecs = Math.floor(endTime / 1000); // 초 단위로 변환
 
 const userSearch = async (req, res) => {
   let { userid, tagLine } = req.query;
-  console.log(userid,'#',tagLine,": 사용자 검색 요청");
-
   // 앞 뒤 공백제거
   userid = userid.trim();
   tagLine = tagLine.trim();
+
+  console.log(userid,'#',tagLine,": 사용자 검색 요청");
 
   // 필수 값 검증
   if (!userid || !tagLine) {
@@ -59,17 +59,24 @@ const userSearch = async (req, res) => {
   try {
     // 1. DB에서 사용자 검색
     const user = await NoobsUserInfo.findOne({
-      where: { gameName: userid, tagLine },
+      where: {
+        gameName: {
+          [Op.like]: `%${userid}%`, // gameName이 userid를 포함하면 검색
+        },
+        tagLine, // tagLine은 완전히 일치
+      },
     });
+
+    console.log(user);
 
     if (user) {
       return res.status(200).json({ message: "사용자 db 요청 완료" });
     }
 
     // 2. 사용자 정보 API 요청
-    const accountUrl = `https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(
-      userid
-    )}/${encodeURIComponent(tagLine)}`;
+    const accountUrl = `https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/${encodeURIComponent(userid)}/${encodeURIComponent(tagLine)}`;
+    console.log(accountUrl);
+    
     const accountResponse = await axios.get(accountUrl, { headers });
     const { puuid, gameName, tagLine: retrievedTagLine } = accountResponse.data;
 
@@ -106,6 +113,11 @@ const userSearch = async (req, res) => {
     const masteryUrl = `https://kr.api.riotgames.com/lol/champion-mastery/v4/champion-masteries/by-puuid/${puuid}/top?count=5`;
     const masteryResponse = await axios.get(masteryUrl, { headers });
     const masterData = masteryResponse.data;
+
+    console.log('트림전',gameName);
+    gameName.trim();
+    console.log('트림후',gameName);
+    tagLine.trim();
 
     // 6. DB에 사용자 데이터 저장
     const newUser = await NoobsUserInfo.create({
@@ -594,8 +606,10 @@ const userAdd = async (req, res) => {
     // DB에서 사용자 검색
     const userSearchData = await NoobsUserInfo.findOne({
       where: {
-        gameName: userid,
-        tagLine: tagLine,
+        gameName: {
+          [Op.like]: `%${userid}%`, // gameName이 userid를 포함하면 검색
+        },
+        tagLine, // tagLine은 완전히 일치
       },
     });
 

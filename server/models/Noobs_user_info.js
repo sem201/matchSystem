@@ -15,7 +15,6 @@ const NoobsUserInfo = sequelize.define('Noobs_user_info', {
   gameName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
   },
   tagLine: {
     type: DataTypes.STRING,
