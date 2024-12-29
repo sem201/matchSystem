@@ -1,4 +1,21 @@
 # 🕹️ 리그오브레전드 팀 매칭 시스템
+## 게임 소개
+리그 오브 레전드(League of Legends)는 5:5 팀 대전 기반의 MOBA(Multiplayer Online Battle Arena) 게임으로, 각 팀의 목표는 상대방의 넥서스(중앙 기지)를 파괴하는 것입니다.<br>
+전략적 사고와 팀워크가 중요한 이 게임은 친구들 혹은 10명의 플레이어가 모여 실력을 겨루기에 적합합니다.<br>
+
+# 프로그램 목적
+이 프로그램은 팀 밸런스를 맞춰주는 도구로, 아래와 같은 상황에서 유용하게 사용됩니다:
+
+
++ 팀 매칭에 걸리는 시간을 줄이고 싶을 때+
++ 플레이어들의 전적과 실력을 고려하여 공정한 팀을 구성하고 싶을 때
++ 각 팀 간의 밸런스를 맞춰 게임을 더욱 재미있게 즐기고 싶을 때
+# 주요 기능
++ 빠른 전적 검색 및 데이터 분석을 통해 시간 낭비를 줄임
++ 해당 플레이어의 필요한 정보만 빠르게 제공
++ 자동으로 균등한 팀 밸런스를 계산하여 제안
++ 팀 구성과 관련된 번거로움을 해결하여 더 나은 게임 경험 제공
++ 이 프로그램을 통해 플레이어들은 효율적으로 팀을 구성하고, 게임 플레이에 더 많은 시간을 집중할 수 있습니다.
 
 
 ## 🗓️ 개발 일정: 2024.12.03 ~ 2024.12.24
@@ -46,6 +63,10 @@
   * 팀 밸런스 알고리즘 구현
   * Redis를 활용한 세션 관리
  
+
+# 배포 주소
+https://www.noobsapp.store/
+ 
     
 # 🚀 기술 스택
 ## <p align="center">Frontend</p>
@@ -57,10 +78,10 @@
 
 
 ## <p align="center">Deployment</p>
-<p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
-+ 배포 플랫폼: AWS EC2, S3<br>
-+ HTTPS 적용: Let's Encrypt 및 SSL 도메인 사용<br>
-+ AWS Route 53<br>
++ <p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
+  + 배포 플랫폼: AWS EC2, S3<br>
+  + HTTPS 적용: Let's Encrypt 및 SSL 도메인 사용<br>
+  + AWS Route 53<br>
 
 # 🛠️ 구현 기능
 1️⃣ 카카오 로그인 API<br>
