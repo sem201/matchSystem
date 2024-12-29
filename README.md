@@ -58,9 +58,9 @@
 
 ## <p align="center">Deployment</p>
 <p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
-배포 플랫폼: AWS EC2, S3
-HTTPS 적용: Let's Encrypt 및 도메인 사용
-로드밸런싱 및 네트워킹: AWS Route 53
++ 배포 플랫폼: AWS EC2, S3<br>
++ HTTPS 적용: Let's Encrypt 및 SSL 도메인 사용<br>
++ AWS Route 53<br>
 
 # 🛠️ 구현 기능
 1️⃣ 카카오 로그인 API<br>
