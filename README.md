@@ -1,13 +1,13 @@
 # 🕹️ 리그오브레전드 팀 매칭 시스템
 ## 게임 소개
-리그 오브 레전드(League of Legends)는 5:5 팀 대전 기반의 MOBA(Multiplayer Online Battle Arena) 게임으로, 각 팀의 목표는 상대방의 넥서스(중앙 기지)를 파괴하는 것입니다.<br>
+리그 오브 레전드(League of Legends)는 5:5 팀 대전 기반의 게임으로, 각 팀의 목표는 상대방의 넥서스(중앙 기지)를 파괴하는 것입니다.<br>
 전략적 사고와 팀워크가 중요한 이 게임은 친구들 혹은 10명의 플레이어가 모여 실력을 겨루기에 적합합니다.<br>
 
 # 프로그램 목적
 이 프로그램은 팀 밸런스를 맞춰주는 도구로, 아래와 같은 상황에서 유용하게 사용됩니다:
 
 
-+ 팀 매칭에 걸리는 시간을 줄이고 싶을 때+
++ 5:5 팀플레이 사용자 설정을 주로 하는 유저들을 대상으로 하여 팀구성을 시간을 줄이고 싶을 때
 + 플레이어들의 전적과 실력을 고려하여 공정한 팀을 구성하고 싶을 때
 + 각 팀 간의 밸런스를 맞춰 게임을 더욱 재미있게 즐기고 싶을 때
 # 주요 기능
@@ -78,10 +78,10 @@ https://www.noobsapp.store/
 
 
 ## <p align="center">Deployment</p>
-+ <p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
-  + 배포 플랫폼: AWS EC2, S3<br>
-  + HTTPS 적용: Let's Encrypt 및 SSL 도메인 사용<br>
-  + AWS Route 53<br>
+ <p align="center"> <img src="https://a0.awsstatic.com/libra-css/images/logos/aws_logo_smile_1200x630.png" alt="AWS" width="60" height="60"/> </p>
+배포 플랫폼: AWS EC2, S3<br>
+HTTPS 적용: Let's Encrypt 및 SSL 도메인 사용<br>
+AWS Route 53<br>
 
 # 🛠️ 구현 기능
 1️⃣ 카카오 로그인 API<br>
@@ -106,11 +106,10 @@ https://www.noobsapp.store/
 # 🛑 부족한 점
 + React와 Tailwind CSS, TypeScript 사용에 대한 부족함을 느끼며 추가 학습 필요
 + Tailwind CSS의 스타일링 코드 가독성이 떨어짐
-+ 프론트 개발 속도가 부족하여 최적화 필요
 + 서버쪽 코드 개선필요
 
   
-🔄 개선할 점
+# 🔄 개선할 점
 + 버튼 위치와 크기 개선
 + UI/UX 디자인 최적화
 + API 응답 속도와 데이터 구조 최적화
