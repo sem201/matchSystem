@@ -25,7 +25,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
   const [lineSrc, setLineSrc] = useState(none);
 
   // 유저가 없을 경우 배경을 다르게 설정
-  const backgroundClass = user ? "bg-[#B9CCDF]" : "bg-[#F0E6D2] bg-opacity-15";
+  const backgroundClass = user ? "bg-[#97b5f9]" : "bg-[#F0E6D2] bg-opacity-15";
 
   // 숫자를 1,000과 같은 형식으로 변환
   const formatNumberWithCommas = (number: number): string => {
@@ -52,10 +52,10 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
             key={user.id}
             className="flex flex-col items-center justify-between h-full"
           >
-            <img
+           <img
               src={lineSrc}
               alt="라인 이미지"
-              className={`w-5 h-5 ${
+              className={`w-8 h-8 rounded-lg border-black shadow-xl bg-white shadow-blue-500 ${
                 selectedMode === "RANDOM" ||
                 selectedMode === "모드선택" ||
                 selectedMode === "DRAFT"
@@ -100,11 +100,11 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
             <img
               src={close}
               alt="close"
-              className="w-5 h-5 cursor-pointer"
+              className="w-8 h-8 rounded-full border-black shadow-xl bg-black shadow-blue-500 cursor-pointer"
               onClick={() => {
                 handleRemoveUser(user);
-                handleAddUser(user);
                 setLineSrc(none);
+                handleAddUser(user);
               }}
             />
           </div>

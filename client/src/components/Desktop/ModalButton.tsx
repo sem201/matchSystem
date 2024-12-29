@@ -26,8 +26,55 @@ const Button: React.FC<ButtonProps> = ({
   closeModal,
 }) => {
   return (
-    <div className="lg:absolute lg:top-[-95px] lg:right-[0px] flex flex-col items-center justify-start xs:mt-7 xs:mb-7 lg:mt-3 lg:mb-3 lg:mx-auto lg:left-0 lg:right-0 h-full min-h-[50px]">
+    <div className="lg:absolute lg:bottom-[140px] lg:right-[0px] flex flex-col items-center justify-start xs:mt-7 xs:mb-7 lg:mt-3 lg:mb-3 lg:mx-auto lg:left-0 lg:right-0 h-full min-h-[50px]">
+      <div className="font-blackHanSans mb-2 flex flex-row items-center justify-center space-x-4 w-full">
+
+        <button
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          onClick={() => openModal("addUser")}
+        >
+          공지사항
+        </button>
+        <button
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          onClick={() => openModal("selectMode")}
+        >
+          문의요청
+        </button>
+        <button
+          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+          onClick={() => openModal("howToUse")}
+        >
+          회원탈퇴
+        </button>
+
+        {/* 모달들 */}
+        {modalType === "addUser" && (
+          <AddUserModal
+            isModalOpen={modalType !== null}
+            closeModal={closeModal}
+            setIsUserAdded={setIsUserAdded}
+          />
+        )}
+        {modalType === "selectMode" && (
+          <SelectModeModal
+            closeModal={closeModal}
+            selectedMode={selectedMode}
+            setSelectedMode={setSelectedMode} // 선택된 모드 처리 함수 전달
+            setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 함수 전달
+            setHeaderText={setHeaderText}
+          />
+        )}
+        {modalType === "howToUse" && (
+          <HowToUseModal
+            isModalOpen={modalType !== null}
+            closeModal={closeModal}
+          />
+        )}
+      </div>
+
       <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full">
+
         <button
           className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
           onClick={() => openModal("addUser")}
@@ -71,6 +118,8 @@ const Button: React.FC<ButtonProps> = ({
           />
         )}
       </div>
+
+      
     </div>
   );
 };

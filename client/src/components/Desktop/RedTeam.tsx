@@ -25,7 +25,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
   const [lineSrc, setLineSrc] = useState(none);
 
   // 유저가 없을 경우 배경을 다르게 설정
-  const backgroundClass = user ? "bg-[#D1C3C3]" : "bg-[#F0E6D2] bg-opacity-15";
+  const backgroundClass = user ? "bg-[#ffdfdf]" : "bg-[#F0E6D2] bg-opacity-15";
 
   // 숫자를 1,000과 같은 형식으로 변환
   const formatNumberWithCommas = (number: number): string => {
@@ -43,10 +43,10 @@ const RedTeam: React.FC<RedTeamProps> = ({
   };
   return (
     <div
-      className={`w-[18%] max-h-[100%] border-2 border-solid border-[#8A2922] rounded-2xl flex flex-col items-center p-2 ${backgroundClass}`}
+      className={`w-[18%] max-h-[100%] border-2 border-solid border-[#fd3f31] rounded-2xl flex flex-col items-center p-2 ${backgroundClass}`}
     >
       <div className="flex flex-col items-center justify-center h-full">
-        {/* 유저 정보가 있을 경우 */}
+        {/* 유저 정보가 있을 경우 */} 
         {user ? (
           <div
             key={user.id}
@@ -55,7 +55,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
             <img
               src={lineSrc}
               alt="라인 이미지"
-              className={`w-5 h-5 ${
+              className={`w-8 h-8 rounded-lg border-black shadow-xl bg-white shadow-red-500  ${
                 selectedMode === "RANDOM" ||
                 selectedMode === "모드선택" ||
                 selectedMode === "DRAFT"
@@ -100,7 +100,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
             <img
               src={close}
               alt="close"
-              className="w-5 h-5 cursor-pointer"
+              className="w-8 h-8 rounded-full border-black shadow-xl bg-black shadow-red-500 cursor-pointer"
               onClick={() => {
                 handleRemoveUser(user);
                 setLineSrc(none);

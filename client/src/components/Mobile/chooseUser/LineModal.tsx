@@ -24,13 +24,13 @@ const LineModal = ({ handleLineSelection, setIsLine, setLineSrc }: Props) => {
   };
 
   return (
-    <div className="absolute flex flex-row bg-white border-[1.5px] border-[#C8AA6E] rounded-[15px] w-[150px] h-[30px] items-center justify-around z-50">
+    <div className="absolute flex flex-row bg-white border-[1.5px] border-[#C8AA6E] rounded-[15px] w-[200px] h-[50px] items-center justify-around z-50">
       {lines.map((line) => (
         <img
           key={line.name}
           src={line.icon}
           alt={line.name}
-          className="w-[20px] h-[20px] cursor-pointer"
+          className="w-[23px] h-[23px] cursor-pointer"
           onClick={() => handleClick(line.icon, line.name)} // 라인의 이름을 전달
         />
       ))}
