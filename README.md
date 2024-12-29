@@ -127,8 +127,13 @@ AWS Route 53<br>
 ![검색 추가](https://github.com/user-attachments/assets/63ce24d1-ab21-4b2c-bf85-898f1de38fdc)
 
 ## 모드 팀 구성
+### 벨런스 모드 팀구성
 ![ezgif com-video-to-gif-converter (2)](https://github.com/user-attachments/assets/8934ed15-2c25-4c9d-89a5-ac9189ee5fe0)
-![ezgif com-video-to-gif-converter (1)](https://github.com/user-attachments/assets/5ccc683c-ef08-4ee7-94cb-9246eae55df9)
+### 랜덤모드 및 드래프트 모드
++ 랜덤 : 팀 밸런스 없이 무작위로 팀구성
++ 드래프트 모드 : 각 팀의 팀장을 선택 팀원을 선택하는 모드
+![모드별 시연](https://github.com/user-attachments/assets/41e71c12-14bd-4506-88cb-f59c966d3f17)
+
 
 ## 정보 업데이트
 ![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/07ad0ad6-3885-43ac-a9fc-12580390fd8a)
