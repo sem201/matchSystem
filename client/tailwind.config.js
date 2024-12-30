@@ -10,6 +10,7 @@ export default {
         notoSansKR: ["'Noto Sans KR'", "sans-serif"],
         protestGuerrilla: ["'Protest Guerrilla'", "cursive"],
         beaufort: ["Beaufort", "serif"],
+        roboto: ['Roboto', 'sans-serif'],
       },
       screens: {
         xs: "425px",

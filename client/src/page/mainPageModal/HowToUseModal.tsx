@@ -30,7 +30,7 @@ export default function HowToUseModal({ closeModal }: ModalProps) {
         <strong className="font-bold">BALANCE :</strong> 알고리즘을 통해 팀
         선정해줍니다.
       </p>
-      <p>(요인: 티어, 주라인과 일치하는지, 원챔인지 등등...)</p>
+      <p>(스코어는 임의의 점수로 배정하였습니다.)</p>
     </div>,
     "팀짜기 버튼을 클릭하면 팀이 구성됩니다. \n재밌게 즐겨주세요!",
   ];

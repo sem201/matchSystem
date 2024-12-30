@@ -2,6 +2,7 @@ import React from "react";
 import AddUserModal from "../../page/mainPageModal/AddUserModal";
 import HowToUseModal from "../../page/mainPageModal/HowToUseModal";
 import SelectModeModal from "../../page/mainPageModal/SelectModeModal";
+import Notice from "../../page/mainPageModal/Notice";
 
 interface ButtonProps {
   setHeaderText: (text: string) => void;
@@ -31,15 +32,15 @@ const Button: React.FC<ButtonProps> = ({
 
         <button
           className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
-          onClick={() => openModal("addUser")}
+          onClick={() => openModal("notic")}
         >
           공지사항
         </button>
         <button
-          className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
-          onClick={() => openModal("selectMode")}
-        >
-          문의요청
+              className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
+              onClick={() => window.open("https://open.kakao.com/o/s05RZU7g", "_blank")}
+            >
+              문의요청
         </button>
         <button
           className="lg:w-[8vw] h-[6vh] bg-[#F0E6D2] rounded-lg border-2 border-[#C8AA6E] text-[22px] text-[#0F2041] flex items-center justify-center font-black whitespace-nowrap"
@@ -48,29 +49,7 @@ const Button: React.FC<ButtonProps> = ({
           회원탈퇴
         </button>
 
-        {/* 모달들 */}
-        {modalType === "addUser" && (
-          <AddUserModal
-            isModalOpen={modalType !== null}
-            closeModal={closeModal}
-            setIsUserAdded={setIsUserAdded}
-          />
-        )}
-        {modalType === "selectMode" && (
-          <SelectModeModal
-            closeModal={closeModal}
-            selectedMode={selectedMode}
-            setSelectedMode={setSelectedMode} // 선택된 모드 처리 함수 전달
-            setIsDraftModalOpen={setIsDraftModalOpen} // DraftModal 상태 관리 함수 전달
-            setHeaderText={setHeaderText}
-          />
-        )}
-        {modalType === "howToUse" && (
-          <HowToUseModal
-            isModalOpen={modalType !== null}
-            closeModal={closeModal}
-          />
-        )}
+      
       </div>
 
       <div className="font-blackHanSans flex flex-row items-center justify-center space-x-4 w-full">
@@ -95,6 +74,12 @@ const Button: React.FC<ButtonProps> = ({
         </button>
 
         {/* 모달들 */}
+        {modalType === "notic" && (
+          <Notice
+            isOpen={modalType === "notic"} // 모달 열림 여부
+            closeModal={closeModal} // 모달 닫기 함수
+          />
+        )}
         {modalType === "addUser" && (
           <AddUserModal
             isModalOpen={modalType !== null}
