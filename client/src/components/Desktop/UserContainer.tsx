@@ -4,6 +4,7 @@ import LatestUserInfo from "./LatestUserInfo";
 
 interface UserContainerProps {
   allUsers: User[];
+  count : number | undefined;
   handleAddUser: (user: User) => void;
   setAddedUsers: React.Dispatch<React.SetStateAction<User[]>>;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
@@ -15,6 +16,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
   handleAddUser,
   setIsUserAdded,
   handleDeleteUser,
+  count,
 }) => {
   return (
     <div>
@@ -24,7 +26,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
             최근에 같이한 친구
           </div>
           <div className="font-blackHanSans text-xl text-center text-white">
-            {allUsers.length}명/20
+            {count}명/20
           </div>
         </div>
 

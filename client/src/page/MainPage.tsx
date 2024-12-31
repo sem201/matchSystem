@@ -10,6 +10,8 @@ const MainPage = () => {
   const [isUserAdded, setIsUserAdded] = useState<boolean>(false);
   // 유저 데이터 저장
   const [allUsers, setAllUsers] = useState<User[]>([]);
+
+  const [userCount, setUserCount] = useState<number>(0);
   // 최근 함께한 유저 불러오기
   useEffect(() => {
     const fetchData = async () => {
@@ -18,6 +20,8 @@ const MainPage = () => {
           apiCall("/noobs/friendUserBr", "get", null),
   
         ]);
+
+        setUserCount(response.data.count)
         setAllUsers(response.data.data);
       } catch (error) {
         console.log(error);
@@ -88,7 +92,7 @@ const MainPage = () => {
         Swal.fire({
           icon: "warning", // 경고 느낌의 아이콘
           title: "인원 초과 ⚠️",
-          text: "함께한 친구 목록이 가득 찼습니다!",
+          text: "현재 대기 인원이 가득찼습니다.",
           confirmButtonText: "확인",
           background: "#fff",
           color: "#000",
@@ -311,6 +315,7 @@ const MainPage = () => {
     setIsUserAdded,
     handleDeleteUser,
     rankDiff,
+    userCount,
   };
 
   return (

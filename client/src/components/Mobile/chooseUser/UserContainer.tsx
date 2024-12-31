@@ -6,6 +6,7 @@ interface UserContainerProps extends Props {
   onAddUser: (user: User) => void;
   setIsUserAdded: React.Dispatch<React.SetStateAction<boolean>>;
   handleDeleteUser: (userId: number) => void;
+  count : number;
 }
 
 const UserContainer: React.FC<UserContainerProps> = ({
@@ -14,6 +15,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
   onAddUser,
   setIsUserAdded,
   handleDeleteUser,
+  count,
 }) => {
   return (
     <>
@@ -21,7 +23,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
         {/* <div className="ml-3 mb-5 mt-3 flex flex-row justify-between"> */}
         <div className="py-3 px-2 flex flex-row justify-between">
           <div className=" text-white">최근에 같이한 친구</div>
-          <div className=" text-white">{users.length}명/20</div>
+          <div className=" text-white">{count}명/20</div>
         </div>
 
         <hr />

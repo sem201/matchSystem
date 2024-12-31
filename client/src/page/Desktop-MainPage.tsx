@@ -27,6 +27,7 @@ interface DesktopMainPageProps {
   closeModal: () => void;
   handleDeleteUser: (userId: number) => void;
   rankDiff: number | null;
+  userCount : number;
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
@@ -52,6 +53,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   closeModal,
   handleDeleteUser,
   rankDiff,
+  userCount,
 }) => {
   const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
     // 상태 업데이트: 최종 팀을 메인 페이지에 반영
@@ -98,6 +100,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
           closeModal={closeModal}
           setIsUserAdded={setIsUserAdded}
           handleDeleteUser={handleDeleteUser}
+          count={userCount}
         />
       </div>
     </div>

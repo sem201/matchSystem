@@ -669,6 +669,13 @@ const friendUserBr = async (req, res) => {
       },
     });
 
+    // 친구 인원
+    const userRecentCount = await NoobsRecentFriend.count({
+      where : {
+        user_id : noobs.id,
+      }
+    });
+
     // 친구 정보를 비동기적으로 처리
     const updatedFriends = await Promise.all(
       friendUser.map(async (friend) => {
@@ -714,7 +721,7 @@ const friendUserBr = async (req, res) => {
         friend.dataValues.tierScore = userRankScore;
         friend.dataValues.profileInfo = profileData;
         friend.dataValues.MostChamp = champData;
-
+        
         // 챔피언 데이터 처리
         if (champData.length > 0) {
           await Promise.all(
@@ -733,7 +740,7 @@ const friendUserBr = async (req, res) => {
       })
     );
 
-    return res.status(200).json({ data: updatedFriends });
+    return res.status(200).json({ data: updatedFriends , count : userRecentCount});
   } catch (error) {
     console.error("API 요청 또는 DB 처리 중 에러 발생:", error);
     return res.status(500).json({

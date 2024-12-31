@@ -28,6 +28,7 @@ interface Props {
   redTeam: User[];
   blueTeam: User[];
   handleDeleteUser: (userId: number) => void;
+  userCount : number;
 }
 
 const MobileMainpage = ({
@@ -49,6 +50,7 @@ const MobileMainpage = ({
   handleDeleteUser,
   setRedTeam,
   setBlueTeam,
+  userCount,
 }: Props) => {
   const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
     // 상태 업데이트: 최종 팀을 메인 페이지에 반영
@@ -113,6 +115,7 @@ const MobileMainpage = ({
         onAddUser={handleAddUser}
         setIsUserAdded={setIsUserAdded}
         handleDeleteUser={handleDeleteUser}
+        count={userCount}
       />
 
       {/* 모달들 */}

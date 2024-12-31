@@ -19,6 +19,7 @@ interface MenuProps {
   openModal: (type: string) => void;
   closeModal: () => void;
   handleDeleteUser: (userId: number) => void;
+  count : number;
 }
 
 const Menu: React.FC<MenuProps> = ({
@@ -36,6 +37,7 @@ const Menu: React.FC<MenuProps> = ({
   openModal,
   closeModal,
   handleDeleteUser,
+  count,
 }) => {
   return (
     <div className="relative">
@@ -59,6 +61,7 @@ const Menu: React.FC<MenuProps> = ({
           setAddedUsers={setAddedUsers}
           setIsUserAdded={setIsUserAdded}
           handleDeleteUser={handleDeleteUser}
+          count={count}
         />
       </div>
     </div>
