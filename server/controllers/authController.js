@@ -134,7 +134,28 @@ const logout = async (req, res) => {
 
 const userDel = async (req,res) => {
 
-  console.log('유저 삭제하기 api 호출');
+  // db에서 유저 삭제
+  const userId = req.session.user.id;
+  const sessionId = req.sessionID;
+
+  try {
+    await User.destroy({
+      where : {
+        id : userId,
+      }
+    });
+    // 세션 정보 Redis에서 삭제
+    await redis.del(`user:${sessionId}`);
+
+    res.status(200).json({
+      data : "회원탈퇴 성공" , 
+      redirectUrl: logoutUrl,
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: "회원탈퇴 실패" });
+  }
+
 }
 
 export { kakaoLogin, logout, passlogin,userDel };

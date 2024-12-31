@@ -58,7 +58,7 @@ router.post("/noobs/friendUserBrDel", friendUserBrDel);
 router.post("/noobs/UserDetilsInfo", UserDetilsInfo);
 
 
-router.delete("/noobs/userDel", userDel);
+router.post("/noobs/userDel", userDel);
 
 router.get("/sampleData", sampleData);
 
