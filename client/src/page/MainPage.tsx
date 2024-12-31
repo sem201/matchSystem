@@ -21,7 +21,6 @@ const MainPage = () => {
         setAllUsers(response.data.data);
       } catch (error) {
         console.log(error);
-
         // error가 AxiosError인 경우 처리
         if (axios.isAxiosError(error)) {
           const axiosError = error; // error를 AxiosError로 타입 단언
@@ -78,6 +77,7 @@ const MainPage = () => {
   // 레드팀, 블루팀 데이터
   const [redTeam, setRedTeam] = useState<User[]>([]);
   const [blueTeam, setBlueTeam] = useState<User[]>([]);
+  const [rankDiff, setRankDiff] = useState<number | null>(null);
 
   // 사용자 추가 핸들러
   const handleAddUser = (user: User) => {
@@ -149,7 +149,7 @@ const MainPage = () => {
     };
     const newRedTeam = sortTeam(addUsers, redTeamIds);
     const newBlueTeam = sortTeam(addUsers, blueTeamIds);
-
+  
     return { newRedTeam, newBlueTeam };
   };
   const handleTeamButtonClick = async () => {
@@ -182,15 +182,19 @@ const MainPage = () => {
           RankScore: user.tierScore.RankScore,
           position: user.position,
         })),
-        mode: "balance",
+        mode: "balance",  
       };
-
       try {
         const response = await apiCall("/noobs/TeamMach", "post", data);
         const { newRedTeam, newBlueTeam } = updateTeams(
           addedUsers,
           response.data
         );
+        let redScore = response.data.redTeam.totalRankScore
+        let blueScore = response.data.blueTeam.totalRankScore
+        let rankDiff = redScore - blueScore;
+
+        setRankDiff(rankDiff);
 
         setRedTeam(newRedTeam);
         setBlueTeam(newBlueTeam);
@@ -202,6 +206,7 @@ const MainPage = () => {
             // missingPlayers 배열에서 gameName 값만 추출하여 콘솔에 출력
             const gameNames = missingPlayers.map((player) => player.gameName);
             const gameNamesString = gameNames.join(", "); // 배열을 쉼표로 구분된 문자열로 변환
+
             Swal.fire({
               icon: "error",
               title: "포지션 미선택 소환사",
@@ -305,6 +310,7 @@ const MainPage = () => {
     closeModal,
     setIsUserAdded,
     handleDeleteUser,
+    rankDiff,
   };
 
   return (

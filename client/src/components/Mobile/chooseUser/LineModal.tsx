@@ -4,12 +4,13 @@ import mid from "../../../assets/line_img/line-mid.png";
 import ad from "../../../assets/line_img/line-ad.png";
 import sup from "../../../assets/line_img/line-sup.png";
 interface Props {
-  handleLineSelection: (line: string) => void;
+  handleLineSelection: (line: string, lineSrc: string) => void; // lineSrc 추가
   setIsLine: (isLine: boolean) => void;
   setLineSrc: (line: string) => void;
 }
+
 const LineModal = ({ handleLineSelection, setIsLine, setLineSrc }: Props) => {
-  const lines = [
+  const lines: { name: string; icon: string }[] = [
     { name: "top", icon: top },
     { name: "jug", icon: jg },
     { name: "mid", icon: mid },
@@ -18,8 +19,8 @@ const LineModal = ({ handleLineSelection, setIsLine, setLineSrc }: Props) => {
   ];
 
   const handleClick = (newLineSrc: string, newLineName: string) => {
-    handleLineSelection(newLineName); // 선택된 라인 정보를 부모로 전달
-    setLineSrc(newLineSrc);
+    setLineSrc(newLineSrc); // 필요 시 추가
+    handleLineSelection(newLineName, newLineSrc); // 이름과 이미지를 함께 전달
     setIsLine(false); // 모달 닫기
   };
 

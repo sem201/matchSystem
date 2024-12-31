@@ -2,7 +2,7 @@ import none from "./../../assets/line_img/line-none.png";
 import PlusIcon from "../../assets/svg/add.svg";
 import close from "../../assets/svg/close.svg";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import LineModal from "../Mobile/chooseUser/LineModal";
 import { User } from "../../commonTypes";
@@ -21,8 +21,14 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
   handleAddUser,
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
-  const [_line, setLine] = useState(none);
-  const [lineSrc, setLineSrc] = useState(none);
+  const [lineSrc, setLineSrc] = useState(user?.lineSrc || none); // user.lineSrc로 초기화
+
+  useEffect(() => {
+    if (user) {
+      // user 정보가 업데이트되었을 때 lineSrc를 최신 상태로 반영
+      setLineSrc(user.lineSrc || none);
+    }
+  }, [user]); // user가 변경될 때마다 lineSrc 업데이트
 
   // 유저가 없을 경우 배경을 다르게 설정
   const backgroundClass = user ? "bg-[#97b5f9]" : "bg-[#F0E6D2] bg-opacity-15";
@@ -31,13 +37,14 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
   const formatNumberWithCommas = (number: number): string => {
     return number.toLocaleString();
   };
-  const handleLineSelection = (newLine: string) => {
-    setLine(newLine); // Line 상태 업데이트
-
-    // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
+  const handleLineSelection = (newLine: string, newLineSrc: string) => {
+    // setLine(newLine); // 선택된 라인 업데이트
+    setLineSrc(newLineSrc); // 선택된 이미지 업데이트
+  
+    // 유저 정보 업데이트
     if (user) {
-      const updatedUser = { ...user, position: newLine }; // line 추가
-      handleAddUser(updatedUser); // 업데이트된 user 전달
+      const updatedUser = { ...user, position: newLine, lineSrc: newLineSrc }; // position과 lineSrc 동시 업데이트
+      handleAddUser(updatedUser); // 부모로 업데이트된 user 전달
     }
   };
 
@@ -53,7 +60,7 @@ const BlueTeam: React.FC<BlueTeamProps> = ({
             className="flex flex-col items-center justify-between h-full"
           >
            <img
-              src={lineSrc}
+               src={lineSrc|| none}
               alt="라인 이미지"
               className={`w-8 h-8 rounded-lg border-black shadow-xl bg-white shadow-blue-500 ${
                 selectedMode === "RANDOM" ||

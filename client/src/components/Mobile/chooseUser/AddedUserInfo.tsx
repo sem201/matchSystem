@@ -1,5 +1,5 @@
 import none from "../../../assets/line_img/line-none.png";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LineModal from "./LineModal";
 import { User } from "../../../commonTypes";
 
@@ -17,23 +17,32 @@ const UserInfo: React.FC<AddedUserInfoProps> = ({
   handleAddUser,
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
-  const [_line, setLine] = useState(none);
-  const [lineSrc, setLineSrc] = useState(none);
+  const [lineSrc, setLineSrc] = useState(user?.lineSrc || none); // user.lineSrc로 초기화
 
-  const handleLineSelection = (newLine: string) => {
-    setLine(newLine); // Line 상태 업데이트
-
-    // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
+  useEffect(() => {
     if (user) {
-      const updatedUser = { ...user, position: newLine }; // line 추가
-      handleAddUser(updatedUser); // 업데이트된 user 전달
+      // user 정보가 업데이트되었을 때 lineSrc를 최신 상태로 반영
+      setLineSrc(user.lineSrc || none);
+    }
+  }, [user]); // user가 변경될 때마다 lineSrc 업데이트
+
+  const handleLineSelection = (newLine: string, newLineSrc: string) => {
+    // setLine(newLine); // 선택된 라인 업데이트
+    setLineSrc(newLineSrc); // 선택된 이미지 업데이트
+  
+    // 유저 정보 업데이트
+    if (user) {
+      const updatedUser = { ...user, position: newLine, lineSrc: newLineSrc }; // position과 lineSrc 동시 업데이트
+      console.log("Updated User:", updatedUser);
+      handleAddUser(updatedUser); // 부모로 업데이트된 user 전달
     }
   };
+
   return (
     <div className="flex flex-row items-center h-[55px] mx-2 my-1 gap-2 relative">
       {selectedMode == "BALANCE" && (
         <img
-          src={lineSrc}
+          src={lineSrc|| none}
           alt="line-info"
           className="w-[15px] h-[15px]"
           onClick={() => setIsLine(!isLine)}

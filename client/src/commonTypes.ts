@@ -33,7 +33,8 @@ interface tierScore {
 }
 export interface User {
   id: number; // 유저 고유 식별자
-  Line?: string;
+  Line?: string | undefined;
+  lineSrc : string
   MostChamp: MostChamp[];
   profileInfo: profileInfo;
   tierImg: tierImg;
@@ -42,5 +43,5 @@ export interface User {
   tagLine: string; // 유저 태그
   winRate: number; // 승률
   updateId: number;
-  position?: string;
+  position?: string | undefined;
 }

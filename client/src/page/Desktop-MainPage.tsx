@@ -26,6 +26,7 @@ interface DesktopMainPageProps {
   openModal: (type: string) => void;
   closeModal: () => void;
   handleDeleteUser: (userId: number) => void;
+  rankDiff: number | null;
 }
 
 const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
@@ -50,6 +51,7 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   openModal,
   closeModal,
   handleDeleteUser,
+  rankDiff,
 }) => {
   const handleFinishDraft = (RedTeam: User[], BlueTeam: User[]) => {
     // 상태 업데이트: 최종 팀을 메인 페이지에 반영
@@ -59,6 +61,11 @@ const DesktopMainPage: React.FC<DesktopMainPageProps> = ({
   return (
     <div className="w-[100vw] xs:h-[100%] lg:h-[100vh]">
       <Header text={headerText} />
+      {headerText === "BALANCE 모드가 선택되었습니다." && (
+        <div className="text-3xl text-white font-bold font-blackHanSans text-center">
+          <h3>두 팀의 점수 차이 : {rankDiff}</h3>
+        </div>
+      )}
       <ComposeButton
         redTeam={redTeam}
         blueTeam={blueTeam}

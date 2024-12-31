@@ -36,7 +36,6 @@ const Login = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        console.log("Response:", data);
       } else {
         console.log("Error with the GET request");
       }

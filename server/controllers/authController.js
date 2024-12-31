@@ -132,4 +132,9 @@ const logout = async (req, res) => {
   }
 };
 
-export { kakaoLogin, logout, passlogin };
+const userDel = async (req,res) => {
+
+  console.log('유저 삭제하기 api 호출');
+}
+
+export { kakaoLogin, logout, passlogin,userDel };

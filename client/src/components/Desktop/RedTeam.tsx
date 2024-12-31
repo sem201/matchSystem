@@ -1,11 +1,9 @@
+import { useState, useEffect  } from "react";
+import LineModal from "../Mobile/chooseUser/LineModal";
+import { User } from "../../commonTypes";
 import none from "./../../assets/line_img/line-none.png";
 import PlusIcon from "../../assets/svg/add.svg";
 import close from "../../assets/svg/close.svg";
-
-import { useState } from "react";
-
-import LineModal from "../Mobile/chooseUser/LineModal";
-import { User } from "../../commonTypes";
 
 interface RedTeamProps {
   user?: User;
@@ -21,26 +19,34 @@ const RedTeam: React.FC<RedTeamProps> = ({
   handleAddUser,
 }) => {
   const [isLine, setIsLine] = useState<boolean>(false);
-  const [_line, setLine] = useState(none);
-  const [lineSrc, setLineSrc] = useState(none);
+  const [lineSrc, setLineSrc] = useState(user?.lineSrc || none); // user.lineSrc로 초기화
+
+  useEffect(() => {
+    if (user) {
+      // user 정보가 업데이트되었을 때 lineSrc를 최신 상태로 반영
+      setLineSrc(user.lineSrc || none);
+    }
+  }, [user]); // user가 변경될 때마다 lineSrc 업데이트
 
   // 유저가 없을 경우 배경을 다르게 설정
-  const backgroundClass = user ? "bg-[#ffdfdf]" : "bg-[#F0E6D2] bg-opacity-15";
+  const backgroundClass = user ? "bg-[#ffdfdf]" : "bg-[#f0d090] bg-opacity-15";
 
   // 숫자를 1,000과 같은 형식으로 변환
   const formatNumberWithCommas = (number: number): string => {
     return number.toLocaleString();
   };
 
-  const handleLineSelection = (newLine: string) => {
-    setLine(newLine); // Line 상태 업데이트
-
-    // 유저 정보가 있다면 user 객체에 line 추가 후 handleAddUser 호출
+  const handleLineSelection = (newLine: string, newLineSrc: string) => {
+    // setLine(newLine); // 선택된 라인 업데이트
+    setLineSrc(newLineSrc); // 선택된 이미지 업데이트
+  
+    // 유저 정보 업데이트
     if (user) {
-      const updatedUser = { ...user, position: newLine }; // line 추가
-      handleAddUser(updatedUser); // 업데이트된 user 전달
+      const updatedUser = { ...user, position: newLine, lineSrc: newLineSrc }; // position과 lineSrc 동시 업데이트
+      handleAddUser(updatedUser); // 부모로 업데이트된 user 전달
     }
   };
+  
   return (
     <div
       className={`w-[18%] max-h-[100%] border-2 border-solid border-[#fd3f31] rounded-2xl flex flex-col items-center p-2 ${backgroundClass}`}
@@ -53,7 +59,7 @@ const RedTeam: React.FC<RedTeamProps> = ({
             className="flex flex-col items-center justify-between h-full"
           >
             <img
-              src={lineSrc}
+              src={lineSrc|| none}
               alt="라인 이미지"
               className={`w-8 h-8 rounded-lg border-black shadow-xl bg-white shadow-red-500  ${
                 selectedMode === "RANDOM" ||
@@ -91,8 +97,8 @@ const RedTeam: React.FC<RedTeamProps> = ({
             </p>
             <img src={user.tierImg.rankImg} alt="tier" className="w-[35%]" />
             {isLine && (
-              <LineModal
-                handleLineSelection={handleLineSelection}
+                <LineModal
+                handleLineSelection={handleLineSelection} // 라인 선택 시 호출되는 함수 전달
                 setIsLine={setIsLine}
                 setLineSrc={setLineSrc}
               />

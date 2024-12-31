@@ -14,13 +14,9 @@ import {
 } from "../controllers/userInfoController.js";
 import { TeamMach, sampleData } from "../controllers/modeTeamController.js";
 import rateLimit from "express-rate-limit";
-import { kakaoLogin, logout, passlogin } from '../controllers/authController.js';
+import { kakaoLogin, logout, passlogin,userDel } from '../controllers/authController.js';
 
-const limiter = rateLimit({
-  windowMs: 300 * 1000,
-  max: 1,
-  message: "요청을 처리중입니다. 5분후에 다시 시도하세요",
-});
+
 
 const router = express.Router();
 
@@ -60,6 +56,9 @@ router.post("/noobs/friendUserBrDel", friendUserBrDel);
 
 // 유저 포로필정보 요청
 router.post("/noobs/UserDetilsInfo", UserDetilsInfo);
+
+
+router.delete("/noobs/userDel", userDel);
 
 router.get("/sampleData", sampleData);
 

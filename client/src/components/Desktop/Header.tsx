@@ -8,11 +8,9 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ text }) => {
   return (
     <>
-      <h2 className="font-blackHanSans text-4xl text-white text-center xs:py-[50px]">
-        {text}
-      </h2>
-
-
+    <h2 className="font-blackHanSans text-4xl text-white text-center xs:py-[50px] animate-bounce">
+      {text}
+    </h2>
       <button
         onClick={() => {
           try {
