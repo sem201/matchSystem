@@ -35,7 +35,7 @@ const Login = () => {
         method: "GET",
       });
       if (response.ok) {
-        const data = await response.json();
+        // const data = await response.json();
       } else {
         console.log("Error with the GET request");
       }
