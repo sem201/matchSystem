@@ -1,4 +1,5 @@
 import { useState, useRef } from "react";
+import SignupModal from "./SignupModal"; // SignupModal 가져오기
 import backGroungImg from "../../assets/login_Img/login.webm";
 import Logo from "../../assets/login_Img/legendLogo.png";
 import start from "../../assets/login_Img/pause.png";
@@ -6,6 +7,11 @@ import stop from "../../assets/login_Img/play.png";
 import sound from "../../assets/Music/2019-MSI-.mp3";
 
 const Login = () => {
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false); // 모달 상태
+
+  const openSignupModal = () => setIsSignupModalOpen(true); // 모달 열기
+  const closeSignupModal = () => setIsSignupModalOpen(false); // 모달 닫기
+
   const [isPlaying, setIsPlaying] = useState(true); // 음악 상태 (재생/일시정지)
   const audioRef = useRef<HTMLAudioElement | null>(null); // audio 태그 참조 타입 명시
 
@@ -26,22 +32,6 @@ const Login = () => {
 
     // 카카오 로그인 페이지로 리디렉션 (서버에서 처리할 로그인 URL로)
     window.location.href = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}`;
-  };
-
-  // 샘플계정 로그인
-  const sampleAccount = async () => {
-    try {
-      const response = await fetch(`${import.meta.env.VITE_BACK_API_URL}/passlogin`, {
-        method: "GET",
-      });
-      if (response.ok) {
-        // const data = await response.json();
-      } else {
-        console.log("Error with the GET request");
-      }
-    } catch (error) {
-      console.error("Request failed:", error);
-    }
   };
 
   return (
@@ -82,19 +72,65 @@ const Login = () => {
           </span>
         </p>
 
+        {/* 아이디와 비밀번호 입력 필드 */}
+        <div className="w-full  space-y-4">
+          {/* 아이디 입력 */}
+          <div className="flex justify-center items-center gap-2">
+            <label
+              htmlFor="id"
+              className="block text-xl font-bold text-gray-700 w-[80px]"
+            >
+              아이디
+            </label>
+            <input
+              type="text"
+              id="id"
+              name="id"
+              className="mt-2 p-3 w-[70%] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="아이디를 입력하세요"
+            />
+          </div>
+
+          {/* 비밀번호 입력 */}
+          <div className="flex justify-center items-center gap-2">
+            <label
+              htmlFor="pass"
+              className="block text-xl font-bold text-gray-700 w-[80px] mt-4"
+            >
+              비밀번호
+            </label>
+            <input
+              type="password"
+              id="pass"
+              name="pass"
+              className="mt-2 p-3 w-[70%] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="비밀번호를 입력하세요"
+            />
+          </div>
+          <div className="flex justify-center items-center gap-4 mt-3">
+            {/* 로그인 버튼 */}
+            <button className="w-[120px] py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-all">
+              로그인
+            </button>
+
+            {/* 회원가입 버튼 */}
+            <button
+              onClick={openSignupModal}
+              className="w-[120px] py-2 bg-green-500 text-white rounded-full hover:bg-green-600 transition-all"
+            >
+              회원가입
+            </button>
+            {/* 모달 표시 */}
+            {isSignupModalOpen && <SignupModal onClose={closeSignupModal} />}
+          </div>
+        </div>
+
         {/* 카카오 로그인 버튼 */}
         <button
           onClick={handleKakaoLogin}
           className="md:text-[10px] lg:text-[17px] bg-[#FEE500] mt-8 py-2 px-4 rounded-lg transition-all"
         >
           카카오톡으로 로그인
-        </button>
-
-        <button
-          onClick={sampleAccount}
-          className="md:text-[10px] lg:text-[17px] bg-[#FEE500] mt-8 py-2 px-4 rounded-lg transition-all"
-        >
-          샘플계정로그인
         </button>
       </div>
 

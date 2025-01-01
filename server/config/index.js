@@ -39,7 +39,8 @@ GameRank.belongsTo(NoobsUserInfo, {
 
 Users.hasMany(NoobsRecentFriends, {
   foreignKey: 'user_id', // Users.id와 연결
-  as: 'AddedFriends'     // 별칭: 사용자가 추가한 친구들
+  as: 'AddedFriends',    // 별칭: 사용자가 추가한 친구들
+  onDelete: 'CASCADE',
 });
 
 NoobsRecentFriends.belongsTo(Users, {

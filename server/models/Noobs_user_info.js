@@ -56,6 +56,10 @@ const NoobsUserInfo = sequelize.define('Noobs_user_info', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  discordNik: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   timestamps: true, // createdAt, updatedAt 자동 생성
 });
