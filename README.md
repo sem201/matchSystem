@@ -137,7 +137,7 @@ AWS Route 53<br>
 ![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/07ad0ad6-3885-43ac-a9fc-12580390fd8a)
 
 
-#[Noobs 개발 수정 내용]
+# [Noobs 개발 수정 내용]
 # ✅ 완료된 작업
  + 🔍 검색 버튼 크기 수정
  + 📍 팀 구성 버튼 위치 조정
